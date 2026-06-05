@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>ESTETIQ Protocol — by Dragos</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#080b0f;
+  --bg2:#0d1117;
+  --bg3:#111820;
+  --card:#131c26;
+  --card2:#1a2535;
+  --border:#1e2d3f;
+  --accent:#00e5a0;
+  --accent2:#00c4ff;
+  --accent3:#ff4d6d;
+  --accent4:#ffb700;
+  --text:#f0f4f8;
+  --text2:#8899aa;
+  --text3:#4a5f72;
+  --neon: 0 0 20px rgba(0,229,160,0.4), 0 0 60px rgba(0,229,160,0.1);
+  --neon2: 0 0 20px rgba(0,196,255,0.4);
+  --r:16px;
+  --r2:12px;
+  --r3:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* INTRO SCREEN */
+#intro{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.8s ease,visibility 0.8s ease}
+#intro.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.intro-logo{text-align:center;animation:introIn 1s ease forwards}
+.intro-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,12vw,96px);letter-spacing:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.intro-sub{font-size:13px;letter-spacing:6px;color:var(--text2);margin-top:8px;font-weight:300;text-transform:uppercase}
+.intro-by{font-size:11px;letter-spacing:4px;color:var(--text3);margin-top:6px;text-transform:uppercase}
+.intro-bar{width:200px;height:2px;background:var(--border);border-radius:2px;margin:40px auto 0;overflow:hidden}
+.intro-progress{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;animation:loadBar 2s ease forwards 0.3s}
+@keyframes loadBar{to{width:100%}}
+@keyframes introIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* MAIN APP */
+#app{display:none;flex-direction:column;min-height:100vh;padding-bottom:100px}
+#app.visible{display:flex}
+
+/* TOP BAR */
+.topbar{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;background:linear-gradient(to bottom,var(--bg) 80%,transparent);padding-bottom:10px}
+.topbar-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:4px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.topbar-protocol{font-size:10px;letter-spacing:3px;color:var(--text3);font-weight:600;text-transform:uppercase}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.streak-badge{background:linear-gradient(135deg,rgba(0,229,160,0.15),rgba(0,196,255,0.1));border:1px solid rgba(0,229,160,0.3);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:6px}
+.streak-badge span{font-size:16px}
+
+/* PAGE SECTIONS */
+.page{display:none;padding:16px 20px;animation:fadeIn 0.3s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTION TITLE */
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--text);margin-bottom:4px}
+.sec-sub{font-size:12px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:14px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,229,160,0.03),transparent);pointer-events:none}
+.card-accent{border-color:rgba(0,229,160,0.3);background:linear-gradient(135deg,rgba(0,229,160,0.08),var(--card))}
+.card-row{display:flex;gap:12px}
+.card-half{flex:1;background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:16px}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:16px;position:relative;overflow:hidden}
+.stat-card.highlight{border-color:rgba(0,229,160,0.4);background:linear-gradient(135deg,rgba(0,229,160,0.1),var(--card))}
+.stat-label{font-size:10px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:6px}
+.stat-value{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;color:var(--text);line-height:1}
+.stat-value.accent{color:var(--accent)}
+.stat-unit{font-size:11px;color:var(--text2);margin-top:2px}
+.stat-change{font-size:11px;margin-top:4px;display:flex;align-items:center;gap:4px}
+.stat-change.up{color:#00e5a0}
+.stat-change.down{color:var(--accent3)}
+
+/* FASTING CARD */
+.fast-ring{width:180px;height:180px;margin:0 auto 20px;position:relative}
+.fast-ring svg{transform:rotate(-90deg)}
+.fast-ring-bg{fill:none;stroke:var(--border);stroke-width:8}
+.fast-ring-fill{fill:none;stroke:url(#fastGrad);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1s ease}
+.fast-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.fast-time{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:2px;color:var(--text)}
+.fast-label{font-size:10px;letter-spacing:3px;color:var(--text3);text-transform:uppercase}
+.fast-status{font-size:11px;color:var(--accent);font-weight:600;letter-spacing:1px;margin-top:2px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 24px;border-radius:var(--r3);font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all 0.2s ease;width:100%}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#00c47a);color:#000;box-shadow:0 4px 20px rgba(0,229,160,0.3)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 30px rgba(0,229,160,0.4)}
+.btn-primary:active{transform:translateY(1px)}
+.btn-danger{background:linear-gradient(135deg,var(--accent3),#c0392b);color:#fff;box-shadow:0 4px 20px rgba(255,77,109,0.3)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-sm{padding:10px 16px;font-size:12px}
+.btn-row{display:flex;gap:10px}
+
+/* INPUTS */
+.input-group{margin-bottom:14px}
+.input-label{font-size:11px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:6px;display:block}
+.input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r3);padding:12px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color 0.2s}
+.input:focus{border-color:var(--accent)}
+.input::placeholder{color:var(--text3)}
+textarea.input{resize:vertical;min-height:80px}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.input-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+/* RANGE SLIDER */
+.range-group{margin-bottom:16px}
+.range-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.range-name{font-size:12px;color:var(--text2);font-weight:600}
+.range-val{font-family:'JetBrains Mono',monospace;font-size:16px;color:var(--accent);font-weight:600}
+input[type=range]{width:100%;height:4px;background:var(--border);border-radius:4px;outline:none;-webkit-appearance:none;appearance:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--accent);border-radius:50%;cursor:pointer;box-shadow:0 0 10px rgba(0,229,160,0.5)}
+input[type=range].blue::-webkit-slider-thumb{background:var(--accent2);box-shadow:0 0 10px rgba(0,196,255,0.5)}
+
+/* MEAL SECTION */
+.meal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.meal-title-area{display:flex;align-items:center;gap:10px}
+.meal-badge{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;font-size:10px;font-weight:800;letter-spacing:2px;padding:4px 10px;border-radius:20px;text-transform:uppercase}
+.meal-badge.eve{background:linear-gradient(135deg,var(--accent2),#7b2ff7)}
+.macro-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.macro-box{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r3);padding:10px;text-align:center}
+.macro-box-val{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--text)}
+.macro-box-val.green{color:var(--accent)}
+.macro-box-val.blue{color:var(--accent2)}
+.macro-box-val.orange{color:var(--accent4)}
+.macro-box-lbl{font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+
+/* TRAINING LOG */
+.exercise-row{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r3);padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.exercise-icon{width:40px;height:40px;border-radius:var(--r3);background:linear-gradient(135deg,rgba(0,229,160,0.2),rgba(0,196,255,0.1));display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.exercise-info{flex:1}
+.exercise-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px}
+.exercise-stats{font-size:11px;color:var(--text2);font-family:'JetBrains Mono',monospace}
+.pr-badge{background:linear-gradient(135deg,var(--accent4),#ff8c00);color:#000;font-size:9px;font-weight:800;letter-spacing:1px;padding:3px 8px;border-radius:10px;text-transform:uppercase}
+
+/* AI COACH */
+.coach-bubble{background:linear-gradient(135deg,rgba(0,229,160,0.08),rgba(0,196,255,0.05));border:1px solid rgba(0,229,160,0.25);border-radius:var(--r);padding:18px;margin-bottom:12px;position:relative}
+.coach-bubble::before{content:'';position:absolute;top:-1px;left:20px;width:40px;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.coach-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.coach-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.coach-name{font-size:12px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase}
+.coach-role{font-size:10px;color:var(--text3);margin-top:1px}
+.coach-text{font-size:13px;color:var(--text2);line-height:1.7}
+.coach-text strong{color:var(--text)}
+.alert-card{border-radius:var(--r3);padding:12px 14px;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px}
+.alert-card.warning{background:rgba(255,183,0,0.08);border:1px solid rgba(255,183,0,0.25)}
+.alert-card.danger{background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.25)}
+.alert-card.success{background:rgba(0,229,160,0.08);border:1px solid rgba(0,229,160,0.25)}
+.alert-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.alert-text{font-size:12px;color:var(--text2);line-height:1.6}
+.alert-text strong{color:var(--text);font-size:13px;display:block;margin-bottom:3px}
+
+/* WEIGHT CHART */
+.chart-area{width:100%;height:160px;position:relative;overflow:hidden}
+.chart-area svg{width:100%;height:100%}
+
+/* BODY TRANSFORM */
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.photo-slot{aspect-ratio:3/4;background:var(--bg3);border:2px dashed var(--border);border-radius:var(--r2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.photo-slot:hover{border-color:var(--accent)}
+.photo-slot-icon{font-size:32px;opacity:0.4}
+.photo-slot-label{font-size:11px;letter-spacing:2px;color:var(--text3);text-transform:uppercase}
+.photo-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* PROTOCOL MODE */
+.protocol-cards{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:14px}
+.protocol-card{border:2px solid var(--border);border-radius:var(--r);padding:20px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.protocol-card.selected{border-color:var(--accent);background:linear-gradient(135deg,rgba(0,229,160,0.1),var(--card))}
+.protocol-card.selected::after{content:'✓';position:absolute;top:16px;right:16px;width:24px;height:24px;background:var(--accent);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px}
+.protocol-name{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;margin-bottom:4px}
+.protocol-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px}
+.protocol-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:10px;letter-spacing:1px;padding:4px 10px;border-radius:20px;font-weight:600;text-transform:uppercase}
+.tag-green{background:rgba(0,229,160,0.15);color:var(--accent);border:1px solid rgba(0,229,160,0.3)}
+.tag-blue{background:rgba(0,196,255,0.15);color:var(--accent2);border:1px solid rgba(0,196,255,0.3)}
+.tag-orange{background:rgba(255,183,0,0.15);color:var(--accent4);border:1px solid rgba(255,183,0,0.3)}
+.tag-red{background:rgba(255,77,109,0.15);color:var(--accent3);border:1px solid rgba(255,77,109,0.3)}
+
+/* SCIENCE SECTION */
+.science-section{background:linear-gradient(135deg,rgba(0,229,160,0.04),rgba(0,196,255,0.02));border:1px solid rgba(0,229,160,0.15);border-radius:var(--r);padding:24px;margin-bottom:14px}
+.science-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--accent);margin-bottom:4px}
+.science-sub{font-size:10px;letter-spacing:3px;color:var(--text3);text-transform:uppercase;margin-bottom:16px}
+.science-block{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.science-block:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.science-block-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.science-block-title span{font-size:18px}
+.science-text{font-size:13px;color:var(--text2);line-height:1.8}
+.science-text strong{color:var(--accent)}
+.science-ref{font-size:10px;color:var(--text3);margin-top:6px;font-style:italic;font-family:'JetBrains Mono',monospace}
+.highlight-box{background:rgba(0,229,160,0.08);border-left:3px solid var(--accent);border-radius:0 var(--r3) var(--r3) 0;padding:12px 14px;margin:12px 0;font-size:13px;color:var(--text);font-weight:500;line-height:1.7}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:16px 0;opacity:0.5}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(8,11,15,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:12px 0 max(12px,env(safe-area-inset-bottom));z-index:200}
+.nav-items{display:flex;justify-content:space-around;align-items:center}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 16px;cursor:pointer;transition:all 0.2s;border-radius:var(--r3);position:relative}
+.nav-item.active .nav-icon{color:var(--accent)}
+.nav-item.active .nav-label{color:var(--accent)}
+.nav-item.active::after{content:'';position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);width:4px;height:4px;background:var(--accent);border-radius:50%}
+.nav-icon{font-size:22px;color:var(--text3);transition:all 0.2s}
+.nav-label{font-size:9px;letter-spacing:1px;color:var(--text3);text-transform:uppercase;font-weight:600;transition:all 0.2s}
+
+/* MISC */
+.weight-log-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.weight-log-date{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.weight-log-val{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--text)}
+.weight-log-delta{font-size:11px}
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.pill-green{background:rgba(0,229,160,0.15);color:var(--accent)}
+.pill-red{background:rgba(255,77,109,0.15);color:var(--accent3)}
+.separator{display:flex;align-items:center;gap:12px;margin:20px 0}
+.separator-line{flex:1;height:1px;background:var(--border)}
+.separator-text{font-size:10px;letter-spacing:3px;color:var(--text3);text-transform:uppercase;white-space:nowrap}
+.progress-bar-wrap{background:var(--border);border-radius:4px;height:6px;overflow:hidden;margin-top:8px}
+.progress-bar-fill{height:100%;border-radius:4px;transition:width 0.5s ease}
+
+/* SAVE BTN FLOATING */
+.save-float{position:fixed;bottom:100px;right:20px;z-index:150;background:linear-gradient(135deg,var(--accent),#00c47a);color:#000;border:none;width:56px;height:56px;border-radius:50%;font-size:22px;cursor:pointer;box-shadow:0 4px 20px rgba(0,229,160,0.4),0 0 40px rgba(0,229,160,0.1);transition:all 0.2s;display:none}
+.save-float.visible{display:flex;align-items:center;justify-content:center}
+.save-float:active{transform:scale(0.92)}
+
+/* AI CHAT */
+.ai-chat-wrap{max-height:350px;overflow-y:auto;margin-bottom:12px}
+.ai-msg{margin-bottom:10px;padding:14px;border-radius:var(--r2);font-size:13px;line-height:1.7}
+.ai-msg.assistant{background:linear-gradient(135deg,rgba(0,229,160,0.08),rgba(0,196,255,0.04));border:1px solid rgba(0,229,160,0.2);color:var(--text2)}
+.ai-msg.user{background:var(--bg3);border:1px solid var(--border);color:var(--text);text-align:right}
+.ai-msg.loading{display:flex;align-items:center;gap:8px;color:var(--text3)}
+.typing-dots span{display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%;animation:dot 1.2s infinite;margin:0 2px}
+.typing-dots span:nth-child(2){animation-delay:0.2s}
+.typing-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes dot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+
+/* ONBOARDING CHECK */
+.onboard-done{display:none}
+
+/* PHOTO UPLOAD HIDDEN INPUT */
+.photo-input{display:none}
+
+@media(min-width:640px){
+  .stats-grid{grid-template-columns:1fr 1fr 1fr 1fr}
+  .protocol-cards{grid-template-columns:1fr 1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="intro-logo">
+    <div class="intro-title">ESTETIQ</div>
+    <div class="intro-sub">Protocol System</div>
+    <div class="intro-by">by Dragos · 2026 Edition</div>
+    <div class="intro-bar"><div class="intro-progress"></div></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div>
+      <div class="topbar-logo">ESTETIQ</div>
+      <div class="topbar-protocol">Protocol Active</div>
+    </div>
+    <div class="topbar-right">
+      <div class="streak-badge"><span>🔥</span><span id="streakBadge">0 zile</span></div>
+    </div>
+  </div>
+
+  <!-- ======================== DASHBOARD ======================== -->
+  <div id="page-dashboard" class="page active">
+    <div class="sec-title">Dashboard</div>
+    <div class="sec-sub">Progresul tău · astăzi</div>
+
+    <div class="stats-grid">
+      <div class="stat-card highlight">
+        <div class="stat-label">Greutate</div>
+        <div class="stat-value accent" id="statWeight">—</div>
+        <div class="stat-unit">kilograme</div>
+        <div class="stat-change" id="statWeightChange">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Zile în program</div>
+        <div class="stat-value" id="statDays">0</div>
+        <div class="stat-unit">zile active</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Energie azi</div>
+        <div class="stat-value" id="statEnergy">—</div>
+        <div class="stat-unit">din 10</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Libido azi</div>
+        <div class="stat-value" id="statLibido">—</div>
+        <div class="stat-unit">din 10</div>
+      </div>
+    </div>
+
+    <!-- FASTING MINI STATUS -->
+    <div class="card card-accent">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div>
+          <div style="font-size:12px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:4px">Fasting Status</div>
+          <div id="dashFastStatus" style="font-size:15px;font-weight:700;color:var(--accent)">—</div>
+        </div>
+        <div style="text-align:right">
+          <div id="dashFastTime" style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--text)">00:00</div>
+          <div style="font-size:10px;color:var(--text3);letter-spacing:1px">ore : minute</div>
+        </div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="dashFastBar" style="width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></div>
+      </div>
+    </div>
+
+    <!-- DAILY CHECK-IN -->
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px">
+        <span>📊</span> Check-in Zilnic
+      </div>
+
+      <div class="range-group">
+        <div class="range-header">
+          <span class="range-name">⚡ Nivel Energie</span>
+          <span class="range-val" id="energyVal">5</span>
+        </div>
+        <input type="range" min="1" max="10" value="5" id="energySlider" oninput="document.getElementById('energyVal').textContent=this.value;saveCheckin()">
+      </div>
+      <div class="range-group">
+        <div class="range-header">
+          <span class="range-name">🔥 Libido</span>
+          <span class="range-val" id="libidoVal">5</span>
+        </div>
+        <input type="range" class="blue" min="1" max="10" value="5" id="libidoSlider" oninput="document.getElementById('libidoVal').textContent=this.value;saveCheckin()">
+      </div>
+      <div class="range-group">
+        <div class="range-header">
+          <span class="range-name">😴 Somn (ore)</span>
+          <span class="range-val" id="sleepVal">7</span>
+        </div>
+        <input type="range" class="blue" min="4" max="10" value="7" id="sleepSlider" oninput="document.getElementById('sleepVal').textContent=this.value;saveCheckin()">
+      </div>
+
+      <div class="input-group" style="margin-top:4px">
+        <label class="input-label">Note zilnice</label>
+        <textarea class="input" id="dailyNote" placeholder="Cum te simți azi? Ceva remarcabil..."></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="saveCheckin()">💾 Salvează Check-in</button>
+    </div>
+
+    <!-- AI COACH INSIGHT -->
+    <div id="dashCoachMsg"></div>
+  </div>
+
+  <!-- ======================== FASTING ======================== -->
+  <div id="page-fasting" class="page">
+    <div class="sec-title">Fasting Tracker</div>
+    <div class="sec-sub">14–16h · Fereastra Metabolică</div>
+
+    <div class="card" style="text-align:center;padding:30px 20px">
+      <div class="fast-ring">
+        <svg viewBox="0 0 180 180">
+          <defs>
+            <linearGradient id="fastGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#00e5a0"/>
+              <stop offset="100%" style="stop-color:#00c4ff"/>
+            </linearGradient>
+          </defs>
+          <circle class="fast-ring-bg" cx="90" cy="90" r="80"/>
+          <circle class="fast-ring-fill" id="fastRingCircle" cx="90" cy="90" r="80"
+            stroke-dasharray="502.65"
+            stroke-dashoffset="502.65"/>
+        </svg>
+        <div class="fast-center">
+          <div class="fast-time" id="fastTimerDisplay">00:00:00</div>
+          <div class="fast-label">timp fasting</div>
+          <div class="fast-status" id="fastStatusLabel">Inactiv</div>
+        </div>
+      </div>
+
+      <div id="fastWindowInfo" style="margin-bottom:20px">
+        <div style="font-size:12px;color:var(--text3);letter-spacing:1px">Target: <span style="color:var(--accent);font-weight:700">16 ore</span></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px" id="fastEndEstimate">—</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="fastStartBtn" onclick="startFast()">⏱ Start Fast</button>
+        <button class="btn btn-danger" id="fastEndBtn" onclick="endFast()" style="display:none">🍽 Break Fast</button>
+      </div>
+    </div>
+
+    <!-- TARGET SELECTOR -->
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px">⚙️ Target Fasting</div>
+      <div class="btn-row">
+        <button class="btn btn-outline btn-sm" id="target14" onclick="setFastTarget(14)">14h</button>
+        <button class="btn btn-outline btn-sm" id="target16" onclick="setFastTarget(16)" style="border-color:var(--accent);color:var(--accent)">16h</button>
+        <button class="btn btn-outline btn-sm" id="target18" onclick="setFastTarget(18)">18h</button>
+      </div>
+    </div>
+
+    <!-- FASTING HISTORY -->
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px">📋 Istoric Fasting</div>
+      <div id="fastHistory">
+        <div style="text-align:center;color:var(--text3);font-size:13px;padding:20px">Niciun fast înregistrat încă</div>
+      </div>
+    </div>
+
+    <!-- SCIENCE MINI -->
+    <div class="coach-bubble">
+      <div class="coach-header">
+        <div class="coach-avatar">🧠</div>
+        <div>
+          <div class="coach-name">Dragos · Protocol</div>
+          <div class="coach-role">De ce funcționează fasting-ul</div>
+        </div>
+      </div>
+      <div class="coach-text">
+        Fereastra de post de <strong>14–16 ore</strong> activează <strong>autofagia</strong> — procesul prin care celulele elimină proteinele deteriorate. Combinat cu antrenamentul, îmbunătățești <strong>sensibilitatea la insulină</strong>, oxizi mai mult grăsime și crești nivelul de <strong>GH (growth hormone)</strong> cu până la 300%.
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== MEALS ======================== -->
+  <div id="page-meals" class="page">
+    <div class="sec-title">Mese</div>
+    <div class="sec-sub">2 Meals System · Optimizat Hormonal</div>
+
+    <!-- BODY WEIGHT FOR MACROS -->
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px">🎯 Target Macros</div>
+      <div class="input-row">
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Greutate corp (kg)</label>
+          <input type="number" class="input" id="macroWeight" placeholder="75" oninput="calcMacros()">
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Zi</label>
+          <select class="input" id="dayType" onchange="calcMacros()">
+            <option value="training">Antrenament</option>
+            <option value="rest">Odihnă</option>
+          </select>
+        </div>
+      </div>
+      <div id="macroTargets" style="margin-top:14px;display:none">
+        <div class="macro-row">
+          <div class="macro-box">
+            <div class="macro-box-val green" id="targetProtein">—</div>
+            <div class="macro-box-lbl">Proteine g</div>
+          </div>
+          <div class="macro-box">
+            <div class="macro-box-val blue" id="targetCarbs">—</div>
+            <div class="macro-box-lbl">Carbs g</div>
+          </div>
+          <div class="macro-box">
+            <div class="macro-box-val orange" id="targetCals">—</div>
+            <div class="macro-box-lbl">Calorii</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEAL 1 -->
+    <div class="card">
+      <div class="meal-header">
+        <div class="meal-title-area">
+          <span style="font-size:20px">🌅</span>
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--text)">Masa 1</div>
+            <div style="font-size:11px;color:var(--text3)">Post-fast · Pre/Post Workout</div>
+          </div>
+        </div>
+        <div class="meal-badge">Meal 1</div>
+      </div>
+      <div class="input-row-3">
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Proteine g</label>
+          <input type="number" class="input" id="m1protein" placeholder="80" oninput="updateMealMacros(1)">
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Carbs g</label>
+          <input type="number" class="input" id="m1carbs" placeholder="120" oninput="updateMealMacros(1)">
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Grăsimi g</label>
+          <input type="number" class="input" id="m1fat" placeholder="20" oninput="updateMealMacros(1)">
+        </div>
+      </div>
+      <div id="m1cals" style="text-align:center;font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);margin:12px 0">— kcal</div>
+      <div class="input-group">
+        <label class="input-label">Ce ai mâncat (note)</label>
+        <textarea class="input" id="m1notes" placeholder="Ex: orez 150g, piept de pui 200g, broccoli, ulei de măsline..." style="min-height:70px"></textarea>
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label class="input-label">Ora mesei</label>
+        <input type="time" class="input" id="m1time" value="13:00">
+      </div>
+    </div>
+
+    <!-- MEAL 2 -->
+    <div class="card">
+      <div class="meal-header">
+        <div class="meal-title-area">
+          <span style="font-size:20px">🌙</span>
+          <div>
+            <div style="font-size:15px;font-weight:700;color:var(--text)">Masa 2</div>
+            <div style="font-size:11px;color:var(--text3)">Seara · Recuperare</div>
+          </div>
+        </div>
+        <div class="meal-badge eve">Meal 2</div>
+      </div>
+      <div class="input-row-3">
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Proteine g</label>
+          <input type="number" class="input" id="m2protein" placeholder="60" oninput="updateMealMacros(2)">
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Carbs g</label>
+          <input type="number" class="input" id="m2carbs" placeholder="60" oninput="updateMealMacros(2)">
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Grăsimi g</label>
+          <input type="number" class="input" id="m2fat" placeholder="30" oninput="updateMealMacros(2)">
+        </div>
+      </div>
+      <div id="m2cals" style="text-align:center;font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent2);margin:12px 0">— kcal</div>
+      <div class="input-group">
+        <label class="input-label">Ce ai mâncat (note)</label>
+        <textarea class="input" id="m2notes" placeholder="Ex: somon 180g, cartofi dulci 200g, salată, ouă..." style="min-height:70px"></textarea>
+      </div>
+      <div class="input-group" style="margin-bottom:0">
+        <label class="input-label">Ora mesei</label>
+        <input type="time" class="input" id="m2time" value="19:00">
+      </div>
+    </div>
+
+    <!-- TOTAL MACROS SUMMARY -->
+    <div class="card card-accent">
+      <div style="font-size:12px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:12px">TOTAL ZI</div>
+      <div class="macro-row">
+        <div class="macro-box">
+          <div class="macro-box-val green" id="totalProtein">0</div>
+          <div class="macro-box-lbl">Proteine g</div>
+        </div>
+        <div class="macro-box">
+          <div class="macro-box-val blue" id="totalCarbs">0</div>
+          <div class="macro-box-lbl">Carbs g</div>
+        </div>
+        <div class="macro-box">
+          <div class="macro-box-val orange" id="totalCals">0</div>
+          <div class="macro-box-lbl">Calorii</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="saveMeals()">💾 Salvează Mese</button>
+  </div>
+
+  <!-- ======================== TRAINING ======================== -->
+  <div id="page-training" class="page">
+    <div class="sec-title">Training Log</div>
+    <div class="sec-sub">Forță · Progres · PR Tracker</div>
+
+    <!-- DAY SELECTOR -->
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px">📅 Selectează antrenament</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px" id="daySelector">
+        <button class="btn btn-outline btn-sm" onclick="selectDay(1,'Piept + Triceps')" id="day1btn">Push A</button>
+        <button class="btn btn-outline btn-sm" onclick="selectDay(2,'Spate + Biceps')" id="day2btn">Pull A</button>
+        <button class="btn btn-outline btn-sm" onclick="selectDay(3,'Picioare + Umeri')" id="day3btn">Legs</button>
+        <button class="btn btn-outline btn-sm" onclick="selectDay(4,'Push B')" id="day4btn">Push B</button>
+        <button class="btn btn-outline btn-sm" onclick="selectDay(5,'Pull B')" id="day5btn">Pull B</button>
+      </div>
+      <div id="selectedDayLabel" style="margin-top:12px;font-size:13px;color:var(--accent);font-weight:600;letter-spacing:1px">—</div>
+    </div>
+
+    <!-- EXERCISE LOG -->
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px">💪 Exerciții</div>
+      <div id="exerciseList"></div>
+      <div class="divider"></div>
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px">+ Adaugă Exercițiu</div>
+      <div class="input-row">
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Exercițiu</label>
+          <input type="text" class="input" id="exName" placeholder="Ex: Bench Press">
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Greutate (kg)</label>
+          <input type="number" class="input" id="exWeight" placeholder="80">
+        </div>
+      </div>
+      <div class="input-row" style="margin-top:10px">
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Seturi × Reps</label>
+          <input type="text" class="input" id="exReps" placeholder="4×8">
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Note</label>
+          <input type="text" class="input" id="exNotes" placeholder="RPE 8, bine...">
+        </div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:12px" onclick="addExercise()">➕ Adaugă</button>
+    </div>
+
+    <!-- PR TRACKER -->
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px">🏆 PR Tracker</div>
+      <div id="prList">
+        <div style="text-align:center;color:var(--text3);font-size:13px;padding:10px">Niciun PR înregistrat</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== BODY ======================== -->
+  <div id="page-body" class="page">
+    <div class="sec-title">Transformare</div>
+    <div class="sec-sub">Before / After · Măsurători</div>
+
+    <!-- WEIGHT LOG -->
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px">⚖️ Înregistrează Greutatea</div>
+      <div class="input-row">
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Greutate (kg)</label>
+          <input type="number" class="input" id="newWeight" placeholder="74.5" step="0.1">
+        </div>
+        <div class="input-group" style="margin-bottom:0">
+          <label class="input-label">Talie (cm)</label>
+          <input type="number" class="input" id="newWaist" placeholder="82" step="0.5">
+        </div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:12px" onclick="logWeight()">📥 Înregistrează</button>
+    </div>
+
+    <!-- WEIGHT HISTORY GRAPH -->
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px">📈 Grafic Greutate</div>
+      <div class="chart-area">
+        <svg id="weightChart" viewBox="0 0 340 140" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:rgba(0,229,160,0.4)"/>
+              <stop offset="100%" style="stop-color:rgba(0,229,160,0)"/>
+            </linearGradient>
+          </defs>
+          <text x="170" y="75" fill="#4a5f72" text-anchor="middle" font-size="12" font-family="DM Sans">Adaugă greutăți pentru grafic</text>
+        </svg>
+      </div>
+      <div id="weightHistory" style="margin-top:14px"></div>
+    </div>
+
+    <!-- PHOTOS -->
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px">📸 Before / After</div>
+      <div class="photo-grid">
+        <div>
+          <div style="font-size:10px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:8px">Before</div>
+          <div class="photo-slot" onclick="triggerPhoto('before')">
+            <div class="photo-slot-icon">📷</div>
+            <div class="photo-slot-label">Adaugă foto</div>
+            <img id="beforeImg" style="display:none">
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px;letter-spacing:2px;color:var(--text3);text-transform:uppercase;margin-bottom:8px">After</div>
+          <div class="photo-slot" onclick="triggerPhoto('after')">
+            <div class="photo-slot-icon">💪</div>
+            <div class="photo-slot-label">Adaugă foto</div>
+            <img id="afterImg" style="display:none">
+          </div>
+        </div>
+      </div>
+      <input type="file" id="photoInputBefore" class="photo-input" accept="image/*" onchange="loadPhoto('before',this)">
+      <input type="file" id="photoInputAfter" class="photo-input" accept="image/*" onchange="loadPhoto('after',this)">
+    </div>
+
+    <!-- MEASUREMENTS -->
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px">📐 Măsurători Corp</div>
+      <div class="input-row">
+        <div class="input-group">
+          <label class="input-label">Piept (cm)</label>
+          <input type="number" class="input" id="measChest" placeholder="100">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Talie (cm)</label>
+          <input type="number" class="input" id="measWaist" placeholder="82">
+        </div>
+      </div>
+      <div class="input-row">
+        <div class="input-group">
+          <label class="input-label">Bicep (cm)</label>
+          <input type="number" class="input" id="measArm" placeholder="40">
+        </div>
+        <div class="input-group">
+          <label class="input-label">Coapsă (cm)</label>
+          <input type="number" class="input" id="measThigh" placeholder="60">
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="saveMeasurements()">💾 Salvează</button>
+    </div>
+  </div>
+
+  <!-- ======================== PROTOCOL ======================== -->
+  <div id="page-protocol" class="page">
+    <div class="sec-title">Protocol Mode</div>
+    <div class="sec-sub">Alege-ți stilul de nutriție</div>
+
+    <div class="protocol-cards" id="protocolCards">
+      <div class="protocol-card" id="proto-vegan" onclick="selectProtocol('vegan')">
+        <div class="protocol-name" style="color:var(--accent)">🌱 Vegan Cut</div>
+        <div class="protocol-desc">Deficit caloric pe bază de plante. Legume, tofu, tempeh, leguminoase. Ideal pentru cei care vor să slăbească menținând masa musculară fără produse animale.</div>
+        <div class="protocol-tags">
+          <span class="tag tag-green">Plante</span>
+          <span class="tag tag-blue">Deficit</span>
+          <span class="tag tag-green">Anti-inflamator</span>
+        </div>
+      </div>
+      <div class="protocol-card" id="proto-omni" onclick="selectProtocol('omni')">
+        <div class="protocol-name" style="color:var(--accent2)">🥩 Omnivore Cut</div>
+        <div class="protocol-desc">Cel mai eficient protocol pentru recompoziție corporală. Carne, pește, ouă combinate cu carbohidrați ciclizați în jurul antrenamentului.</div>
+        <div class="protocol-tags">
+          <span class="tag tag-blue">Recomp</span>
+          <span class="tag tag-orange">Proteină înaltă</span>
+          <span class="tag tag-green">Flexibil</span>
+        </div>
+      </div>
+      <div class="protocol-card" id="proto-bulk" onclick="selectProtocol('bulk')">
+        <div class="protocol-name" style="color:var(--accent4)">⚡ Performance Bulk</div>
+        <div class="protocol-desc">Surplus caloric controlat (+200–300 kcal). Maximizarea forței și a masei musculare. Carbohidrați crescuți, antrenament intensiv, recuperare optimizată.</div>
+        <div class="protocol-tags">
+          <span class="tag tag-orange">Surplus</span>
+          <span class="tag tag-red">Forță max</span>
+          <span class="tag tag-blue">Masă</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="protocolDetail" style="display:none">
+      <div class="card card-accent" id="protocolDetailContent"></div>
+    </div>
+
+    <div class="separator">
+      <div class="separator-line"></div>
+      <div class="separator-text">Știința din spate</div>
+      <div class="separator-line"></div>
+    </div>
+
+    <!-- SCIENCE SECTION -->
+    <div class="science-section">
+      <div class="science-title">De ce funcționează</div>
+      <div class="science-sub">Baze Științifice · Explicate Simplu</div>
+
+      <div class="science-block">
+        <div class="science-block-title"><span>🔬</span> Sensibilizarea la Insulină</div>
+        <div class="science-text">
+          <strong>Insulina este hormonul care „deschide ușa" celulelor</strong> — permite glucozei (zahărului din sânge) să intre în celule pentru energie. Când mănânci prea des sau prea multe carbohidrați, celulele devin „surde" la insulină (rezistență la insulină).
+          <br><br>
+          Prin fasting 14–16h, dai celulelor timp să „reseteze" receptorii de insulină. Rezultatul: <strong>corpul tău folosește carbohidrații mult mai eficient</strong> — mai mult merge spre mușchi, mai puțin spre grăsime.
+        </div>
+        <div class="highlight-box">💡 Cu cât ești mai sensibil la insulină, cu atât carbohidrații pe care îi mănânci ajung mai mult la mușchi, nu la burtă.</div>
+        <div class="science-ref">Ref: Halberg et al. (2005) J Appl Physiol · Sutton et al. (2018) Cell Metabolism</div>
+      </div>
+
+      <div class="science-block">
+        <div class="science-block-title"><span>🔥</span> Fat Burning Avansat</div>
+        <div class="science-text">
+          După 12–14 ore fără mâncare, glicogenul hepatic scade. Corpul <strong>activează lipoliza</strong> — descompunerea grăsimii în acizi grași liberi pentru energie. Nivelul de <strong>norepinefrină crește cu 40%</strong>, accelerând arderea grăsimii abdominale.
+          <br><br>
+          Antrenamentul în această stare (fasted cardio/training) <strong>amplifică de 3x oxidarea grăsimilor</strong> față de antrenamentul post-masă.
+        </div>
+        <div class="science-ref">Ref: Acheson et al. (2004) AJCN · Bergouignan et al. (2019) Obesity Reviews</div>
+      </div>
+
+      <div class="science-block">
+        <div class="science-block-title"><span>💪</span> Mușchi + Ardere Grăsime Simultan</div>
+        <div class="science-text">
+          Combinația fasting + proteină ridicată (1.8–2.2g/kg) + antrenament de forță permite <strong>recompoziția corporală</strong> — adică poți pierde grăsime și construi mușchi în același timp. Lucru considerat imposibil în nutriția clasică.
+          <br><br>
+          <strong>Cheie:</strong> proteina ridicată menține sinteza proteică musculară ridicată chiar și în deficit caloric, mai ales combinată cu mTOR activat de antrenament.
+        </div>
+        <div class="science-ref">Ref: Barakat et al. (2020) Sports Medicine · Morton et al. (2018) BJSM</div>
+      </div>
+
+      <div class="science-block">
+        <div class="science-block-title"><span>🧬</span> Autofagie — Curățarea Celulară</div>
+        <div class="science-text">
+          Autofagia este procesul prin care celulele <strong>descompun și reciclează componentele deteriorate</strong>. Se activează după 14+ ore de post. Are efecte anti-aging documentate, reduce inflamația și îmbunătățește funcția mitocondrială.
+          <br><br>
+          Yoshinori Ohsumi a câștigat <strong>Premiul Nobel 2016</strong> pentru descoperirea mecanismelor autofagiei.
+        </div>
+        <div class="science-ref">Ref: Ohsumi (2016) Nobel Lecture · Levine & Klionsky (2017) Cell</div>
+      </div>
+
+      <div class="science-block">
+        <div class="science-block-title"><span>⚡</span> Carbohidrați Ciclizați</div>
+        <div class="science-text">
+          Carbohidrații nu sunt inamicul — <strong>timing-ul este totul</strong>. În zile de antrenament: 3–4g/kg carbohidrați pentru a umple glicogenul muscular, alimenta performanța și activa mTOR (sinteza proteică). În zile de odihnă: 1–2g/kg pentru a menține sensibilitatea la insulină ridicată și a maximiza arderea grăsimilor.
+        </div>
+        <div class="highlight-box">🎯 Scopul: să fii într-un deficit total săptămânal de 3500–5000 kcal, fără să simți că ești „la dietă".</div>
+        <div class="science-ref">Ref: Churchward-Venne et al. (2012) Nutrients · Burke et al. (2017) J Physiol</div>
+      </div>
+
+      <div class="science-block" style="border-bottom:none;margin-bottom:0;padding-bottom:0">
+        <div class="science-block-title"><span>🏋️</span> De ce arăți bine, nu doar slab</div>
+        <div class="science-text">
+          Diferența dintre „slab" și „estetic" este proporția mușchi/grăsime — <strong>body composition</strong>. Protocolul ESTETIQ optimizează exact asta: hormoni anabolici ridicați (testosteron, GH, IGF-1) combinați cu insulină scăzută la repaus = <strong>corpul arde grăsime și construiește mușchi simultan</strong>.
+          <br><br>
+          Rezultatul în 8–12 săptămâni: definit, musculos, cu vene vizibile și talie mică. Nu slab și flasc.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== AI COACH ======================== -->
+  <div id="page-ai" class="page">
+    <div class="sec-title">AI Coach</div>
+    <div class="sec-sub">Dragos Protocol · Powered by AI</div>
+
+    <!-- ALERTS -->
+    <div id="alertsSection">
+      <div class="alert-card warning">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-text">
+          <strong>Completează datele zilnice</strong>
+          Adaugă greutatea și macronutrienții pentru a primi analize personalizate.
+        </div>
+      </div>
+    </div>
+
+    <!-- AI COACH CHAT -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:20px">🤖</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:var(--text)">Dragos AI Coach</div>
+          <div style="font-size:11px;color:var(--accent)">● Online · ESTETIQ Protocol</div>
+        </div>
+      </div>
+
+      <div class="ai-chat-wrap" id="aiChatMessages">
+        <div class="ai-msg assistant">
+          👋 Bună! Sunt antrenorul tău AI bazat pe protocolul ESTETIQ creat de Dragos. Îți pot analiza progresul, sugera ajustări la macronutrienți sau răspunde la orice întrebare despre nutriție, fasting sau antrenament. Ce vrei să discutăm?
+        </div>
+      </div>
+
+      <div class="input-group" style="margin-bottom:10px">
+        <textarea class="input" id="aiInput" placeholder="Întreabă orice: macros, fasting, antrenament, progres..." style="min-height:70px" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAIMessage()}"></textarea>
+      </div>
+      <button class="btn btn-primary" onclick="sendAIMessage()">🚀 Trimite</button>
+    </div>
+
+    <!-- QUICK QUESTIONS -->
+    <div class="card">
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px;letter-spacing:1px">⚡ ÎNTREBĂRI RAPIDE</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn btn-outline btn-sm" onclick="quickQuestion('Câte calorii ar trebui să mănânc pentru a slăbi 0.5kg/săptămână?')">📊 Calculează caloriile mele</button>
+        <button class="btn btn-outline btn-sm" onclick="quickQuestion('Ce să mănânc în Masa 1 și Masa 2 pe protocolul ESTETIQ?')">🍽 Meniu recomandat</button>
+        <button class="btn btn-outline btn-sm" onclick="quickQuestion('Cum știu dacă fac prea mult fasting sau prea puțin?')">⏱ Optimizează fasting-ul</button>
+        <button class="btn btn-outline btn-sm" onclick="quickQuestion('De ce scade libidoul în deficit caloric și ce pot face?')">⚡ Energie & Hormoni</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end #app -->
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottomNav" style="display:none">
+  <div class="nav-items">
+    <div class="nav-item active" onclick="navigate('dashboard')">
+      <div class="nav-icon">📊</div>
+      <div class="nav-label">Dash</div>
+    </div>
+    <div class="nav-item" onclick="navigate('fasting')">
+      <div class="nav-icon">⏱</div>
+      <div class="nav-label">Fast</div>
+    </div>
+    <div class="nav-item" onclick="navigate('meals')">
+      <div class="nav-icon">🍽</div>
+      <div class="nav-label">Mese</div>
+    </div>
+    <div class="nav-item" onclick="navigate('training')">
+      <div class="nav-icon">💪</div>
+      <div class="nav-label">Gym</div>
+    </div>
+    <div class="nav-item" onclick="navigate('body')">
+      <div class="nav-icon">📸</div>
+      <div class="nav-label">Corp</div>
+    </div>
+    <div class="nav-item" onclick="navigate('protocol')">
+      <div class="nav-icon">🧬</div>
+      <div class="nav-label">Protocol</div>
+    </div>
+    <div class="nav-item" onclick="navigate('ai')">
+      <div class="nav-icon">🤖</div>
+      <div class="nav-label">AI</div>
+    </div>
+  </div>
+</nav>
+
+<script>
+// ===================== STATE =====================
+let state = {
+  startDate: null,
+  fastStart: null,
+  fastTarget: 16,
+  fastHistory: [],
+  weightLog: [],
+  checkins: [],
+  meals: { m1: {}, m2: {} },
+  exercises: [],
+  prs: {},
+  protocol: null,
+  measurements: {}
+};
+
+// ===================== INIT =====================
+function init() {
+  loadState();
+  if (!state.startDate) state.startDate = new Date().toISOString();
+  setTimeout(() => {
+    document.getElementById('intro').classList.add('hidden');
+    document.getElementById('app').classList.add('visible');
+    document.getElementById('bottomNav').style.display = 'block';
+    updateDashboard();
+    if (state.fastStart) startFastTimer();
+    saveState();
+  }, 2700);
+}
+
+// ===================== STORAGE =====================
+function saveState() {
+  localStorage.setItem('estetiq_state', JSON.stringify(state));
+}
+function loadState() {
+  const s = localStorage.getItem('estetiq_state');
+  if (s) {
+    try { state = {...state, ...JSON.parse(s)}; } catch(e) {}
+  }
+}
+
+// ===================== NAVIGATION =====================
+function navigate(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  const navItems = document.querySelectorAll('.nav-item');
+  const pages = ['dashboard','fasting','meals','training','body','protocol','ai'];
+  const idx = pages.indexOf(page);
+  if (idx >= 0) navItems[idx].classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+  if (page === 'body') renderWeightChart();
+  if (page === 'dashboard') updateDashboard();
+}
+
+// ===================== FASTING =====================
+let fastInterval = null;
+let fastTarget = 16;
+
+function setFastTarget(h) {
+  state.fastTarget = h;
+  fastTarget = h;
+  ['14','16','18'].forEach(t => {
+    const b = document.getElementById('target'+t);
+    if (b) { b.style.borderColor = ''; b.style.color = ''; }
+  });
+  const btn = document.getElementById('target'+h);
+  if (btn) { btn.style.borderColor = 'var(--accent)'; btn.style.color = 'var(--accent)'; }
+  saveState();
+}
+
+function startFast() {
+  state.fastStart = new Date().toISOString();
+  document.getElementById('fastStartBtn').style.display = 'none';
+  document.getElementById('fastEndBtn').style.display = 'block';
+  startFastTimer();
+  saveState();
+}
+
+function endFast() {
+  if (!state.fastStart) return;
+  const start = new Date(state.fastStart);
+  const end = new Date();
+  const hours = ((end - start) / 3600000).toFixed(1);
+  state.fastHistory.unshift({
+    date: start.toLocaleDateString('ro-RO'),
+    hours: parseFloat(hours),
+    target: state.fastTarget
+  });
+  if (state.fastHistory.length > 30) state.fastHistory.pop();
+  state.fastStart = null;
+  clearInterval(fastInterval);
+  document.getElementById('fastTimerDisplay').textContent = '00:00:00';
+  document.getElementById('fastStatusLabel').textContent = 'Inactiv';
+  document.getElementById('fastRingCircle').style.strokeDashoffset = '502.65';
+  document.getElementById('fastStartBtn').style.display = 'block';
+  document.getElementById('fastEndBtn').style.display = 'none';
+  renderFastHistory();
+  saveState();
+  updateDashboard();
+}
+
+function startFastTimer() {
+  document.getElementById('fastStartBtn').style.display = 'none';
+  document.getElementById('fastEndBtn').style.display = 'block';
+  clearInterval(fastInterval);
+  fastInterval = setInterval(() => {
+    if (!state.fastStart) return;
+    const elapsed = (Date.now() - new Date(state.fastStart)) / 1000;
+    const h = Math.floor(elapsed / 3600);
+    const m = Math.floor((elapsed % 3600) / 60);
+    const s = Math.floor(elapsed % 60);
+    const display = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    document.getElementById('fastTimerDisplay').textContent = display;
+
+    const targetSec = state.fastTarget * 3600;
+    const pct = Math.min(elapsed / targetSec, 1);
+    const circumference = 502.65;
+    document.getElementById('fastRingCircle').style.strokeDashoffset = circumference * (1 - pct);
+
+    let statusText = '';
+    if (h < 4) statusText = '🍽 Digestie';
+    else if (h < 8) statusText = '📉 Glucoză scăzând';
+    else if (h < 12) statusText = '🔥 Fat Burning activ';
+    else if (h < 16) statusText = '⚡ Cetone crescând';
+    else statusText = '🧬 Autofagie activată';
+    document.getElementById('fastStatusLabel').textContent = statusText;
+
+    // Dashboard fast bar
+    const dashBar = document.getElementById('dashFastBar');
+    if (dashBar) dashBar.style.width = (pct * 100) + '%';
+    const dashTime = document.getElementById('dashFastTime');
+    if (dashTime) dashTime.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+    const dashStatus = document.getElementById('dashFastStatus');
+    if (dashStatus) dashStatus.textContent = statusText;
+
+    // End estimate
+    const remaining = targetSec - elapsed;
+    if (remaining > 0) {
+      const rh = Math.floor(remaining / 3600);
+      const rm = Math.floor((remaining % 3600) / 60);
+      document.getElementById('fastEndEstimate').textContent = `⏳ Mai sunt: ${rh}h ${rm}m`;
+    } else {
+      document.getElementById('fastEndEstimate').textContent = '✅ Target atins!';
+    }
+
+    if (elapsed > 18 * 3600) {
+      document.getElementById('fastStatusLabel').textContent = '⚠️ Depășit 18h!';
+    }
+  }, 1000);
+}
+
+function renderFastHistory() {
+  const el = document.getElementById('fastHistory');
+  if (!state.fastHistory.length) {
+    el.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:13px;padding:20px">Niciun fast înregistrat încă</div>';
+    return;
+  }
+  el.innerHTML = state.fastHistory.slice(0,7).map(f => {
+    const ok = f.hours >= f.target;
+    return `<div class="weight-log-row">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">${f.date}</div>
+        <div style="font-size:11px;color:var(--text3)">Target: ${f.target}h</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:${ok?'var(--accent)':'var(--accent3)'}">${f.hours}h</div>
+        <span class="pill ${ok?'pill-green':'pill-red'}">${ok?'✓ OK':'Scurt'}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ===================== MEALS =====================
+function calcMacros() {
+  const w = parseFloat(document.getElementById('macroWeight').value);
+  const day = document.getElementById('dayType').value;
+  if (!w) { document.getElementById('macroTargets').style.display = 'none'; return; }
+  const protein = Math.round(w * 2);
+  const carbs = day === 'training' ? Math.round(w * 3.5) : Math.round(w * 1.5);
+  const fat = Math.round(w * 0.8);
+  const cals = protein * 4 + carbs * 4 + fat * 9;
+  document.getElementById('targetProtein').textContent = protein;
+  document.getElementById('targetCarbs').textContent = carbs;
+  document.getElementById('targetCals').textContent = cals;
+  document.getElementById('macroTargets').style.display = 'block';
+}
+
+function updateMealMacros(n) {
+  const p = parseFloat(document.getElementById('m'+n+'protein').value)||0;
+  const c = parseFloat(document.getElementById('m'+n+'carbs').value)||0;
+  const f = parseFloat(document.getElementById('m'+n+'fat').value)||0;
+  const cals = Math.round(p*4 + c*4 + f*9);
+  document.getElementById('m'+n+'cals').textContent = cals ? cals+' kcal' : '— kcal';
+  updateTotalMacros();
+}
+
+function updateTotalMacros() {
+  const p1 = parseFloat(document.getElementById('m1protein').value)||0;
+  const c1 = parseFloat(document.getElementById('m1carbs').value)||0;
+  const f1 = parseFloat(document.getElementById('m1fat').value)||0;
+  const p2 = parseFloat(document.getElementById('m2protein').value)||0;
+  const c2 = parseFloat(document.getElementById('m2carbs').value)||0;
+  const f2 = parseFloat(document.getElementById('m2fat').value)||0;
+  document.getElementById('totalProtein').textContent = p1+p2;
+  document.getElementById('totalCarbs').textContent = c1+c2;
+  document.getElementById('totalCals').textContent = Math.round((p1+p2)*4+(c1+c2)*4+(f1+f2)*9);
+}
+
+function saveMeals() {
+  const today = new Date().toLocaleDateString('ro-RO');
+  state.meals[today] = {
+    m1: {
+      protein: document.getElementById('m1protein').value,
+      carbs: document.getElementById('m1carbs').value,
+      fat: document.getElementById('m1fat').value,
+      notes: document.getElementById('m1notes').value,
+      time: document.getElementById('m1time').value
+    },
+    m2: {
+      protein: document.getElementById('m2protein').value,
+      carbs: document.getElementById('m2carbs').value,
+      fat: document.getElementById('m2fat').value,
+      notes: document.getElementById('m2notes').value,
+      time: document.getElementById('m2time').value
+    }
+  };
+  saveState();
+  showToast('✅ Mese salvate!');
+}
+
+// ===================== TRAINING =====================
+let currentDay = null;
+const dayExercises = {
+  1: [
+    {icon:'🏋️',name:'Bench Press',default:'4×8'},
+    {icon:'💪',name:'Incline DB Press',default:'3×10'},
+    {icon:'🔺',name:'Cable Fly',default:'3×12'},
+    {icon:'↘️',name:'Tricep Pushdown',default:'3×12'},
+    {icon:'🔻',name:'Skull Crusher',default:'3×10'}
+  ],
+  2: [
+    {icon:'🏋️',name:'Deadlift',default:'4×5'},
+    {icon:'🔙',name:'Barbell Row',default:'4×8'},
+    {icon:'⬆️',name:'Pull-up / Lat Pulldown',default:'4×10'},
+    {icon:'💪',name:'Barbell Curl',default:'3×10'},
+    {icon:'🔄',name:'Face Pull',default:'3×15'}
+  ],
+  3: [
+    {icon:'🦵',name:'Squat',default:'5×5'},
+    {icon:'🦵',name:'Leg Press',default:'4×10'},
+    {icon:'🎯',name:'Romanian Deadlift',default:'3×10'},
+    {icon:'🏋️',name:'OHP',default:'4×8'},
+    {icon:'🔝',name:'Lateral Raise',default:'3×15'}
+  ],
+  4: [
+    {icon:'↗️',name:'Incline Bench Press',default:'4×8'},
+    {icon:'🏋️',name:'Dumbbell Press',default:'4×10'},
+    {icon:'💪',name:'Dips',default:'3×12'},
+    {icon:'🔄',name:'Overhead Tricep',default:'3×12'}
+  ],
+  5: [
+    {icon:'🔙',name:'T-Bar Row',default:'4×8'},
+    {icon:'⬆️',name:'Wide-Grip Pulldown',default:'4×10'},
+    {icon:'🔄',name:'Seated Row',default:'3×12'},
+    {icon:'💪',name:'Hammer Curl',default:'3×10'},
+    {icon:'🎯',name:'Preacher Curl',default:'3×12'}
+  ]
+};
+
+function selectDay(n, name) {
+  currentDay = n;
+  document.getElementById('selectedDayLabel').textContent = `Ziua ${n} — ${name}`;
+  ['1','2','3','4','5'].forEach(d => {
+    const b = document.getElementById('day'+d+'btn');
+    if (b) { b.style.borderColor=''; b.style.color=''; b.style.background=''; }
+  });
+  const selBtn = document.getElementById('day'+n+'btn');
+  if (selBtn) { selBtn.style.borderColor='var(--accent)'; selBtn.style.color='var(--accent)'; }
+  renderExercises(n);
+}
+
+function renderExercises(day) {
+  const list = document.getElementById('exerciseList');
+  const defaults = dayExercises[day] || [];
+  const today = new Date().toLocaleDateString('ro-RO');
+  const logged = (state.exercises[today] && state.exercises[today][day]) || [];
+  let html = '';
+  defaults.forEach(ex => {
+    const logged_ex = logged.find(l => l.name === ex.name);
+    const weight = logged_ex ? logged_ex.weight : '—';
+    const reps = logged_ex ? logged_ex.reps : ex.default;
+    const pr = state.prs[ex.name];
+    const isPR = logged_ex && pr && parseFloat(logged_ex.weight) >= parseFloat(pr);
+    html += `<div class="exercise-row">
+      <div class="exercise-icon">${ex.icon}</div>
+      <div class="exercise-info">
+        <div class="exercise-name">${ex.name}${isPR?'&nbsp;<span class="pr-badge">PR!</span>':''}</div>
+        <div class="exercise-stats">${reps} · ${weight}kg${pr?' · PR: '+pr+'kg':''}</div>
+      </div>
+    </div>`;
+  });
+  list.innerHTML = html || '<div style="color:var(--text3);font-size:13px;padding:10px">Selectează o zi de antrenament</div>';
+}
+
+function addExercise() {
+  const name = document.getElementById('exName').value.trim();
+  const weight = document.getElementById('exWeight').value;
+  const reps = document.getElementById('exReps').value;
+  const notes = document.getElementById('exNotes').value;
+  if (!name) { showToast('⚠️ Completează exercițiul'); return; }
+  const today = new Date().toLocaleDateString('ro-RO');
+  if (!state.exercises[today]) state.exercises[today] = {};
+  if (!state.exercises[today][currentDay||0]) state.exercises[today][currentDay||0] = [];
+  state.exercises[today][currentDay||0].push({ name, weight, reps, notes });
+  // Update PR
+  if (weight && (!state.prs[name] || parseFloat(weight) > parseFloat(state.prs[name]))) {
+    state.prs[name] = parseFloat(weight);
+  }
+  document.getElementById('exName').value = '';
+  document.getElementById('exWeight').value = '';
+  document.getElementById('exReps').value = '';
+  document.getElementById('exNotes').value = '';
+  saveState();
+  renderPRs();
+  if (currentDay) renderExercises(currentDay);
+  showToast('💪 Exercițiu adăugat!');
+}
+
+function renderPRs() {
+  const el = document.getElementById('prList');
+  const prs = Object.entries(state.prs);
+  if (!prs.length) {
+    el.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:13px;padding:10px">Niciun PR înregistrat</div>';
+    return;
+  }
+  el.innerHTML = prs.slice(0,10).map(([ex, kg]) => `
+    <div class="weight-log-row">
+      <div style="font-size:13px;color:var(--text);font-weight:600">${ex}</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent4)">${kg}<span style="font-size:12px;color:var(--text3)">kg</span></div>
+    </div>`).join('');
+}
+
+// ===================== WEIGHT LOG =====================
+function logWeight() {
+  const w = parseFloat(document.getElementById('newWeight').value);
+  const waist = parseFloat(document.getElementById('newWaist').value);
+  if (!w) { showToast('⚠️ Introdu greutatea'); return; }
+  const today = new Date().toLocaleDateString('ro-RO');
+  state.weightLog.unshift({ date: today, weight: w, waist: waist || null });
+  if (state.weightLog.length > 60) state.weightLog.pop();
+  document.getElementById('newWeight').value = '';
+  document.getElementById('newWaist').value = '';
+  saveState();
+  renderWeightChart();
+  renderWeightHistory();
+  updateDashboard();
+  showToast('⚖️ Greutate înregistrată!');
+}
+
+function renderWeightChart() {
+  const svg = document.getElementById('weightChart');
+  const data = [...state.weightLog].reverse().slice(-14);
+  if (data.length < 2) {
+    svg.innerHTML = '<text x="170" y="75" fill="#4a5f72" text-anchor="middle" font-size="12" font-family="DM Sans">Adaugă cel puțin 2 greutăți</text>';
+    return;
+  }
+  const weights = data.map(d => d.weight);
+  const min = Math.min(...weights) - 1;
+  const max = Math.max(...weights) + 1;
+  const W = 340, H = 140;
+  const xStep = W / (data.length - 1);
+  const yScale = h => H - 20 - ((h - min) / (max - min)) * (H - 40);
+  const points = data.map((d, i) => `${i * xStep},${yScale(d.weight)}`).join(' ');
+  const areaPoints = `0,${H} ${points} ${(data.length-1)*xStep},${H}`;
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="chartGrad2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" style="stop-color:rgba(0,229,160,0.4)"/>
+        <stop offset="100%" style="stop-color:rgba(0,229,160,0)"/>
+      </linearGradient>
+    </defs>
+    <polygon points="${areaPoints}" fill="url(#chartGrad2)"/>
+    <polyline points="${points}" fill="none" stroke="#00e5a0" stroke-width="2.5" stroke-linejoin="round"/>
+    ${data.map((d,i) => `
+      <circle cx="${i*xStep}" cy="${yScale(d.weight)}" r="4" fill="#00e5a0"/>
+      <text x="${i*xStep}" y="${H-2}" fill="#4a5f72" text-anchor="middle" font-size="8" font-family="JetBrains Mono">${d.date.slice(0,5)}</text>
+      <text x="${i*xStep}" y="${yScale(d.weight)-8}" fill="#f0f4f8" text-anchor="middle" font-size="9" font-family="JetBrains Mono">${d.weight}</text>
+    `).join('')}
+  `;
+}
+
+function renderWeightHistory() {
+  const el = document.getElementById('weightHistory');
+  if (!state.weightLog.length) { el.innerHTML = ''; return; }
+  el.innerHTML = state.weightLog.slice(0,5).map((e, i) => {
+    const prev = state.weightLog[i+1];
+    const delta = prev ? (e.weight - prev.weight).toFixed(1) : null;
+    const up = delta > 0;
+    return `<div class="weight-log-row">
+      <div>
+        <div class="weight-log-date">${e.date}</div>
+        ${e.waist ? `<div style="font-size:11px;color:var(--text3)">Talie: ${e.waist}cm</div>` : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="weight-log-val">${e.weight}<span style="font-size:11px;color:var(--text3)">kg</span></div>
+        ${delta !== null ? `<div class="weight-log-delta" style="color:${up?'var(--accent3)':'var(--accent)'}">${up?'▲':'▼'}${Math.abs(delta)}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ===================== CHECKIN =====================
+function saveCheckin() {
+  const today = new Date().toLocaleDateString('ro-RO');
+  const energy = parseInt(document.getElementById('energySlider').value);
+  const libido = parseInt(document.getElementById('libidoSlider').value);
+  const sleep = parseInt(document.getElementById('sleepSlider').value);
+  const note = document.getElementById('dailyNote').value;
+  state.checkins = state.checkins.filter(c => c.date !== today);
+  state.checkins.unshift({ date: today, energy, libido, sleep, note });
+  if (state.checkins.length > 60) state.checkins.pop();
+  saveState();
+  updateDashboard();
+}
+
+// ===================== DASHBOARD =====================
+function updateDashboard() {
+  // Weight
+  if (state.weightLog.length) {
+    const w = state.weightLog[0];
+    document.getElementById('statWeight').textContent = w.weight;
+    if (state.weightLog.length >= 2) {
+      const delta = (w.weight - state.weightLog[1].weight).toFixed(1);
+      const up = delta > 0;
+      document.getElementById('statWeightChange').innerHTML = `<span style="color:${up?'var(--accent3)':'var(--accent)'}">${up?'▲':'▼'} ${Math.abs(delta)}kg față de ieri</span>`;
+      document.getElementById('statWeightChange').className = 'stat-change';
+    }
+  }
+
+  // Days
+  const days = Math.floor((Date.now() - new Date(state.startDate)) / 86400000);
+  document.getElementById('statDays').textContent = days;
+
+  // Checkin
+  const today = new Date().toLocaleDateString('ro-RO');
+  const checkin = state.checkins.find(c => c.date === today);
+  if (checkin) {
+    document.getElementById('statEnergy').textContent = checkin.energy;
+    document.getElementById('statLibido').textContent = checkin.libido;
+    document.getElementById('energySlider').value = checkin.energy;
+    document.getElementById('libidoSlider').value = checkin.libido;
+    document.getElementById('sleepSlider').value = checkin.sleep;
+    document.getElementById('energyVal').textContent = checkin.energy;
+    document.getElementById('libidoVal').textContent = checkin.libido;
+    document.getElementById('sleepVal').textContent = checkin.sleep;
+    if (checkin.note) document.getElementById('dailyNote').value = checkin.note;
+  }
+
+  // Streak
+  const streak = calcStreak();
+  document.getElementById('streakBadge').textContent = streak + ' zile';
+
+  // Fast status on dashboard
+  if (!state.fastStart) {
+    document.getElementById('dashFastStatus').textContent = 'Nicio sesiune activă';
+    document.getElementById('dashFastTime').textContent = '00:00';
+  }
+
+  // Coach insights
+  renderCoachInsights();
+}
+
+function calcStreak() {
+  let streak = 0;
+  const today = new Date();
+  for (let i = 0; i < 60; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const ds = d.toLocaleDateString('ro-RO');
+    const hasMeal = !!state.meals[ds];
+    const hasFast = state.fastHistory.some(f => f.date === ds);
+    const hasCheckin = state.checkins.some(c => c.date === ds);
+    if (hasMeal || hasFast || hasCheckin) streak++;
+    else if (i > 0) break;
+  }
+  return streak;
+}
+
+function renderCoachInsights() {
+  const el = document.getElementById('dashCoachMsg');
+  const msgs = [];
+  const checkin = state.checkins[0];
+  if (checkin) {
+    if (checkin.energy <= 4) msgs.push({ type:'warning', icon:'⚡', title:'Energie scăzută detectată', text:'Energia ta e la '+checkin.energy+'/10. Verifică dacă fasting-ul nu e prea lung sau caloriile prea mici. Adaugă 30–50g carbs la Masa 1.' });
+    if (checkin.libido <= 3) msgs.push({ type:'warning', icon:'🔥', title:'Semnal hormonal scăzut', text:'Libidoul scăzut poate indica deficit caloric agresiv sau somn insuficient. Asigură-te că mănânci suficiente grăsimi sănătoase (50–70g/zi).' });
+    if (checkin.sleep < 6) msgs.push({ type:'danger', icon:'😴', title:'Somn insuficient', text:'Ai dormit '+checkin.sleep+'h. Sub 7h scade testosteronul cu până la 15% și crește cortizolul — ambele sabotează recompoziția corporală.' });
+  }
+  if (state.weightLog.length >= 7) {
+    const wNow = state.weightLog[0].weight;
+    const wWeek = state.weightLog[Math.min(6, state.weightLog.length-1)].weight;
+    const weekDelta = wNow - wWeek;
+    if (weekDelta < -1.5) msgs.push({ type:'danger', icon:'⚠️', title:'Scădere prea rapidă', text:`Ai pierdut ${Math.abs(weekDelta.toFixed(1))}kg în ultimele 7 zile. Risc de pierdere masă musculară. Crește caloriile cu 200–300kcal.` });
+    if (weekDelta > 0.5) msgs.push({ type:'warning', icon:'📈', title:'Greutate în creștere', text:`+${weekDelta.toFixed(1)}kg săptămâna asta. Verifică totalul caloric și asigură-te că ești în deficit.` });
+  }
+  if (!msgs.length) {
+    msgs.push({ type:'success', icon:'✅', title:'Protocol activ', text:'Completează check-in-ul zilnic și log-ul de mese pentru analize personalizate.' });
+  }
+  el.innerHTML = msgs.map(m => `
+    <div class="alert-card ${m.type}">
+      <div class="alert-icon">${m.icon}</div>
+      <div class="alert-text"><strong>${m.title}</strong>${m.text}</div>
+    </div>`).join('');
+}
+
+// ===================== PROTOCOL =====================
+function selectProtocol(p) {
+  state.protocol = p;
+  document.querySelectorAll('.protocol-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('proto-'+p).classList.add('selected');
+  const details = {
+    vegan: {
+      title:'🌱 VEGAN CUT — Protocol Activ',
+      text:`<strong>Protein:</strong> tofu, tempeh, linte, năut, seitan, edamame<br>
+      <strong>Carbs:</strong> orez brun, cartofi dulci, ovăz, quinoa<br>
+      <strong>Grăsimi:</strong> avocado, nuci, ulei de cocos, unt de arahide<br>
+      <strong>Target protein:</strong> 2.2g/kg (mai greu din surse vegetale, deci mai sus)<br>
+      <strong>Suplimente recomandate:</strong> Creatina, B12, Omega-3 alge, Zinc`
+    },
+    omni: {
+      title:'🥩 OMNIVORE CUT — Protocol Activ',
+      text:`<strong>Protein:</strong> piept pui, ton, somon, ouă, iaurt grecesc, brânză cottage<br>
+      <strong>Carbs zile training:</strong> orez alb, cartofi, banane, fructe<br>
+      <strong>Carbs zile odihnă:</strong> legume, salate, broccoli, sparanghel<br>
+      <strong>Grăsimi:</strong> ouă întregi, somon, avocado, ulei de măsline<br>
+      <strong>Suplimente:</strong> Creatina 5g/zi, Whey Protein (opțional), Magneziu seara`
+    },
+    bulk: {
+      title:'⚡ PERFORMANCE BULK — Protocol Activ',
+      text:`<strong>Surplus:</strong> +200–300 kcal față de TDEE<br>
+      <strong>Protein:</strong> 2g/kg · surse: carne roșie, pui, ouă, lapte, brânzeturi<br>
+      <strong>Carbs ridicați:</strong> 4–5g/kg · paste, orez, pâine, cartofi, ovăz<br>
+      <strong>Grăsimi:</strong> 1g/kg minimum · unt, ouă, carne grasă<br>
+      <strong>Fasting mai scurt:</strong> 12–14h (mai mult timp în fereastra de alimentare)<br>
+      <strong>Suplimente:</strong> Creatina 5g, Beta-Alanine, Carbs intra-workout`
+    }
+  };
+  const d = details[p];
+  document.getElementById('protocolDetailContent').innerHTML = `
+    <div style="font-size:14px;font-weight:800;color:var(--accent);margin-bottom:12px;letter-spacing:1px">${d.title}</div>
+    <div style="font-size:13px;color:var(--text2);line-height:2">${d.text}</div>`;
+  document.getElementById('protocolDetail').style.display = 'block';
+  saveState();
+  showToast('✅ Protocol '+p+' selectat!');
+}
+
+// ===================== MEASUREMENTS =====================
+function saveMeasurements() {
+  state.measurements = {
+    chest: document.getElementById('measChest').value,
+    waist: document.getElementById('measWaist').value,
+    arm: document.getElementById('measArm').value,
+    thigh: document.getElementById('measThigh').value,
+    date: new Date().toLocaleDateString('ro-RO')
+  };
+  saveState();
+  showToast('📐 Măsurători salvate!');
+}
+
+// ===================== PHOTOS =====================
+function triggerPhoto(type) {
+  document.getElementById('photoInput'+type.charAt(0).toUpperCase()+type.slice(1)).click();
+}
+function loadPhoto(type, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById(type+'Img');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    state['photo_'+type] = e.target.result;
+    saveState();
+  };
+  reader.readAsDataURL(file);
+}
+
+// ===================== AI COACH =====================
+async function sendAIMessage() {
+  const input = document.getElementById('aiInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  const chat = document.getElementById('aiChatMessages');
+
+  chat.innerHTML += `<div class="ai-msg user">${msg}</div>`;
+  chat.innerHTML += `<div class="ai-msg loading" id="aiLoading"><div class="typing-dots"><span></span><span></span><span></span></div>&nbsp;Dragos AI analizează...</div>`;
+  chat.scrollTop = chat.scrollHeight;
+
+  const context = buildContext();
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `Ești Dragos AI Coach — un antrenor personal de elită specializat în recompoziție corporală, fasting intermitent, nutriție și antrenament de forță. Operezi în cadrul aplicației ESTETIQ Protocol creată de Dragos. 
+
+Stilul tău: direct, motivant, bazat pe știință dar explicat simplu. Răspunzi în română. Ești concis dar complet. Folosești date din context pentru a personaliza sfaturile. Nu ești niciodată generic — mereu personalizat.
+
+Date utilizator curent:
+${context}
+
+Reguli:
+- Răspunzi în română
+- Ești specific și acționabil
+- Bazezi sfaturile pe știință (menționezi studii când relevant)
+- Ești direct ca un antrenor personal, nu ca un chatbot
+- Răspunsuri de maxim 200 cuvinte`,
+        messages: [{ role: 'user', content: msg }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.[0]?.text || 'Eroare la procesarea răspunsului.';
+    document.getElementById('aiLoading').remove();
+    chat.innerHTML += `<div class="ai-msg assistant">${text.replace(/\n/g,'<br>')}</div>`;
+  } catch (e) {
+    document.getElementById('aiLoading').remove();
+    chat.innerHTML += `<div class="ai-msg assistant">⚠️ Conexiune indisponibilă. Verifică internetul și încearcă din nou.</div>`;
+  }
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function quickQuestion(q) {
+  document.getElementById('aiInput').value = q;
+  sendAIMessage();
+}
+
+function buildContext() {
+  const wl = state.weightLog[0];
+  const cl = state.checkins[0];
+  const streak = calcStreak();
+  let ctx = `Greutate curentă: ${wl ? wl.weight+'kg' : 'nedisponibil'}\n`;
+  ctx += `Zile în program: ${Math.floor((Date.now()-new Date(state.startDate))/86400000)}\n`;
+  ctx += `Streak: ${streak} zile\n`;
+  if (cl) ctx += `Energie azi: ${cl.energy}/10, Libido: ${cl.libido}/10, Somn: ${cl.sleep}h\n`;
+  if (state.protocol) ctx += `Protocol selectat: ${state.protocol}\n`;
+  ctx += `Fast target: ${state.fastTarget}h\n`;
+  if (state.fastHistory.length) {
+    const last3 = state.fastHistory.slice(0,3).map(f=>f.hours+'h').join(', ');
+    ctx += `Ultimele 3 fast-uri: ${last3}\n`;
+  }
+  if (state.weightLog.length >= 2) {
+    const delta = (state.weightLog[0].weight - state.weightLog[Math.min(6,state.weightLog.length-1)].weight).toFixed(1);
+    ctx += `Tendință greutate 7 zile: ${delta}kg\n`;
+  }
+  return ctx;
+}
+
+// ===================== ALERTS SECTION =====================
+function updateAlerts() {
+  const el = document.getElementById('alertsSection');
+  const alerts = [];
+  const checkin = state.checkins[0];
+  if (checkin) {
+    if (checkin.energy <= 3) alerts.push({ type:'danger', icon:'⚠️', title:'Energie critică', text:'Sub 3/10 — risc de overtraining sau deficit prea agresiv. Ia o zi de odihnă și crește caloriile.' });
+    if (checkin.libido <= 2) alerts.push({ type:'danger', icon:'🔥', title:'Hormon scăzut', text:'Libido sub 2 poate indica cortizol crescut. Reduce volumul de antrenament și crește grăsimile saturate.' });
+  }
+  if (state.weightLog.length >= 7) {
+    const delta = state.weightLog[0].weight - state.weightLog[Math.min(6,state.weightLog.length-1)].weight;
+    if (delta < -2) alerts.push({ type:'danger', icon:'📉', title:'Scădere prea rapidă!', text:`-${Math.abs(delta.toFixed(1))}kg în 7 zile. Masă musculară în pericol. Crește proteinele și caloriile imediat.` });
+  }
+  if (!alerts.length) {
+    alerts.push({ type:'success', icon:'✅', title:'Totul arată bine', text:'Niciun semnal de alarmă. Continuă protocolul și monitorizează zilnic.' });
+  }
+  el.innerHTML = alerts.map(a => `
+    <div class="alert-card ${a.type}">
+      <div class="alert-icon">${a.icon}</div>
+      <div class="alert-text"><strong>${a.title}</strong>${a.text}</div>
+    </div>`).join('');
+}
+
+// ===================== TOAST =====================
+let toastTimeout;
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.style.cssText = `position:fixed;bottom:130px;left:50%;transform:translateX(-50%);background:rgba(0,229,160,0.15);border:1px solid rgba(0,229,160,0.4);color:var(--accent);padding:12px 24px;border-radius:30px;font-size:13px;font-weight:700;z-index:9999;backdrop-filter:blur(10px);transition:opacity 0.3s;white-space:nowrap`;
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => { t.style.opacity = '0'; }, 2500);
+}
+
+// ===================== RESTORE STATE =====================
+function restoreState() {
+  if (state.protocol) selectProtocol(state.protocol);
+  if (state.weightLog.length) renderWeightHistory();
+  if (state.fastHistory.length) renderFastHistory();
+  renderPRs();
+  if (state.fastStart) {
+    document.getElementById('fastStartBtn').style.display = 'none';
+    document.getElementById('fastEndBtn').style.display = 'block';
+  }
+  setFastTarget(state.fastTarget || 16);
+  if (state.photo_before) {
+    const img = document.getElementById('beforeImg');
+    img.src = state.photo_before; img.style.display = 'block';
+  }
+  if (state.photo_after) {
+    const img = document.getElementById('afterImg');
+    img.src = state.photo_after; img.style.display = 'block';
+  }
+  updateAlerts();
+}
+
+// ===================== START =====================
+document.addEventListener('DOMContentLoaded', () => {
+  init();
+  setTimeout(restoreState, 2800);
+});
+</script>
+</body>
+</html>
