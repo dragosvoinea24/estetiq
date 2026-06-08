@@ -72,6 +72,6 @@ export async function initAuthPage() {
   const session = await getSession();
   if (session) {
     const redirect = new URLSearchParams(window.location.search).get('redirect');
-    window.location.href = redirect || '/dashboard.html';
+    window.location.href = redirect || '/EstetiqAntrenamentB.html';
   }
 }
