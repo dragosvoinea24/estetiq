@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<link rel="apple-touch-icon" href="https://dododragos.neocities.org/icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="estetiq.fit">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#04040A">
+<title>estetiq.fit — Plan Antrenament Băieți</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   VARS
+═══════════════════════════════════════ */
+:root {
+  --ink:   #04040A;
+  --ink2:  #08081A;
+  --ink3:  #0E0E24;
+  --card:  rgba(255,255,255,0.032);
+  --bdr:   rgba(255,255,255,0.07);
+  --bdr2:  rgba(255,255,255,0.13);
+  --white: #F2F0EB;
+  --muted: #68687A;
+  --mid:   #A0A0B4;
+
+  --mint:  #00FFB2;
+  --volt:  #FFDD00;
+  --coral: #FF4E6A;
+  --violet:#7B61FF;
+  --cyan:  #00E5FF;
+  --green: #00E87A;
+
+  --g-main: linear-gradient(135deg,#00FFB2 0%,#7B61FF 55%,#FF4E6A 100%);
+  --g-volt: linear-gradient(110deg,#FFDD00,#00FFB2);
+  --g-fire: linear-gradient(110deg,#FF4E6A,#FF8C42);
+  --g-mint: linear-gradient(110deg,#00FFB2,#00E5FF);
+
+  --r: 14px; --r2: 20px; --r3: 28px;
+  --mono: 'Space Mono',monospace;
+  --display: 'Unbounded',sans-serif;
+  --body: 'Plus Jakarta Sans',sans-serif;
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--body);
+  background:var(--ink);
+  color:var(--white);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:calc(72px + env(safe-area-inset-bottom));
+}
+a{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+img{display:block;max-width:100%;}
+
+/* NOISE */
+body::before{
+  content:'';position:fixed;inset:0;z-index:9997;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.02;
+}
+
+/* ═══════════════════════════════════════
+   LOADER
+═══════════════════════════════════════ */
+#loader{
+  position:fixed;inset:0;z-index:10000;background:var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  transition:opacity .7s ease,visibility .7s ease;
+}
+#loader.out{opacity:0;visibility:hidden;pointer-events:none;}
+
+.ldr-logo{
+  font-family:var(--display);font-size:clamp(1.8rem,7vw,3.5rem);
+  font-weight:900;letter-spacing:-.04em;
+  background:var(--g-main);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:ldrPop .7s cubic-bezier(.22,1,.36,1) .1s both;
+}
+.ldr-sub{
+  font-family:var(--mono);font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--muted);opacity:0;animation:fadeUp .5s .5s both;
+}
+.ldr-bar-w{width:180px;height:1px;background:rgba(255,255,255,.07);border-radius:1px;overflow:hidden;}
+.ldr-bar-f{height:100%;width:0;background:var(--g-main);animation:lBarF 2s cubic-bezier(.25,0,.1,1) .3s forwards;}
+@keyframes lBarF{to{width:100%}}
+@keyframes ldrPop{from{opacity:0;transform:scale(.9) translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══════════════════════════════════════
+   HEADER
+═══════════════════════════════════════ */
+#hdr{
+  position:sticky;top:0;z-index:500;
+  background:rgba(4,4,10,.96);
+  backdrop-filter:blur(24px) saturate(1.4);
+  border-bottom:1px solid var(--bdr);
+  padding:14px 20px;
+  padding-top:calc(14px + env(safe-area-inset-top));
+}
+.hdr-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:900px;margin:0 auto;}
+.hdr-logo{font-family:var(--display);font-size:1rem;font-weight:700;letter-spacing:-.03em;color:var(--white);}
+.hdr-logo span{color:var(--mint);}
+.hdr-badge{
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;
+  background:rgba(0,255,178,.08);border:1px solid rgba(0,255,178,.2);
+  color:var(--mint);padding:5px 12px;border-radius:100px;
+}
+.hdr-dot{width:6px;height:6px;border-radius:50%;background:var(--mint);animation:blink 1.6s infinite;}
+
+/* ═══════════════════════════════════════
+   HERO BANNER
+═══════════════════════════════════════ */
+.hero-banner{
+  background:var(--ink2);
+  border-bottom:1px solid var(--bdr);
+  padding:32px 20px 24px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero-banner::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,255,178,.07),transparent 65%);
+  pointer-events:none;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--mint);margin-bottom:14px;
+}
+.hero-tag-line{width:18px;height:1px;background:var(--mint);opacity:.5;}
+.hero-title{
+  font-family:var(--display);
+  font-size:clamp(1.7rem,6vw,2.8rem);
+  font-weight:900;letter-spacing:-.04em;line-height:.95;
+  margin-bottom:12px;
+}
+.hero-title .grad{
+  background:var(--g-main);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{font-size:.88rem;color:var(--mid);line-height:1.75;max-width:500px;margin:0 auto 20px;}
+.hero-pills{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.hero-pill{
+  padding:5px 14px;border-radius:100px;font-size:.72rem;font-weight:700;
+  background:rgba(255,255,255,.04);border:1px solid var(--bdr2);color:var(--mid);
+}
+
+/* ═══════════════════════════════════════
+   TABS
+═══════════════════════════════════════ */
+.tabs-wrap{
+  position:sticky;top:calc(53px + env(safe-area-inset-top));z-index:400;
+  background:rgba(4,4,10,.97);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bdr);
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+}
+.tabs-wrap::-webkit-scrollbar{display:none;}
+.tabs-inner{display:flex;gap:4px;padding:10px 16px;width:max-content;margin:0 auto;}
+.tab{
+  padding:9px 18px;border-radius:100px;
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:700;white-space:nowrap;cursor:pointer;
+  background:transparent;border:1px solid var(--bdr2);color:var(--muted);
+  transition:all .25s;
+}
+.tab.active{
+  background:var(--mint);border-color:var(--mint);color:#000;
+  box-shadow:0 0 20px rgba(0,255,178,.3);
+}
+.tab:active{transform:scale(.96);}
+
+/* ═══════════════════════════════════════
+   SECTIONS
+═══════════════════════════════════════ */
+.section{display:none;animation:secIn .35s cubic-bezier(.22,1,.36,1);}
+.section.active{display:block;}
+@keyframes secIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.container{max-width:900px;margin:0 auto;padding:24px 16px;}
+
+/* ═══════════════════════════════════════
+   PROGRESS BOX
+═══════════════════════════════════════ */
+.prog-box{
+  background:linear-gradient(135deg,rgba(123,97,255,.08),rgba(0,255,178,.04));
+  border:1px solid rgba(123,97,255,.25);
+  border-radius:var(--r3);padding:22px;margin-bottom:20px;
+}
+.prog-title{
+  font-family:var(--display);font-size:.82rem;font-weight:700;
+  letter-spacing:-.02em;color:var(--violet);margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.prog-body{font-size:.85rem;color:var(--mid);line-height:1.85;}
+.prog-body strong{color:var(--white);}
+
+/* ═══════════════════════════════════════
+   INFO / ALERT CARDS
+═══════════════════════════════════════ */
+.info-card{
+  border-radius:var(--r2);padding:18px;margin-bottom:16px;
+}
+.info-mint{background:rgba(0,255,178,.06);border:1px solid rgba(0,255,178,.2);}
+.info-volt{background:rgba(255,221,0,.06);border:1px solid rgba(255,221,0,.2);}
+.info-coral{background:rgba(255,78,106,.06);border:1px solid rgba(255,78,106,.2);}
+.info-violet{background:rgba(123,97,255,.06);border:1px solid rgba(123,97,255,.2);}
+.info-title{font-weight:800;font-size:.88rem;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.info-title.c-mint{color:var(--mint);}
+.info-title.c-volt{color:var(--volt);}
+.info-title.c-coral{color:var(--coral);}
+.info-title.c-violet{color:var(--violet);}
+.info-body{font-size:.84rem;color:var(--mid);line-height:1.8;}
+.info-body strong{color:var(--white);}
+
+/* ═══════════════════════════════════════
+   ACORDEON - ZIUA
+═══════════════════════════════════════ */
+.acc{
+  border:1px solid var(--bdr);border-radius:var(--r2);
+  margin-bottom:12px;overflow:hidden;
+  transition:border-color .3s;
+}
+.acc.open{border-color:rgba(0,255,178,.25);}
+.acc-head{
+  padding:16px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  cursor:pointer;background:var(--card);
+  transition:background .2s;
+  -webkit-user-select:none;user-select:none;
+}
+.acc-head:active{background:rgba(255,255,255,.04);}
+.acc.open .acc-head{background:rgba(0,255,178,.04);}
+.acc-head-left{display:flex;align-items:center;gap:12px;}
+.acc-day-num{
+  font-family:var(--display);font-size:1.1rem;font-weight:900;
+  background:var(--g-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  opacity:.5;min-width:28px;transition:opacity .3s;
+}
+.acc.open .acc-day-num{opacity:1;}
+.acc-day-title{font-weight:700;font-size:.92rem;line-height:1.3;}
+.acc-day-sub{font-size:.72rem;color:var(--muted);font-family:var(--mono);margin-top:2px;letter-spacing:.05em;}
+.acc-arrow{
+  width:28px;height:28px;border-radius:50%;
+  background:rgba(0,255,178,.06);border:1px solid rgba(0,255,178,.15);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--mint);font-size:.7rem;flex-shrink:0;
+  transition:transform .3s,background .3s;
+}
+.acc.open .acc-arrow{transform:rotate(180deg);background:rgba(0,255,178,.15);}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1);}
+.acc.open .acc-body{max-height:9999px;}
+.acc-content{padding:4px 16px 20px;}
+
+/* ═══════════════════════════════════════
+   EXERCITIU CARD
+═══════════════════════════════════════ */
+.ex{
+  background:rgba(0,0,0,.25);
+  border-left:3px solid rgba(0,255,178,.35);
+  border-radius:0 var(--r) var(--r) 0;
+  padding:16px;margin-bottom:12px;
+}
+.ex:last-child{margin-bottom:0;}
+.ex-name{
+  font-weight:800;font-size:.95rem;margin-bottom:8px;
+  display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;
+}
+.ex-badge{
+  font-size:.58rem;padding:2px 8px;border-radius:100px;
+  font-weight:900;letter-spacing:.06em;text-transform:uppercase;flex-shrink:0;margin-top:2px;
+}
+.badge-compound{background:var(--violet);color:#fff;}
+.badge-iso{background:rgba(0,255,178,.15);border:1px solid rgba(0,255,178,.3);color:var(--mint);}
+.badge-super{background:rgba(255,78,106,.15);border:1px solid rgba(255,78,106,.3);color:var(--coral);}
+
+.ex-sets{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;
+  color:var(--muted);margin-bottom:10px;
+}
+
+.ex-row{
+  font-size:.83rem;line-height:1.75;
+  border-radius:var(--r);padding:10px 14px;margin-bottom:8px;
+}
+.ex-row:last-child{margin-bottom:0;}
+.ex-row-label{
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.18em;
+  text-transform:uppercase;font-weight:700;margin-bottom:4px;
+}
+
+.row-weight{background:rgba(255,221,0,.07);border:1px solid rgba(255,221,0,.18);}
+.row-weight .ex-row-label{color:var(--volt);}
+
+.row-exec{background:rgba(0,255,178,.05);border:1px solid rgba(0,255,178,.15);}
+.row-exec .ex-row-label{color:var(--mint);}
+
+.row-why{background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.15);}
+.row-why .ex-row-label{color:var(--cyan);}
+
+/* ═══════════════════════════════════════
+   TESTO CARDS
+═══════════════════════════════════════ */
+.testo-card{
+  background:linear-gradient(135deg,rgba(255,221,0,.06),transparent);
+  border:1px solid rgba(255,221,0,.2);
+  border-radius:var(--r2);padding:18px;margin-bottom:12px;
+}
+.testo-title{
+  font-weight:900;font-size:.9rem;color:var(--volt);
+  margin-bottom:10px;display:flex;align-items:flex-start;gap:8px;
+}
+.testo-body{font-size:.84rem;color:var(--mid);line-height:1.82;}
+.testo-body strong{color:var(--white);}
+
+/* ═══════════════════════════════════════
+   SECTION HEADER
+═══════════════════════════════════════ */
+.sec-hdr{margin-bottom:20px;}
+.sec-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--mint);margin-bottom:10px;
+}
+.sec-tag-line{width:16px;height:1px;background:var(--mint);opacity:.5;}
+.sec-title{
+  font-family:var(--display);font-size:clamp(1.5rem,5vw,2.2rem);
+  font-weight:700;letter-spacing:-.04em;line-height:1;
+}
+.sec-title .g{
+  background:var(--g-main);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* ═══════════════════════════════════════
+   PROTOCOL BOX (testo zilnic)
+═══════════════════════════════════════ */
+.protocol-box{
+  background:linear-gradient(135deg,rgba(255,78,106,.07),rgba(123,97,255,.05));
+  border:1px solid rgba(255,78,106,.25);
+  border-radius:var(--r3);padding:22px;margin:20px 0;
+}
+.protocol-title{
+  font-family:var(--display);font-size:.85rem;font-weight:700;
+  color:var(--coral);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.protocol-body{font-size:.84rem;color:var(--mid);line-height:1.9;}
+.protocol-body strong{color:var(--white);}
+.protocol-body br{margin-bottom:4px;}
+
+/* ═══════════════════════════════════════
+   CONTACT BAR (bottom fixed)
+═══════════════════════════════════════ */
+#contact-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:500;
+  background:rgba(4,4,10,.97);backdrop-filter:blur(24px);
+  border-top:1px solid var(--bdr);
+  padding:10px 16px;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom));
+  display:flex;gap:10px;
+}
+.c-btn{
+  flex:1;padding:12px;border-radius:12px;
+  font-family:var(--body);font-weight:800;font-size:.88rem;
+  text-decoration:none;text-align:center;transition:all .2s;
+  border:none;cursor:pointer;
+}
+.c-btn:active{transform:scale(.96);}
+.c-wa{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;}
+.c-ig{background:linear-gradient(135deg,#E1306C,#C13584);color:#fff;}
+
+/* ═══════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════ */
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:var(--ink);}
+::-webkit-scrollbar-thumb{background:var(--mint);border-radius:2px;}
+
+/* ═══════════════════════════════════════
+   ANIM HELPERS
+═══════════════════════════════════════ */
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s;}
+.reveal.visible{opacity:1;transform:none;}
+
+/* Spacer between groups */
+.gap{height:20px;}
+.gap-lg{height:32px;}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ldr-logo">estetiq<span style="color:var(--mint)">.</span>fit</div>
+  <div class="ldr-sub">Plan Antrenament · Băieți · Dragoș</div>
+  <div class="ldr-bar-w"><div class="ldr-bar-f"></div></div>
+</div>
+
+<!-- HEADER -->
+<header id="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-logo">estetiq<span>.</span>fit</div>
+    <div class="hdr-badge">
+      <div class="hdr-dot"></div>
+      Plan activ
+    </div>
+  </div>
+</header>
+
+<!-- HERO BANNER -->
+<div class="hero-banner">
+  <div class="hero-tag"><div class="hero-tag-line"></div>Dragoș · 2026<div class="hero-tag-line"></div></div>
+  <h1 class="hero-title">
+    Plan <span class="grad">Antrenament</span><br>Băieți
+  </h1>
+  <p class="hero-sub">Exerciții, greutăți, execuție, progresie. Tot ce trebuie să știi ca să crești. Fără ghicit, fără pierdut timpul.</p>
+  <div class="hero-pills">
+    <div class="hero-pill">🏋️ Sală</div>
+    <div class="hero-pill">📈 PPL 5 zile</div>
+    <div class="hero-pill">⚡ 45-75 min</div>
+    <div class="hero-pill">🔥 Testosteron</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs-inner">
+    <button class="tab active" onclick="switchTab('inc',this)">👦 Începători</button>
+    <button class="tab" onclick="switchTab('av',this)">💪 Avansați</button>
+    <button class="tab" onclick="switchTab('testo',this)">🔥 Testosteron</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SECȚIUNEA ÎNCEPĂTORI
+═══════════════════════════════════════ -->
+<div id="inc" class="section active">
+<div class="container">
+
+<div class="sec-hdr reveal">
+  <div class="sec-tag"><div class="sec-tag-line"></div>Începători</div>
+  <div class="sec-title">4 zile/săpt.<br><span class="g">50–60 min.</span></div>
+</div>
+
+<div class="prog-box reveal">
+  <div class="prog-title">🎯 Cum alegi greutatea — Regula de Aur</div>
+  <div class="prog-body">
+    <strong>Prima dată la sală:</strong> Începi cu bara goală 20kg la compuse. La gantere începi cu 4–6kg. Faci 10 repetări. Dacă e ușor, pui +2.5kg. Dacă e greu, scazi.<br><br>
+    <strong>Greutatea corectă:</strong> Ultimele 2 repetări trebuie să ardă și să fie lente, dar le faci cu formă perfectă. Dacă te balansezi sau trișezi = prea greu.<br><br>
+    <strong>Când crești:</strong> Când faci toate seriile cu 2 repetări în rezervă, data viitoare adaugă 2.5kg la compuse, 1kg la izolare. Notezi în telefon după fiecare antrenament.<br><br>
+    <strong>Progresie:</strong> Săpt. 1–2 înveți forma. Săpt. 3–4 crești greutatea săptămânal. Dacă stagnezi 2 săptămâni, mănânci mai mult sau dormi mai mult.
+  </div>
+</div>
+
+<div class="info-card info-mint reveal">
+  <div class="info-title c-mint">💡 Structura săptămânii</div>
+  <div class="info-body">
+    <strong>Luni:</strong> Piept + Triceps + Umeri &nbsp;|&nbsp;
+    <strong>Marți:</strong> Spate + Biceps &nbsp;|&nbsp;
+    <strong>Joi:</strong> Picioare &nbsp;|&nbsp;
+    <strong>Vineri:</strong> Umeri + Brațe + Abdomen<br><br>
+    Miercuri, Sâmbătă, Duminică: pauză sau cardio ușor 20 min.
+  </div>
+</div>
+
+<!-- ZIUA 1 -->
+<div class="acc reveal" id="acc-i1">
+  <div class="acc-head" onclick="toggleAcc('acc-i1')">
+    <div class="acc-head-left">
+      <div class="acc-day-num">Z1</div>
+      <div>
+        <div class="acc-day-title">Piept + Triceps + Umeri</div>
+        <div class="acc-day-sub">Luni · 5 exerciții · 50 min</div>
+      </div>
+    </div>
+    <div class="acc-arrow">▼</div>
+  </div>
+  <div class="acc-body"><div class="acc-content">
+
+    <div class="ex">
+      <div class="ex-name">1. Împins cu bara — bancă orizontală <span class="ex-badge badge-compound">COMPOUND</span></div>
+      <div class="ex-sets">4 serii × 8–10 rep · Pauză 90 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Începi cu bara goală 20kg. Dacă faci 10 ușor, pui 25kg. Greutatea ideală: la rep 8–9 simți că mai ai 2 în tine, la rep 10 ești la limită dar cu formă bună.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Omoplații lipiți și în jos, ca și cum ai vrea să rupi banca. Picioarele înfipte în sol, fundul pe bancă. Cobori 2 secunde controlat la piept inferior, atingi ușor, împingi exploziv. Bara se mișcă în linie dreaptă.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Regele pt piept. Lucrează pieptul 60%, tricepsul 25%, umerii față 15%. Când împingi greu, corpul eliberează testosteron să repare și să crească mușchii. De aia după piept te simți bărbat.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">2. Împins cu gantere — înclinat 30°</div>
+      <div class="ex-sets">3 serii × 10–12 rep · Pauză 75 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Ia 60% din ce împingi cu bara. Ex: dacă faci 60kg cu bara = 15–17.5kg fiecare ganteră. Dacă poți face 15 ușor, data viitoare +2.5kg.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Înclinat 30 grade, nu 45. Cobori până simți întinderea în piept, nu până la umăr. Sus nu atingi ganterele, lași 5cm între ele. Ții tensiunea pe piept tot timpul.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Partea de sus a pieptului = forma de "V" când porți tricou. Gantere = fiecare parte lucrează separat, corectează dacă ai un piept mai mic.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">3. Fluturări la cabluri / Pec-Deck <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">3 serii × 12–15 rep · Pauză 60 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Ușoară. Aici nu contează kg, contează să simți pieptul. Începe cu 10–15kg la cabluri. Dacă nu simți pieptul, scade greutatea.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Coatele puțin îndoite, fixe. Îmbrățișezi un butoi mare. Strângi pieptul 1 secundă la mijloc ca și cum ai vrea să spargi o nucă între pectorali.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Izolare pură. Pompare maximă = sânge + nutrienți în mușchi = recuperare rapidă. Nu construiește masă ca împinsul, dar dă forma și detaliile.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">4. Împins militar cu gantere — din șezut</div>
+      <div class="ex-sets">3 serii × 10–12 rep · Pauză 75 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Începe cu 8–10kg fiecare. Dacă faci 15, pui 12.5kg. Umerii obosesc repede, nu te rușina de greutăți mici.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Spate drept lipit de bancă. Cobori până coatele la 90 grade, nu mai jos. Împingi drept în sus, nu atingi ganterele.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Umeri largi = talie subțire vizual. Raportul umeri-talie e primul lucru care se vede. Umerii fac diferența între "ok" și "wow".
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">5. Extensii triceps la helcometru — sfoară <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">3 serii × 12–15 rep · Pauză 60 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        15–20kg la început. Tricepsul obosește repede. Dacă te balansezi, scade.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Coatele lipite de coaste, fixe. Doar antebrațul se mișcă. Jos desfaci sfoara și strângi tricepsul 1 secundă. Sus nu lași să tragă greutatea, controlezi.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Tricepsul = 70% din braț. Bicepsul e doar pt poze. Vrei brațe mari? Lucrează tricepsul. Sfoara lovește toate cele 3 capete.
+      </div>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- ZIUA 2 -->
+<div class="acc reveal" id="acc-i2">
+  <div class="acc-head" onclick="toggleAcc('acc-i2')">
+    <div class="acc-head-left">
+      <div class="acc-day-num">Z2</div>
+      <div>
+        <div class="acc-day-title">Spate + Biceps</div>
+        <div class="acc-day-sub">Marți · 5 exerciții · 55 min</div>
+      </div>
+    </div>
+    <div class="acc-arrow">▼</div>
+  </div>
+  <div class="acc-body"><div class="acc-content">
+
+    <div class="ex">
+      <div class="ex-name">1. Tracțiuni la helcometru — priză largă <span class="ex-badge badge-compound">COMPOUND</span></div>
+      <div class="ex-sets">4 serii × 8–10 rep · Pauză 90 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Începe cu o greutate unde faci 12 greu. Ex: 40–50kg. Dacă faci 15, pui +5kg. Obiectiv: să ajungi să faci cu greutatea corpului.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Prinde bara mai lat ca umerii. Tragi coatele în jos și în spate, nu bara la gât. Pieptul în față, tragi la piept superior. Gândește-te că vrei să bagi coatele în buzunarele din spate.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Lățimea spatelui. V-taper. Spate lat + talie îngustă = fizic de invidiat. Lucrează latissimus, rotunzi, trapez inferior. Plus: eliberează testosteron pt că e mușchi mare.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">2. Ramat cu bara — aplecat</div>
+      <div class="ex-sets">4 serii × 8–10 rep · Pauză 90 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Începe cu 30–40kg total. Mai puțin ca la împins. Spatele trebuie să țină, nu doar brațele.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Picioarele la lățimea umerilor, genunchii puțin îndoiți, spatele drept 45 grade. Tragi bara la buric/ombilic, strângi omoplații 1 secundă. Cobori controlat 2 secunde.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Grosimea spatelui. Spate gros din lateral = arăți puternic în tricou, nu doar lat din față. Lucrează romboizii, trapez mijlociu, erectori. Postură de bărbat.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">3. Ramat la helcometru — priză îngustă V</div>
+      <div class="ex-sets">3 serii × 10–12 rep · Pauză 75 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        35–45kg la început. Mai ușoară ca bara pt că e izolare.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Stai drept, tragi la stomac inferior. Coatele pe lângă corp, nu în lateral. Pieptul în față tot timpul.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Partea de mijloc-jos a spatelui. Densitate și grosime. Detalii care fac diferența.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">4. Flexii biceps cu bara Z <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">3 serii × 10–12 rep · Pauză 60 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Bara Z goală 10kg + 5kg fiecare parte = 20kg total la început. Dacă faci 15, pui +2.5kg.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Coatele lipite de corp, fixe. Nu le miști în față. Ridici 1 secundă, ții 1 secundă sus strâns, cobori 3 secunde lent. Nu te balansa.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Bicepsul clasic. Bara Z e mai blândă cu încheieturile vs bara dreaptă. Coborârea lentă 3 secunde = mai mult stres = mai multă creștere.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">5. Flexii ciocan cu gantere — alternat <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">3 serii × 12–15 pe braț · Pauză 60 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        6–8kg fiecare la început. Mai ușor ca bara Z pt că e un braț odată.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Palma spre corp tot timpul, ca și cum ai ține ciocane. Ridici alternat, când una coboară, cealaltă urcă. Strângi 1 secundă sus.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Brahialul = mușchiul de sub biceps care îl împinge în afară. Plus brahioradialul din antebraț. Rezultat: braț gros din lateral și antebrațe vânate.
+      </div>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- ZIUA 3 -->
+<div class="acc reveal" id="acc-i3">
+  <div class="acc-head" onclick="toggleAcc('acc-i3')">
+    <div class="acc-head-left">
+      <div class="acc-day-num">Z3</div>
+      <div>
+        <div class="acc-day-title">Picioare</div>
+        <div class="acc-day-sub">Joi · ZIUA TESTOSTERONULUI · 60 min</div>
+      </div>
+    </div>
+    <div class="acc-arrow">▼</div>
+  </div>
+  <div class="acc-body"><div class="acc-content">
+
+    <div class="info-card info-coral" style="margin-bottom:14px;">
+      <div class="info-title c-coral">🔥 Ziua care contează cel mai mult</div>
+      <div class="info-body">Genuflexiunile = cel mai anabolic exercițiu din univers. Sari peste picioare = sari peste testosteron = sari peste rezultate. Nu există scuză.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">1. Genuflexiuni cu bara — la ceafă <span class="ex-badge badge-compound">COMPOUND</span></div>
+      <div class="ex-sets">4 serii × 8–10 rep · Pauză 2 minute</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Începi cu bara goală 20kg să înveți forma PERFECT. Adaugă 5kg pe săptămână dacă forma e bună. După 1 lună ar trebui să fii la 40–50kg. Nu te grăbi, genuflexiunile greșite = genunchi/spate distrus.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție detaliată</div>
+        Bara pe trapez, nu pe gât. Picioarele la lățimea umerilor, vârfurile 15–30 grade în afară. Piept în față, privirea înainte. Coboară ca și cum te-ai așeza pe scaun, fesele în spate. Coboară până coapsele paralele cu solul sau puțin sub. Călcâiele lipite de sol mereu. Împingi prin călcâie și mijlocul tălpii, nu prin vârfuri.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        CEL MAI ANABOLIC EXERCIȚIU. Lucrezi 200+ mușchi: cvadriceps, fese, femurali, gambe, spate inferior, abdomen. Corpul eliberează testosteron +15–30% și hormon de creștere +18% pt 48h după. Nu există scuză să sari.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">2. Presă pentru picioare</div>
+      <div class="ex-sets">4 serii × 10–12 rep · Pauză 90 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Începe cu 60–80kg total. Poți pune mult mai mult ca la genuflexiuni pt că e mai sigur. Adaugă 10kg pe săptămână dacă faci 12 ușor.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Spatele lipit de pad, picioarele la mijlocul plăcii la lățimea umerilor. Coboară controlat până genunchii la 90 grade. Împingi prin călcâie. NU bloca genunchii sus niciodată, lași 5 grade îndoiți.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Volum pt cvadriceps fără să încarci coloana după genuflexiuni. Poți pune 200kg+ și să crești picioarele în siguranță.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">3. Îndreptări românești cu gantere</div>
+      <div class="ex-sets">3 serii × 10–12 rep · Pauză 90 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        10–15kg fiecare ganteră la început. Mai ușor ca genuflexiunile pt că e izolare femurali/fese.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Picioarele la lățimea umerilor, genunchii puțin îndoiți și FIXE. Împingi fesele în spate maxim, spatele drept, ganterele alunecă pe coapse. Coboară până simți întinderea puternică în spatele piciorului. Ridici strângând fesele.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Femurali + fese + spate inferior = lanțul posterior. Putere, postură, previne durerile de spate de la stat la birou. Fese tari = femeile observă 100%.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">4. Fandări mergând cu gantere</div>
+      <div class="ex-sets">3 serii × 10 pași pe picior · Pauză 75 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        6–8kg fiecare ganteră. Mai ușor ca crezi pt că e unilateral și obosești repede.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Pas lung în față, cobori drept în jos până genunchiul din spate aproape atinge solul. Genunchiul din față nu trece de vârf. Corpul drept, nu te apleci. Împingi prin călcâiul din față să revii.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Lucrează fiecare picior separat = corectează dezechilibre. Fese + cvadriceps + echilibru + coordonare + cardio. Arde rău, dar face picioare simetrice.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">5. Ridicări pe vârfuri — gambe la aparat/presă <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">4 serii × 15–20 rep · Pauză 45 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Greu. Gambele sunt rezistente. Începe cu greutatea corpului + 20kg. Dacă faci 25, pui +10kg.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Amplitudine COMPLETĂ. Coboară cât de jos poți, simți întinderea. Urcă cât de sus poți pe vârfuri, ții 2 secunde strâns. Lent, controlat. Nu sări.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Gambele se văd tot anul la pantaloni scurți, la plajă, la piscină. Gambe mici cu corp mare = arăți disproporționat și neantrenat. Gambele cresc greu, trebuie volum + frecvență + ținere în contracție.
+      </div>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- ZIUA 4 -->
+<div class="acc reveal" id="acc-i4">
+  <div class="acc-head" onclick="toggleAcc('acc-i4')">
+    <div class="acc-head-left">
+      <div class="acc-day-num">Z4</div>
+      <div>
+        <div class="acc-day-title">Umeri + Abdomen + Brațe</div>
+        <div class="acc-day-sub">Vineri · 5 exerciții · 50 min</div>
+      </div>
+    </div>
+    <div class="acc-arrow">▼</div>
+  </div>
+  <div class="acc-body"><div class="acc-content">
+
+    <div class="ex">
+      <div class="ex-name">1. Ridicări laterale cu gantere <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">4 serii × 12–15 rep · Pauză 60 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        4–6kg fiecare la început. Umerii obosesc repede. Dacă te balansezi, e prea greu. Mai bine 4kg corect ca 8kg trișat.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Brațele puțin îndoite 10–15 grade, fixe. Ridici lateral până la nivelul umerilor, nu mai sus. Coatele conduc mișcarea, nu mâinile. Imaginează-ți că torni apă din căni. Cobori lent 3 secunde.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Capul lateral al umărului = lățime. Umeri largi = talie subțire vizual. Raportul umeri-talie e primul lucru care se vede la plajă.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">2. Fluturări inverse la pec-deck / Cabluri</div>
+      <div class="ex-sets">3 serii × 15 rep · Pauză 60 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        15–20kg la aparat. Ușor. Aici contează contracția, nu kg.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Piept lipit de pad, brațele întinse în față. Desfaci în lateral ca și cum ai vrea să îmbrățișezi pe cineva la spate. Strângi omoplații 2 secunde. Controlezi revenirea.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Spatele umerilor = postură dreaptă + umeri 3D rotunzi din lateral. Corectează postura de la stat la birou/telefon. Fără ăsta ai umeri căzuți în față.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">3. Superset: Flexii biceps + Extensii triceps sfoară <span class="ex-badge badge-super">SUPERSET</span></div>
+      <div class="ex-sets">3 serii × 12 + 15 rep · Pauză 75 sec după ambele</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Biceps: 8–10kg | Triceps: 15–20kg. Faci biceps, IMEDIAT triceps fără pauză, apoi pauza de 75 sec.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Faci biceps 12 rep, imediat triceps 15 rep, apoi pauză. Pompare maximă. Brațele se umflă de nu-ți mai încap în tricou.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Brațe în 10 minute. Superseturile = timp sub tensiune mare + pompare + ardere. Eficient când n-ai timp.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">4. Plank</div>
+      <div class="ex-sets">3 serii × 45–60 sec · Pauză 60 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Corpul tău. Când faci 60 sec ușor, pui disc de 5kg pe spate.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Coatele sub umeri, corpul drept ca o scândură de la cap la călcâie. Strângi abdomenul ca și cum te-ar lovi cineva, strângi fesele. Respiri normal.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Mai multă forță la toate exercițiile, fără dureri de spate, abdomen plat și tare. Plank-ul ține pătrățelele încordate și vizibile.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">5. Ridicări picioare din atârnat / La sol <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">3 serii × 15–20 rep · Pauză 60 sec</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Corpul tău. Când faci 20 ușor, ții ganteră de 2kg între glezne.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Atârnat de bară: ridici picioarele drepte sau îndoite la 90 grade până la orizontală. Nu te balansa. Coboară lent 3 secunde. La sol: mâinile sub fund, ridici picioarele drepte, cobori fără să atingi solul.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Partea de jos a abdomenului — cea mai grea de definit și prima care se acoperă cu grăsime. Ăsta e exercițiul care o lovește direct.
+      </div>
+    </div>
+
+  </div></div>
+</div>
+
+<div class="info-card info-violet reveal">
+  <div class="info-title c-violet">💡 Progresie Începători — Regula 2-2-2</div>
+  <div class="info-body">
+    <strong>Săptămâna 1–2:</strong> Înveți forma cu greutăți mici. Nu te interesează kg, te interesează să simți mușchiul corect. Filmează-te.<br><br>
+    <strong>Săptămâna 3–4:</strong> Crești greutatea când faci toate seriile cu 2 repetări în rezervă. Adaugă 2.5kg la compuse, 1–2kg la izolare.<br><br>
+    <strong>După 4 săptămâni:</strong> Treci la Avansați dacă: faci împins cu 60kg×8, genuflexiuni cu 80kg×8, tracțiuni 8+ fără ajutor. Dacă nu, mai stai 4 săptămâni și crești greutățile.
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SECȚIUNEA AVANSAȚI
+═══════════════════════════════════════ -->
+<div id="av" class="section">
+<div class="container">
+
+<div class="sec-hdr reveal">
+  <div class="sec-tag"><div class="sec-tag-line"></div>Avansați</div>
+  <div class="sec-title">5 zile/săpt.<br><span class="g">Push · Pull · Legs</span></div>
+</div>
+
+<div class="info-card info-coral reveal">
+  <div class="info-title c-coral">⚡ Condiții minime pentru planul avansat</div>
+  <div class="info-body">
+    Minim 1 an de sală și ridici: <strong>Împins 80kg×5 · Genuflexiuni 100kg×5 · Îndreptări 120kg×5 · Tracțiuni 8+ fără ajutor.</strong> Dacă nu, mai stai 2–3 luni la începători și crești greutățile.
+  </div>
+</div>
+
+<div class="prog-box reveal">
+  <div class="prog-title">🎯 Protocol Avansat — RPE + Progresie Dublă</div>
+  <div class="prog-body">
+    <strong>RPE — Rate of Perceived Exertion:</strong> RPE 7 = mai ai 3 rep în tine. RPE 8 = mai ai 2. RPE 9 = mai ai 1. RPE 10 = eșec.<br><br>
+    <strong>Compuse (5×5, 4×8):</strong> Lucrezi la RPE 8–9. Ultima serie trebuie să fie luptă, dar cu formă perfectă. Dacă faci toate seriile RPE 7, data viitoare +2.5kg.<br><br>
+    <strong>Izolare (3×12–15):</strong> Lucrezi la RPE 9–10. Ultimele 2–3 repetări ard și sunt lente.<br><br>
+    <strong>Progresie Dublă:</strong> Întâi crești repetările. Ex: 8-8-8-7 → 8-8-8-8 → adaugă +2.5kg → revii la 8-8-8-7.<br><br>
+    <strong>Deload:</strong> La fiecare 6–8 săptămâni, faci 1 săptămână cu 50% din greutate și 50% din volum. Corpul se recuperează, revii mai puternic.
+  </div>
+</div>
+
+<!-- PUSH GREU -->
+<div class="acc reveal" id="acc-a1">
+  <div class="acc-head" onclick="toggleAcc('acc-a1')">
+    <div class="acc-head-left">
+      <div class="acc-day-num">Z1</div>
+      <div>
+        <div class="acc-day-title">PUSH Greu — Piept / Umeri / Triceps</div>
+        <div class="acc-day-sub">6 exerciții · 70 min · RPE 8–9</div>
+      </div>
+    </div>
+    <div class="acc-arrow">▼</div>
+  </div>
+  <div class="acc-body"><div class="acc-content">
+
+    <div class="ex">
+      <div class="ex-name">1. Împins cu bara — 5×5 FORȚĂ <span class="ex-badge badge-compound">COMPOUND</span></div>
+      <div class="ex-sets">5 serii × 5 rep · Pauză 3–4 min · RPE 9</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        80–85% din 1RM. Dacă maximul tău e 100kg, lucrezi cu 80–85kg. Crești 2.5kg când faci 5×5 curat 2 săptămâni la rând. Încălzire obligatorie: bara×10, 40%×5, 60%×3, 80%×1. Spotter obligatoriu la ultimele 2 serii.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Omoplații lipiți și în jos, arcuire ușoară lombară, picioarele înfipte. Cobori 2 sec, pauză 1 sec pe piept, explozie sus.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        5×5 = protocol de forță pură. Forță mai mare = mușchi mai mari pe termen lung. Sistemul nervos învață să recruteze mai multe fibre musculare simultan. Ăsta e exercițiul care separă băieții de bărbați.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">2. Împins înclinat gantere 30° — Tempo 3-1-1</div>
+      <div class="ex-sets">4 serii × 8–10 rep · Pauză 90 sec · RPE 8</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        70–75% din ce împingi cu bara. Ex: 80kg bară = 30–32.5kg fiecare ganteră. Dacă faci 12, data viitoare +2.5kg.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        3 sec coborâre controlată până simți întinderea maximă în piept, 1 sec pauză jos fără să relaxezi, 1 sec urcare explozivă. Nu atingi ganterele sus, lași 3cm între ele.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Pieptul superior = forma de armură când porți tricou. Gantere = amplitudine mai mare ca bara + fiecare parte lucrează independent. Tempo lent = timp sub tensiune = hipertrofie maximă.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">3. Împins militar bara — din picioare <span class="ex-badge badge-compound">COMPOUND</span></div>
+      <div class="ex-sets">4 serii × 6–8 rep · Pauză 2–3 min · RPE 8</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        60–65% din împinsul orizontal. Ex: 80kg împins = 50–55kg militar. Începe cu mai puțin dacă n-ai făcut din picioare.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Picioarele la lățimea umerilor, încordat ca la plank, fesieri strânși. Bara pleacă de la claviculă, trece pe lângă față, ajunge deasupra capului în linie cu coloana. Nu te arcuiești pe spate.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Cel mai bun constructor de umeri + stabilitate totală. Din picioare = tot corpul lucrează să stabilizeze. Umeri de ghiulea.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">4. Fluturări cabluri — din sus în jos <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">3 serii × 12–15 rep · Pauză 60 sec · Strângi 2 sec · RPE 9</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        15–20kg fiecare parte. Dacă nu simți pieptul, scade greutatea.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Cablurile sus, pas în față, corpul puțin aplecat. Îmbrățișezi un butoi mare. Coatele puțin îndoite și fixe. Strângi pieptul 2 secunde la mijloc.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Pompare și izolare pură. Sânge + nutrienți în mușchi = recuperare rapidă + creștere. Definește linia mediană a pieptului.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">5. Extensii triceps sfoară — deasupra capului <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">4 serii × 12–15 rep · Pauză 60 sec · RPE 9</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        25–35kg. Tricepsul e puternic.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Spatele la cablu, aplecat puțin în față. Coatele fixe lângă cap, doar antebrațele se mișcă. Întinzi complet, desfaci sfoara jos. Controlezi revenirea 3 secunde.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Capul lung al tricepsului = 2/3 din masa brațului. Ăsta e singurul exercițiu care îl lovește în poziție întinsă. Fără ăsta, brațele nu cresc.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">6. Ridicări laterale — Dropset Triplu <span class="ex-badge badge-super">DROPSET</span></div>
+      <div class="ex-sets">3 serii × 15+12+10 rep · Fără pauză între · Pauză 90 sec după tot · RPE 10</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Ex: 12kg×15, imediat 10kg×12, imediat 8kg×10. Fără pauză. Umerii trebuie să ia foc.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Brațele puțin îndoite 10–15 grade, fixe. Ridici cu coatele, nu cu mâinile. Până la nivelul umerilor, nu mai sus. Controlezi coborârea.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Umeri largi = arăți de 2× mai mare în tricou. Dropset = stres metabolic brutal = creștere. Dacă nu ard umerii de mori, n-ai făcut bine.
+      </div>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- PULL GREU -->
+<div class="acc reveal" id="acc-a2">
+  <div class="acc-head" onclick="toggleAcc('acc-a2')">
+    <div class="acc-head-left">
+      <div class="acc-day-num">Z2</div>
+      <div>
+        <div class="acc-day-title">PULL Greu — Spate / Biceps</div>
+        <div class="acc-day-sub">6 exerciții · 75 min · RPE 8–9</div>
+      </div>
+    </div>
+    <div class="acc-arrow">▼</div>
+  </div>
+  <div class="acc-body"><div class="acc-content">
+
+    <div class="ex">
+      <div class="ex-name">1. Îndreptări — Deadlift clasic 5×5 <span class="ex-badge badge-compound">COMPOUND</span></div>
+      <div class="ex-sets">5 serii × 5 rep · Pauză 3–4 min · RPE 9</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        85–90% din 1RM. Dacă maximul e 140kg, lucrezi cu 120–125kg. Crești 2.5kg când faci 5×5 curat 2 săptămâni.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Bara peste mijlocul labei, aproape de tibie. Prinde mixtă sau dublu peste. Piept în față, spatele drept, tragi omoplații în spate. Împingi podeaua cu picioarele + tragi cu spatele simultan. Bara alunecă pe tibii și coapse. Sus: piept în față, umeri în spate, strângi fesele. Coboară controlat.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        REGELE ABSOLUT. Lucrezi tot lanțul posterior: spate, fese, femurali, trapez, antebrațe. Eliberează cea mai mare cantitate de testosteron și hormon de creștere. Dacă faci doar 1 exercițiu în viață, ăsta e. Nu există scuză să sari peste deadlift.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">2. Tracțiuni cu greutate — priză largă <span class="ex-badge badge-compound">COMPOUND</span></div>
+      <div class="ex-sets">4 serii × 6–8 rep · Pauză 2–3 min · RPE 8</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Greutatea corpului + disc la centură. Începe cu +5kg. Când faci 10, pui +7.5kg. Obiectiv: +20kg×8.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Prinde bara mai lat ca umerii, palmele spre înainte. Pleci din dead hang (brațe întinse complet). Tragi coatele în jos și în spate, pieptul la bară. Nu te balansa. Coboară lent 3 secunde.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Lățimea spatelui supremă. Nimic nu bate tracțiunile grele pt V-taper. Lucrează latissimus, rotunzi, trapez inferior, biceps, antebrațe. Plus: ești mai puternic ca 95% din populație dacă faci 10 cu +10kg.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">3. Ramat cu bara T / Bara aplecat <span class="ex-badge badge-compound">COMPOUND</span></div>
+      <div class="ex-sets">4 serii × 8–10 rep · Pauză 90 sec · RPE 8</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        70–80% din deadlift. Ex: 120kg deadlift = 85–95kg ramat. Greu.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Piept în față, spate drept 45 grade, genunchii puțin îndoiți. Tragi la buric/ombilic, strângi omoplații 1 secundă tare. Coatele pe lângă corp. Coboară controlat 2 secunde.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Grosimea spatelui. Spate gros din lateral = arăți puternic, dens, nu doar lat din față. Diferența între începător și avansat e grosimea spatelui.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">4. Ramat cablu priză neutră V — Tempo 2-1-2 <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">3 serii × 10–12 rep · Pauză 75 sec · RPE 9</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        70–80kg. Mai puțin ca bara pt că e izolare și tempo lent.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Stai drept, tragi la stomac inferior. 2 sec tragi, 1 sec ții strâns omoplații, 2 sec eliberezi. Timp sub tensiune.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Densitate în mijlocul spatelui + romboizi + trapez mijlociu. Tempo lent = stres metabolic = hipertrofie. Detalii care fac spatele 3D.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">5. Flexii biceps bara Z — greu <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">4 serii × 8–10 rep · Pauză 75 sec · RPE 9</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        35–45kg total. Bicepsul e mic, nu te da mare cu 60kg și formă de rahat.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Coatele lipite de corp și FIXE acolo. Nu le miști în față deloc. Ridici 1 secundă, ții 1 secundă sus strâns, cobori 3 secunde lent. Nu te balansa cu spatele.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Bara Z salvează încheieturile vs bara dreaptă. Coborârea lentă 3 sec = faza excentrică = aia care rupe fibrele = aia care crește mușchiul.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">6. Flexii ciocan gantere — alternat <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">3 serii × 12–15 pe braț · Pauză 60 sec · RPE 9</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        12–15kg fiecare. Mai ușor ca bara Z pt că e un braț odată.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Palma spre corp tot timpul, ca și cum ai ține ciocane. Ridici alternat: stânga sus, dreapta jos. Strângi 1 secundă sus. Controlezi coborârea.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Brahialul = mușchiul de sub biceps care îl împinge în afară când faci dublu biceps. Plus brahioradialul din antebraț. Rezultat: braț gros din lateral + antebrațe vânate.
+      </div>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- LEGS AVANSAT -->
+<div class="acc reveal" id="acc-a3">
+  <div class="acc-head" onclick="toggleAcc('acc-a3')">
+    <div class="acc-head-left">
+      <div class="acc-day-num">Z3</div>
+      <div>
+        <div class="acc-day-title">LEGS — Ziua care separă băieții de bărbați</div>
+        <div class="acc-day-sub">7 exerciții · 75 min · RPE 9</div>
+      </div>
+    </div>
+    <div class="acc-arrow">▼</div>
+  </div>
+  <div class="acc-body"><div class="acc-content">
+
+    <div class="ex">
+      <div class="ex-name">1. Genuflexiuni cu bara — 5×5 FORȚĂ <span class="ex-badge badge-compound">COMPOUND</span></div>
+      <div class="ex-sets">5 serii × 5 rep · Pauză 3–4 min · RPE 9</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        80–85% din 1RM. Dacă maximul e 140kg, lucrezi cu 115–120kg. Crești 2.5kg când faci 5×5 curat 2 săptămâni. Obiectiv: 2× greutatea corpului×5. Încălzire obligatorie: bara×10, 50%×5, 70%×3, 85%×1.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Bara pe trapez, nu pe gât. Coboară sub paralel dacă mobilitatea permite. Adânc = fese + femurali. Parțial = doar cvadriceps. Coboară 2–3 sec, pauză 1 sec jos, explozie sus. Respiră!
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        TESTOSTERON +23% pt 48h post-antrenament. Hormon de creștere +18%. Picioare mari = arzi calorii și în somn pt că mușchiul consumă energie. Sari peste ziua de picioare = testosteron de bunic la 25 ani. Nu există scuză.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">2. Presă picioare — picioare jos și înguste</div>
+      <div class="ex-sets">4 serii × 10–12 rep · Pauză 2 min · RPE 8</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Greu. 200–300kg+ după genuflexiuni. Poți pune mult pt că e sigur. Crești 10kg când faci 12 ușor.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Picioarele jos pe placă și înguste = focus cvadriceps. Coboară până genunchii la 90 grade sau puțin mai jos. Împingi prin călcâie și mijlocul tălpii. NU bloca genunchii sus niciodată.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Volum pt cvadriceps fără să obosești lombarul după genuflexiuni. Cvadriceps mare = picioare care umplu pantalonii.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">3. Îndreptări românești cu bara <span class="ex-badge badge-compound">COMPOUND</span></div>
+      <div class="ex-sets">4 serii × 8–10 rep · Pauză 2 min · RPE 8</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        60–70% din deadlift clasic. Ex: 120kg deadlift = 70–85kg românești. Mai ușor pt că e izolare femurali/fese.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Picioarele la lățimea umerilor, genunchii puțin îndoiți 15 grade și FIXE tot timpul. Împingi fesele în spate maxim, spatele drept, bara alunecă pe coapse. Coboară până simți întinderea puternică în femurali. Ridici strângând fesele și femuralii, nu lombarul.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Femurali + fese + spate inferior = lanțul posterior. Putere, postură, previne durerile de spate de la birou. Fese tari = femeile observă 100%. Femurali mari din lateral = picioare complete, nu doar cvadriceps.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">4. Fandări bulgărești — picior spate pe bancă</div>
+      <div class="ex-sets">3 serii × 12 pe picior · Pauză 90 sec · RPE 9</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Începe cu greutatea corpului. Când faci 15 ușor, ia gantere 5kg fiecare. Apoi 7.5kg, 10kg, etc. Greu de echilibrat.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Piciorul din spate pe bancă la nivelul genunchiului. Piciorul din față la 2 pași de bancă. Coboară drept în jos, genunchiul din față nu trece de vârf, genunchiul din spate aproape atinge solul. Împingi prin călcâiul din față.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Izolează fiecare fesă + cvadriceps. Corectează dezechilibre între picioare. Cel mai bun exercițiu după hip thrust pt fese.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">5. Extensii cvadriceps — un picior <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">3 serii × 15 pe picior · Pauză 60 sec · Ții 2 sec sus · RPE 9</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        20–30kg. Un picior odată = concentrare maximă.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Stai drept, prinde mânerele. Extinzi piciorul complet, ții 2 secunde strâns tare, cobori lent 3 secunde. Un picior odată.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Izolare pură cvadriceps. Pompare finală. Vasele de sânge dilatate = nutrienți în mușchi = recuperare. Definește "picătură" de deasupra genunchiului.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">6. Flexii femurali culcat <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">3 serii × 12–15 rep · Pauză 60 sec · RPE 9</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        40–60kg. Femuralii sunt puternici.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Ridici exploziv 1 secundă, ții 1 secundă strâns, cobori lent 3 secunde. Amplitudine completă.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Femurali mari din lateral și spate = picioare complete. Majoritatea au cvadriceps mare și femurali mici = dezechilibru + accidentări. Fă femuralii.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">7. Gambe la presă — vârfuri pe margine <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">5 serii × 15–20 rep · Pauză 45 sec · Ții 2 sec sus · RPE 10</div>
+      <div class="ex-row row-weight">
+        <div class="ex-row-label">⚖️ Greutate</div>
+        Greu. 100–150kg+. Gambele sunt rezistente, trebuie șoc.
+      </div>
+      <div class="ex-row row-exec">
+        <div class="ex-row-label">💡 Execuție</div>
+        Doar vârfurile pe marginea plăcii, călcâiele în aer. Coboară cât de jos poți, simți întinderea în gambă. Urcă cât de sus poți pe vârfuri, ții 2 secunde strâns tare. Lent, controlat. Nu sări.
+      </div>
+      <div class="ex-row row-why">
+        <div class="ex-row-label">🔥 De ce</div>
+        Gambele se văd tot anul la pantaloni scurți, la plajă. Gambe mici cu corp mare = arăți disproporționat și neantrenat. Gambele cresc greu, trebuie volum + frecvență + ținere în contracție + durere. 5 serii minim, de 2–3 ori pe săptămână.
+      </div>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- PUSH VOLUM -->
+<div class="acc reveal" id="acc-a4">
+  <div class="acc-head" onclick="toggleAcc('acc-a4')">
+    <div class="acc-head-left">
+      <div class="acc-day-num">Z4</div>
+      <div>
+        <div class="acc-day-title">PUSH Volum — Piept / Umeri / Triceps</div>
+        <div class="acc-day-sub">6 exerciții · 65 min · RPE 8</div>
+      </div>
+    </div>
+    <div class="acc-arrow">▼</div>
+  </div>
+  <div class="acc-body"><div class="acc-content">
+
+    <div class="ex">
+      <div class="ex-name">1. Împins înclinat gantere 30° — cu rotație</div>
+      <div class="ex-sets">4 serii × 10–12 rep · Pauză 90 sec · RPE 8</div>
+      <div class="ex-row row-weight"><div class="ex-row-label">⚖️ Greutate</div>70–75% din ce împingi cu bara. Ex: 80kg bară = 28–30kg fiecare ganteră.</div>
+      <div class="ex-row row-exec"><div class="ex-row-label">💡 Execuție</div>Rotești ganterele ușor când urci = contracție mai bună sus. Cobori până simți întinderea în piept, nu până la umăr. Nu atingi ganterele sus, lași 3cm între ele.</div>
+      <div class="ex-row row-why"><div class="ex-row-label">🔥 De ce</div>Pieptul superior dă forma de armură când porți tricou. Gantere = amplitudine mai mare ca bara + corectează dezechilibre.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">2. Fluturări cabluri — din jos în sus <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">4 serii × 12–15 rep · Pauză 60 sec · RPE 9</div>
+      <div class="ex-row row-weight"><div class="ex-row-label">⚖️ Greutate</div>10–15kg fiecare parte. Nu contează kg, contează să simți pieptul.</div>
+      <div class="ex-row row-exec"><div class="ex-row-label">💡 Execuție</div>Cablurile jos de tot, pas în față. Îmbrățișezi un copac mare de jos în sus. Coatele puțin îndoite și fixe. Strângi pieptul 2 secunde sus la nivelul ochilor.</div>
+      <div class="ex-row row-why"><div class="ex-row-label">🔥 De ce</div>Partea de sus-interior a pieptului = linia mediană definită + claviculă vizibilă. Detaliu de avansat.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">3. Împins militar gantere — din șezut</div>
+      <div class="ex-sets">4 serii × 10–12 rep · Pauză 90 sec · RPE 8</div>
+      <div class="ex-row row-weight"><div class="ex-row-label">⚖️ Greutate</div>22.5–27.5kg fiecare. Umerii obosesc repede.</div>
+      <div class="ex-row row-exec"><div class="ex-row-label">💡 Execuție</div>Spate drept lipit de bancă. Cobori până coatele la 90 grade, nu mai jos. Împingi drept în sus, nu atingi ganterele. Ții tensiunea.</div>
+      <div class="ex-row row-why"><div class="ex-row-label">🔥 De ce</div>Masă pe umeri. Din șezut = izolează umerii, fără să folosești picioarele să trișezi.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">4. Ridicări laterale la cablu — un braț <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">4 serii × 15–20 pe braț · Pauză 45 sec · RPE 9</div>
+      <div class="ex-row row-weight"><div class="ex-row-label">⚖️ Greutate</div>5–7.5kg. Cablul e mai greu ca gantera pt că e tensiune constantă.</div>
+      <div class="ex-row row-exec"><div class="ex-row-label">💡 Execuție</div>Cablul în spatele tău, la nivelul șoldului. Prinde mânerul, brațul puțin îndoit 10 grade și fix. Ridici lateral până la nivelul umărului. Controlezi coborârea 3 secunde. Un braț odată = concentrare maximă.</div>
+      <div class="ex-row row-why"><div class="ex-row-label">🔥 De ce</div>Cablul e superior ganterei pt umeri laterali pt că ai tensiune de la început până la sfârșit. Cu gantera, la început n-ai tensiune deloc.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">5. Flotări la paralele — focus triceps <span class="ex-badge badge-compound">COMPOUND</span></div>
+      <div class="ex-sets">4 serii × 10–12 rep · Pauză 90 sec · RPE 8</div>
+      <div class="ex-row row-weight"><div class="ex-row-label">⚖️ Greutate</div>Greutatea corpului. Când faci 15 ușor, pune disc la centură +5kg, +10kg, etc.</div>
+      <div class="ex-row row-exec"><div class="ex-row-label">💡 Execuție</div>Corpul drept vertical, nu te apleci în față. Coatele pe lângă corp, nu în lateral. Coboară până umerii sub coate, împingi până aproape de blocare. Dacă te apleci în față lucrează pieptul, nu tricepsul.</div>
+      <div class="ex-row row-why"><div class="ex-row-label">🔥 De ce</div>Cel mai bun constructor de triceps după împinsul cu priză îngustă. Lucrează toate cele 3 capete. Plus: piept inferior + umeri față.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">6. Extensii triceps sfoară deasupra capului <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">3 serii × 15–20 rep · Pauză 45 sec · RPE 10</div>
+      <div class="ex-row row-weight"><div class="ex-row-label">⚖️ Greutate</div>20–30kg. Ultimele 5 repetări trebuie să ardă de mori.</div>
+      <div class="ex-row row-exec"><div class="ex-row-label">💡 Execuție</div>Spatele la cablu, aplecat puțin în față. Coatele fixe lângă cap, nu le miști. Întinzi complet, desfaci sfoara jos și strângi tricepsul 1 secundă. Controlezi revenirea.</div>
+      <div class="ex-row row-why"><div class="ex-row-label">🔥 De ce</div>Capul lung al tricepsului = 2/3 din masa brațului. Fără ăsta, brațele nu cresc.</div>
+    </div>
+
+  </div></div>
+</div>
+
+<!-- PULL VOLUM -->
+<div class="acc reveal" id="acc-a5">
+  <div class="acc-head" onclick="toggleAcc('acc-a5')">
+    <div class="acc-head-left">
+      <div class="acc-day-num">Z5</div>
+      <div>
+        <div class="acc-day-title">PULL Volum + Brațe + Abdomen</div>
+        <div class="acc-day-sub">6 exerciții · 70 min · RPE 8–9</div>
+      </div>
+    </div>
+    <div class="acc-arrow">▼</div>
+  </div>
+  <div class="acc-body"><div class="acc-content">
+
+    <div class="ex">
+      <div class="ex-name">1. Ramat cu gantera — pe bancă</div>
+      <div class="ex-sets">4 serii × 10–12 pe braț · Pauză 75 sec · RPE 8</div>
+      <div class="ex-row row-weight"><div class="ex-row-label">⚖️ Greutate</div>Greu. 30–40kg+. Poți pune mult pt că ești sprijinit pe bancă.</div>
+      <div class="ex-row row-exec"><div class="ex-row-label">💡 Execuție</div>Genunchi + mână pe bancă, spatele drept paralel cu solul. Tragi gantera la șold, nu la piept. Cotul merge spre tavan, strângi omoplatul 1 secundă. Coboară controlat 2 secunde.</div>
+      <div class="ex-row row-why"><div class="ex-row-label">🔥 De ce</div>Izolezi fiecare parte a spatelui. Poți pune greutate mare fără să obosești lombarul. Grosime + lățime.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">2. Tracțiuni la helcometru — priză inversă îngustă</div>
+      <div class="ex-sets">4 serii × 10–12 rep · Pauză 75 sec · RPE 8</div>
+      <div class="ex-row row-weight"><div class="ex-row-label">⚖️ Greutate</div>50–70kg. Mai ușor ca priza largă.</div>
+      <div class="ex-row row-exec"><div class="ex-row-label">💡 Execuție</div>Palmele spre tine, la lățimea umerilor. Tragi la piept superior, piept în față. Coboară lent 3 secunde.</div>
+      <div class="ex-row row-why"><div class="ex-row-label">🔥 De ce</div>Bicepsul lucrează masiv + spatele inferior + lățime. 2 în 1. Plus: e mai ușor ca priza largă, faci mai multe repetări.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">3. Face pulls la cablu — sfoară <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">4 serii × 15–20 rep · Pauză 45 sec · RPE 9</div>
+      <div class="ex-row row-weight"><div class="ex-row-label">⚖️ Greutate</div>20–30kg. Ușor. Contează contracția, nu kg.</div>
+      <div class="ex-row row-exec"><div class="ex-row-label">💡 Execuție</div>Cablul la nivelul ochilor. Tragi la față/frunte, coatele sus și în lateral, deasupra umerilor. Strângi omoplații 2 secunde tare. Imaginează-ți că vrei să rupi sfoara.</div>
+      <div class="ex-row row-why"><div class="ex-row-label">🔥 De ce</div>Spatele umerilor + trapez mijlociu + rotație externă. Previne accidentări la umăr, corectează postura. OBLIGATORIU 2× pe săptămână. Fără ăsta, umerii se duc în 5 ani.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">4. Superset Brațe: Flexii bara Z + Extensii sfoară <span class="ex-badge badge-super">SUPERSET</span></div>
+      <div class="ex-sets">3 runde × 12 + 15 rep · Pauză 90 sec după ambele · RPE 9</div>
+      <div class="ex-row row-weight"><div class="ex-row-label">⚖️ Greutate</div>Biceps: 30–40kg | Triceps: 20–25kg. Fără pauză între ele.</div>
+      <div class="ex-row row-exec"><div class="ex-row-label">💡 Execuție</div>Faci biceps 12 rep, imediat triceps 15 rep, apoi pauză. Pompare de nu-ți mai încap brațele în tricou. Ultimele 3 rep ard.</div>
+      <div class="ex-row row-why"><div class="ex-row-label">🔥 De ce</div>Brațe în 10 minute. Superseturile = timp sub tensiune mare + pompare + ardere + stres metabolic. Eficient când vrei brațe mari repede.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">5. Flexii concentrate — vârf biceps <span class="ex-badge badge-iso">IZOLARE</span></div>
+      <div class="ex-sets">3 serii × 12–15 pe braț · Pauză 45 sec · RPE 10</div>
+      <div class="ex-row row-weight"><div class="ex-row-label">⚖️ Greutate</div>8–12kg. Ușor. Contează contracția de 3 secunde.</div>
+      <div class="ex-row row-exec"><div class="ex-row-label">💡 Execuție</div>Stai pe bancă, cotul sprijinit de interior coapsă. Ridici, strângi 3 secunde tare sus supinând palma (rotești), cobori lent 3 secunde. Simte bicepsul.</div>
+      <div class="ex-row row-why"><div class="ex-row-label">🔥 De ce</div>Vârful bicepsului = când faci dublu biceps să ai munte acolo. Detaliu de avansat. Arnold făcea ăsta zilnic.</div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-name">6. Circuit Abdomen: Plank + Ridicări atârnat + Twist + Climbers <span class="ex-badge badge-super">CIRCUIT</span></div>
+      <div class="ex-sets">3 runde × 45 sec + 20 rep + 30 rep + 30 rep · Pauză 60 sec după circuit · RPE 9</div>
+      <div class="ex-row row-weight"><div class="ex-row-label">⚖️ Greutate</div>Corpul tău. La Russian twist poți ține disc 5kg.</div>
+      <div class="ex-row row-exec"><div class="ex-row-label">💡 Execuție</div>Plank: corp drept, strângi tot. Ridicări: atârnat de bară, ridici picioarele drepte la 90 grade. Twist: stai pe fund, picioarele puțin ridicate, rotești trunchiul stânga-dreapta cu greutate. Climbers: poziție flotare, aduci genunchii la piept rapid alternat.</div>
+      <div class="ex-row row-why"><div class="ex-row-label">🔥 De ce</div>Abdomen din toate unghiurile. Superior, inferior, oblici, cardio. Plank = stabilitate, Ridicări = inferior, Twist = oblici, Climbers = arde grăsimea. Circuitul le face să iasă.</div>
+    </div>
+
+  </div></div>
+</div>
+
+<div class="info-card info-mint reveal">
+  <div class="info-title c-mint">💡 Diferența Începător vs Avansat</div>
+  <div class="info-body">
+    <strong>Începător:</strong> 4 zile, 3–4 serii, focus pe formă, progresie liniară +2.5kg pe săptămână, 8–12 repetări. Înveți mișcările.<br><br>
+    <strong>Avansat:</strong> 5 zile, 4–5 serii, tehnici avansate (tempo, dropset, superset, RPE), 5–20 repetări funcție de exercițiu, periodizare. Știi deja forma, acum vânezi stresul metabolic.<br><br>
+    <strong>Când treci la avansat:</strong> Împins 80kg×5, Genuflexiuni 100kg×5, Îndreptări 120kg×5, Tracțiuni 8+ fără ajutor. Dacă nu, mai stai 2–3 luni la începători.
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TESTOSTERON
+═══════════════════════════════════════ -->
+<div id="testo" class="section">
+<div class="container">
+
+<div class="sec-hdr reveal">
+  <div class="sec-tag"><div class="sec-tag-line"></div>Testosteron Natural</div>
+  <div class="sec-title">De ce contează<br><span class="g">totul.</span></div>
+</div>
+
+<div class="info-card info-coral reveal">
+  <div class="info-title c-coral">⚠️ Clarificare Critică Înainte de Tot</div>
+  <div class="info-body">
+    <strong>NU există suplimente legale care "măresc" testosteronul peste nivelul tău natural maxim.</strong><br><br>
+    Ce e "mărit" artificial = steroizi/dopaj = ilegal, periculos, îți închide producția naturală pe viață, ginecomastie, acnee, chelie, sterilitate.<br><br>
+    Suplimentele de mai jos <strong>OPTIMIZEAZĂ și SUSȚIN</strong> producția naturală a corpului tău. Te aduc de la 60% din potențial (400 ng/dL) la 95–100% (700–800 ng/dL). Diferența: 60% = obosit, fără chef, fără rezultate, grăsime pe burtă, libido zero. 100% = energie de la 6AM la 10PM, drive să rupi sala, recuperare rapidă, creștere, încredere, libido de 20 ani.
+  </div>
+</div>
+
+<div class="gap"></div>
+<div class="sec-tag reveal"><div class="sec-tag-line"></div>De ce testosteronul e totul</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">1. Sinteză Proteică — Motorul Creșterii</div>
+  <div class="testo-body">Testosteronul susține sinteza proteică — procesul prin care corpul repară și construiește masă musculară după antrenament. Acționează ca un semnal anabolic și contribuie la activarea mTOR, principalul mecanism celular responsabil de inițierea creșterii musculare. Un nivel optim de testosteron ajută corpul să răspundă mai eficient la antrenament. Un nivel scăzut poate încetini recuperarea, progresul și afecta energia generală.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">2. Masă Musculară + Forță + Recuperare</div>
+  <div class="testo-body">Direct proporțional. Testosteron mai mare = mai mult mușchi, mai multă forță, recuperare 48h în loc de 72h. Poți să te antrenezi mai des, mai greu, cu rezultate mai bune. Testosteron scăzut = te antrenezi, mănânci, dormi, și tot nu crești. Frustrant și demotivant.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">3. Ardere Grăsime + Metabolism</div>
+  <div class="testo-body">Testosteronul crește metabolismul bazal cu 7–15%, reduce depozitarea grăsimii abdominale, crește masa musculară care arde calorii 24/7 chiar și în somn. Cercul vicios: burta mare = aromataza = mai mult estrogen = mai puțin testosteron = mai multă burtă.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">4. Energie + Motivație + Chef de Sală</div>
+  <div class="testo-body">Testosteron scăzut = letargie dimineața, amâni sala, nu ai chef, procrastinezi, bei cafea și tot ești obosit. Testosteron optim = energie de la 6AM la 10PM fără cafea, drive să rupi sala, agresivitate pozitivă, vrei să câștigi, vrei să concurezi. Diferența între a trage de tine să mergi la sală și a număra orele până la sală.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">5. Foggy Mind + Focus + Memorie</div>
+  <div class="testo-body">Testosteron scăzut = ceață mentală, uiți unde ai pus cheile, concentrare zero, memorie slabă, decizii lente. Testosteron optim = claritate mentală, memorie bună, focus laser, iei decizii rapid și corect, înveți mai repede. Creierul merge pe testosteron.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">6. Încredere + Libido + Prezență + Carismă</div>
+  <div class="testo-body">Bărbat cu testosteron optim = carismă, vorbești răspicat, mergi drept cu pieptul în față, lume te respectă instinctiv, femeile simt energetic, bărbații simt, tu simți. Nu e placebo, e biologie. Testosteronul îți schimbă literalmente comportamentul și cum te percep alții.</div>
+</div>
+
+<div class="gap-lg"></div>
+
+<div class="info-card info-coral reveal">
+  <div class="info-title c-coral">❌ Ce SCADE Testosteronul — Evită Astea</div>
+  <div class="info-body">
+    <strong>Somn sub 7 ore:</strong> −15% testosteron pe noapte pierdută. 5 ore = −40%. Dormi puțin = anulezi sala + suplimentele + dieta.<br><br>
+    <strong>Stres cronic + Cortizol:</strong> Cortizolul ucide testosteronul. Sunt invers proporționali. Stres la muncă + acasă + financiar = testosteron de bunic la 25 ani.<br><br>
+    <strong>Grăsime abdominală:</strong> Conține aromataza = enzima care convertește testosteronul în estrogen. Burta mare = testosteron mic + estrogen mare.<br><br>
+    <strong>Alcool frecvent:</strong> −20% testosteron 24h după băutură. Ficatul ocupat cu alcoolul nu produce testosteron. 2–3 beri pe săptămână ok, în fiecare zi = sabotaj direct.<br><br>
+    <strong>Zahăr procesat în exces:</strong> Insulina mare constant = testosteron mic. Dulciuri zilnic = castrare chimică lentă.<br><br>
+    <strong>Sedentarism:</strong> Corpul produce cât are nevoie. Stai pe scaun 10h/zi = nu produce. Mișcă-te sau acceptă consecințele.<br><br>
+    <strong>Deficit Zinc/Magneziu/Vit D/Bor:</strong> Materii prime lipsă = fabrica oprită. 80% din populație are deficit la cel puțin una.
+  </div>
+</div>
+
+<div class="gap-lg"></div>
+<div class="sec-tag reveal"><div class="sec-tag-line"></div>Ce crește testosteronul natural</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">1. Antrenament cu Greutăți — NR. 1 ABSOLUT</div>
+  <div class="testo-body"><strong>Cum:</strong> 3–5× pe săptămână, exerciții compuse grele: genuflexiuni, îndreptări, împins, tracțiuni, ramat. Serii de 5–8 repetări, greutăți 80–85% din maxim, pauză 2–3 minute.<br><br><strong>De ce:</strong> Cel mai puternic stimulator natural. Ridicări grele = corpul produce testosteron să se adapteze + să repare mușchii + să devină mai puternic data viitoare. Studii: +15–30% testosteron pt 48h post-antrenament. Fără sală = testosteron de bunic la 25 ani. Serios.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">2. Somn 7–9 Ore — NR. 2 ABSOLUT</div>
+  <div class="testo-body"><strong>Cum:</strong> Cameră întunecată complet (blackout), rece 18–20°C, fără ecrane 1h înainte (lumină albastră = melatonină blocată), același orar zilnic inclusiv weekend, fără cafea după ora 14:00.<br><br><strong>De ce:</strong> 70% din testosteron se produce în somn profund REM între orele 00:00–06:00. 5 ore somn = −15% testosteron. 4 ore = −40%. Dormi puțin = anulezi sala + suplimentele + dieta. Pur și simplu.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">3. Zinc 15–30mg Zilnic Seara</div>
+  <div class="testo-body"><strong>Cum:</strong> Zinc Picolinat sau Gluconat, seara cu mâncare (pe stomacul gol dă greață).<br><br><strong>De ce:</strong> Materie primă directă pentru producția de testosteron în celulele Leydig din testicule. Deficitul de zinc = testosteron prăbușit garantat 100%. Studii: bărbați cu deficit care au suplimentat zinc = +40% testosteron în 6 luni. Blochează aromataza = mai puțin estrogen. 80% din populație are deficit.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">4. Magneziu Glicinat 300–400mg Seara</div>
+  <div class="testo-body"><strong>Cum:</strong> Înainte de culcare, pe stomacul gol sau cu puțină mâncare.<br><br><strong>De ce:</strong> Crește testosteronul liber (cel activ, nu cel legat de SHBG) cu 10–15%. Reduce cortizolul. Îmbunătățește calitatea somnului = mai mult testosteron produs noaptea. Relaxare musculară, recuperare mai bună. Glicinatul e forma cea mai bine absorbită, fără efect laxativ ca oxidul. 75% din populație are deficit.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">5. Vitamina D3 2000–5000 UI + K2 100–200mcg Dimineața</div>
+  <div class="testo-body"><strong>Cum:</strong> Dimineața cu grăsimi (ouă, ulei, avocado). Zilnic. Vara dacă stai 20 min la soare poți reduce la 2000 UI.<br><br><strong>De ce:</strong> D3 e de fapt hormon steroid, nu vitamină. Receptorii de vitamina D din testicule reglează direct producția de testosteron. Studii: bărbați cu D3 optim 50–80 ng/mL au +25% testosteron vs cei cu deficit. K2 direcționează calciul în oase, nu în artere. Sinergie perfectă, ia-le împreună mereu.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">6. Boron 6–10mg — Ciclu 2 Săpt On, 1 Off</div>
+  <div class="testo-body"><strong>Cum:</strong> Dimineața. NU lua continuu, fă ciclu obligatoriu pt că corpul se adaptează.<br><br><strong>De ce:</strong> Crește testosteronul liber cu 28% în 7 zile (studiu). Reduce SHBG (proteina care leagă testosteronul și îl face inactiv) și reduce estrogenul. Crește și magneziul celular. Ieftin, eficient, subestimat.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">7. Ashwagandha KSM-66 300–600mg Seara</div>
+  <div class="testo-body"><strong>Cum:</strong> Ciclu: 8 săptămâni on, 2 off. Seara pt somn.<br><br><strong>De ce:</strong> Adaptogenul nr. 1 pentru stres. Reduce cortizolul cu 25–30%. Cortizol mic = testosteron mare automat. Studii: +15% testosteron, +18% forță, −3% grăsime în 8 săptămâni. KSM-66 e extractul cel mai studiat și standardizat.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">8. Tongkat Ali 200–400mg Dimineața</div>
+  <div class="testo-body"><strong>Cum:</strong> Extract 100:1 sau 200:1. Ciclu: 5 zile on, 2 off sau 3 săptămâni on, 1 off.<br><br><strong>De ce:</strong> Reduce SHBG = mai mult testosteron liber disponibil. Reduce cortizolul. Studii: +37% testosteron la bărbați cu nivel scăzut, +15% la cei normali. Crește libidoul și energia. Folosit de 1000+ ani în Asia de SE pt vitalitate masculină. NU e steroid, e plantă.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">9. Grăsimi Sănătoase 25–30% din Calorii</div>
+  <div class="testo-body"><strong>Cum:</strong> Ouă întregi cu gălbenuș 4–6 pe zi, ulei măsline extravirgin 2–3 linguri, avocado 1 pe zi, nuci/migdale 30g, pește gras (somon, macrou, sardine) 3× pe săptămână, vită hrănită cu iarbă.<br><br><strong>De ce:</strong> Colesterolul = materia primă din care se fabrică testosteronul în testicule. Diete low-fat sub 20% grăsimi = testosteron prăbușit cu 20–30% garantat. Nu evita grăsimile. Evită grăsimile trans (margarină, prăjeli) și uleiurile vegetale procesate = inflamatorii, cresc estrogenul.</div>
+</div>
+
+<div class="testo-card reveal">
+  <div class="testo-title">10. Soare 15–20 Min + Duș Rece 2–3 Min Zilnic</div>
+  <div class="testo-body"><strong>Cum:</strong> Soare pe piele dimineața 7–10 AM sau după-amiază 17–19, fără protecție solară, piept/spate/brațe expuse. Duș rece dimineața sau după sală, 2–3 min la final pe apă rece maxim.<br><br><strong>De ce:</strong> Soarele = vitamina D naturală + oxid nitric + dispoziție + testosteron. Frigul = șoc termic = norepinefrină + testosteron crescut, grăsime brună activată, dopamină +300% pt 4h. Gratis și eficient. Fă-o. Nu există scuză.</div>
+</div>
+
+<div class="protocol-box reveal">
+  <div class="protocol-title">🔥 Protocol Complet — Zilnic, 90 Zile</div>
+  <div class="protocol-body">
+    <strong>DIMINEAȚA (cu mic dejun):</strong><br>
+    → D3 5000 UI + K2 200mcg<br>
+    → Zinc 30mg<br>
+    → Boron 9mg (2 săpt on, 1 off)<br>
+    → Tongkat Ali 400mg (5 zile on, 2 off)<br>
+    → 4 ouă întregi + ovăz + unt arahide<br>
+    → Duș rece 2–3 min la final<br>
+    → 15 min soare pe balcon/terasă<br><br>
+
+    <strong>PRE-ANTRENAMENT (30 min înainte):</strong><br>
+    → Cordyceps 2000mg<br>
+    → Rhodiola 300mg<br>
+    → NALT 500mg<br>
+    → ALCAR 1000mg<br>
+    → Cafeină 200mg (sau cafea)<br><br>
+
+    <strong>SEARA (înainte de culcare):</strong><br>
+    → Magneziu Glicinat 400mg<br>
+    → Ashwagandha KSM-66 600mg (8 săpt on, 2 off)<br>
+    → Zinc 30mg (dacă nu ai luat dimineața)<br>
+    → Cameră întunecată, rece 18–20°C, fără telefon 1h<br><br>
+
+    <strong>TOATĂ ZIUA:</strong><br>
+    → 7–9h somn obligatoriu, același orar zilnic<br>
+    → 3–5 antrenamente grele/săptămână cu compuse<br>
+    → 0.8–1g grăsimi/kg corp din surse bune<br>
+    → Stres minim, meditație 10 min dacă poți<br>
+    → Zero alcool sau max 2 beri/săptămână<br>
+    → Zero zahăr procesat, zero sucuri<br><br>
+
+    <strong>REZULTAT ÎN 90 ZILE:</strong><br>
+    Testosteron optimizat de la 400 la 700–800 ng/dL natural, +2–4kg mușchi, −3–5% grăsime, energie de la 6AM la 10PM fără cafea, focus laser, încredere, libido-ul sare în aer, somn de bebeluș, recuperare 48h în loc de 72h. Fără riscuri, fără ilegalități, fără să-ți închizi producția naturală. Permanent dacă menții stilul de viață.
+  </div>
+</div>
+
+<div class="prog-box reveal">
+  <div class="prog-title">🎯 Planul Meu Personal — Ce Fac Eu Zilnic</div>
+  <div class="prog-body">
+    <strong>06:30</strong> — Trezire, 500ml apă, duș rece 3 min<br>
+    <strong>06:45</strong> — D3+K2, Zinc, Boron, Tongkat, 4 ouă + ovăz + banană + unt arahide<br>
+    <strong>07:30</strong> — 20 min soare pe balcon + 10 min meditație<br>
+    <strong>12:00</strong> — Antrenament 60 min (Pre: Cordyceps+Rhodiola+NALT+ALCAR+cafea)<br>
+    <strong>13:30</strong> — Post: Whey 40g + banană + miere<br>
+    <strong>14:30</strong> — Prânz: 200g pui/vită + 100g orez + legume + ulei măsline<br>
+    <strong>19:00</strong> — Cină: 200g somon + cartof dulce + salată + avocado<br>
+    <strong>21:30</strong> — Magneziu + Ashwagandha + ZMA dacă nu am luat Zinc dimineața<br>
+    <strong>22:00</strong> — Pat, cameră întunecată, rece, fără telefon<br><br>
+
+    <strong>Rezultatele mele:</strong> Testosteron 780 ng/dL, 12% grăsime, 85kg la 178cm, dorm 8h, energie toată ziua, chef de sală zilnic, libido mare, focus bun. Fără steroizi, doar protocolul de sus + consecvență 3 ani.
+  </div>
+</div>
+
+<div class="info-card info-mint reveal">
+  <div class="info-title c-mint">💡 Testează-ți Nivelul — Mergi la Medic Privat</div>
+  <div class="info-body">
+    Cere analizele dimineața 8–10 AM pe stomacul gol, fără antrenament în ultimele 48h:<br><br>
+    Testosteron Total · Testosteron Liber (Free) · SHBG · Estradiol (E2) · LH + FSH · Prolactină · Vitamina D 25-OH · Zinc seric · Magneziu seric · Cortizol dimineața<br><br>
+    <strong>Optim:</strong> Total 600–900 ng/dL · Liber 15–25 ng/dL · SHBG 20–40 nmol/L · E2 20–30 pg/mL · Vit D 50–80 ng/mL<br><br>
+    <strong>Problemă:</strong> Total sub 400 · Liber sub 10 · SHBG peste 50 · E2 peste 40 sau sub 15 · Vit D sub 30<br><br>
+    Fă analiza acum, apoi iar după 90 zile de protocol. Vezi diferența cu ochii tăi pe hârtie. Costă 200–300 lei setul complet. Merită.
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- CONTACT BAR -->
+<div id="contact-bar">
+  <a href="https://wa.me/40753452245" class="c-btn c-wa" target="_blank">💬 WhatsApp</a>
+  <a href="https://instagram.com/dododragos" class="c-btn c-ig" target="_blank">📸 Instagram</a>
+</div>
+
+<script>
+/* LOADER */
+(function(){
+  const ldr = document.getElementById('loader');
+  const done = () => ldr.classList.add('out');
+  if(document.readyState==='complete') setTimeout(done,2200);
+  else { window.addEventListener('load',()=>setTimeout(done,2200)); setTimeout(done,3000); }
+})();
+
+/* TABS */
+function switchTab(id, btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ACORDEON */
+function toggleAcc(id){
+  const acc = document.getElementById(id);
+  const isOpen = acc.classList.contains('open');
+  // close all in same section
+  const section = acc.closest('.section');
+  if(section) section.querySelectorAll('.acc').forEach(a=>a.classList.remove('open'));
+  if(!isOpen) acc.classList.add('open');
+}
+
+/* SCROLL REVEAL */
+(function(){
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+  },{threshold:.08,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+})();
+
+/* PREVENT DOUBLE TAP ZOOM */
+let lastTouch = 0;
+document.addEventListener('touchend', e=>{
+  const now = Date.now();
+  if(now - lastTouch <= 300) e.preventDefault();
+  lastTouch = now;
+}, false);
+</script>
+</body>
+</html>

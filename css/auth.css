@@ -1,0 +1,140 @@
+/* ============================================================
+   css/auth.css — Stiluri pagini autentificare
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+.auth-page {
+  min-height:100svh; display:flex;
+  background:var(--ink);
+}
+
+/* Panel stânga — decorativ */
+.auth-left {
+  flex:1; display:none;
+  background:var(--ink2);
+  border-right:1px solid var(--bdr);
+  position:relative; overflow:hidden;
+  align-items:center; justify-content:center;
+  flex-direction:column; gap:32px; padding:60px;
+}
+@media(min-width:1024px){ .auth-left { display:flex; } }
+
+.auth-left-orb {
+  position:absolute; border-radius:50%;
+  filter:blur(80px); pointer-events:none;
+}
+.auth-left-orb.orb1 {
+  width:400px; height:400px;
+  background:rgba(0,255,178,.07);
+  top:-100px; left:-100px;
+}
+.auth-left-orb.orb2 {
+  width:300px; height:300px;
+  background:rgba(123,97,255,.06);
+  bottom:-50px; right:-50px;
+}
+
+.auth-left-logo {
+  font-family:var(--display); font-size:2.5rem; font-weight:700;
+  letter-spacing:-.04em; position:relative; z-index:2;
+}
+.auth-left-logo span { color:var(--mint); }
+
+.auth-left-tagline {
+  font-size:1rem; color:var(--mid); text-align:center;
+  line-height:1.7; max-width:320px; position:relative; z-index:2;
+}
+
+.auth-left-features {
+  display:flex; flex-direction:column; gap:14px;
+  width:100%; max-width:320px; position:relative; z-index:2;
+}
+.auth-feature {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 18px; border-radius:var(--r);
+  background:rgba(255,255,255,.04); border:1px solid var(--bdr);
+  font-size:.88rem; color:var(--mid);
+}
+.auth-feature-icon { font-size:1.2rem; flex-shrink:0; }
+
+/* Panel dreapta — formular */
+.auth-right {
+  width:100%; max-width:480px;
+  display:flex; flex-direction:column;
+  justify-content:center; padding:40px 36px;
+  position:relative;
+}
+@media(max-width:1023px){ .auth-right { max-width:100%; padding:40px 24px; } }
+
+.auth-right-logo {
+  font-family:var(--display); font-size:1.4rem; font-weight:700;
+  letter-spacing:-.03em; margin-bottom:48px;
+  display:block;
+}
+.auth-right-logo span { color:var(--mint); }
+
+@media(min-width:1024px){ .auth-right-logo { display:none; } }
+
+.auth-title {
+  font-family:var(--display); font-size:clamp(1.8rem,5vw,2.4rem);
+  font-weight:700; letter-spacing:-.04em; line-height:1;
+  margin-bottom:8px;
+}
+.auth-subtitle {
+  font-size:.9rem; color:var(--mid); margin-bottom:36px; line-height:1.6;
+}
+.auth-subtitle a { color:var(--mint); text-decoration:none; font-weight:600; }
+.auth-subtitle a:hover { text-decoration:underline; }
+
+.auth-form { display:flex; flex-direction:column; gap:4px; }
+
+.auth-divider {
+  display:flex; align-items:center; gap:16px;
+  margin:20px 0; color:var(--muted); font-size:.8rem;
+}
+.auth-divider::before, .auth-divider::after {
+  content:''; flex:1; height:1px; background:var(--bdr);
+}
+
+.auth-submit {
+  width:100%; padding:15px; border-radius:14px; border:none;
+  font-family:var(--body); font-size:.95rem; font-weight:800;
+  cursor:pointer; color:#000; background:var(--mint);
+  box-shadow:0 0 24px rgba(0,255,178,.3);
+  transition:all .3s; margin-top:8px;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.auth-submit:hover { transform:translateY(-2px); box-shadow:0 0 40px rgba(0,255,178,.5); }
+.auth-submit:active { transform:scale(.98); }
+.auth-submit:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+
+.auth-error {
+  background:rgba(255,78,106,.08); border:1px solid rgba(255,78,106,.3);
+  color:var(--coral); padding:12px 16px; border-radius:var(--r);
+  font-size:.85rem; margin-bottom:16px; display:none;
+}
+.auth-error.show { display:block; }
+
+.auth-success {
+  background:rgba(0,255,178,.08); border:1px solid rgba(0,255,178,.3);
+  color:var(--mint); padding:12px 16px; border-radius:var(--r);
+  font-size:.85rem; margin-bottom:16px; display:none; text-align:center;
+}
+.auth-success.show { display:block; }
+
+.auth-footer-links {
+  display:flex; justify-content:space-between; flex-wrap:wrap;
+  gap:8px; margin-top:20px; font-size:.82rem; color:var(--muted);
+}
+.auth-footer-links a { color:var(--mint); font-weight:600; }
+
+/* Verificare email — pagina de confirmare */
+.auth-verify-box {
+  text-align:center; padding:40px 24px;
+}
+.auth-verify-icon { font-size:4rem; margin-bottom:20px; }
+.auth-verify-title {
+  font-family:var(--display); font-size:1.8rem; font-weight:700;
+  letter-spacing:-.03em; margin-bottom:12px;
+}
+.auth-verify-sub { color:var(--mid); line-height:1.75; margin-bottom:28px; }
