@@ -5,7 +5,7 @@
 
 // ⚠️  ÎNLOCUIEȘTE cu datele tale din Supabase → Settings → API
 const SUPABASE_URL = 'https://utljkuefjdvdpmmzxnoi.supabase.co';
-const SUPABASE_ANON_KEY = 'utljkuefjdvdpmmzxnoi';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0bGprdWVmamR2ZHBtbXp4bm9pIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDkyMDczMCwiZXhwIjoyMDk2NDk2NzMwfQ.ZnhGWQYn5ltIhB3ekf1154JtmpnZQsqDRBfu35aiSZw';
 
 // Importă din CDN
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
