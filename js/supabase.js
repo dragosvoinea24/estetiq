@@ -5,7 +5,7 @@
 
 // ⚠️  ÎNLOCUIEȘTE cu datele tale din Supabase → Settings → API
 const SUPABASE_URL = 'https://utljkuefjdvdpmmzxnoi.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_dJNniaqWOEVQLDLFms6bDQ_zoaRJqvb';
+const SUPABASE_ANON_KEY = 'utljkuefjdvdpmmzxnoi';
 
 // Importă din CDN
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
