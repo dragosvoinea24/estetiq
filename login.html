@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estetiq - Autentificare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .bg-gradient {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 20% 50%, #00d4aa22 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, #00d4aa15 0%, transparent 50%),
+                        #000;
+            z-index: 0;
+        }
+        .auth-container { position: relative; z-index: 1; width: 100%; max-width: 440px; }
+        .auth-card {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 100px rgba(0, 212, 170, 0.1);
+        }
+        .brand { text-align: center; margin-bottom: 32px; }
+        .logo-icon {
+            width: 56px; height: 56px;
+            background: linear-gradient(135deg, #00d4aa, #00a88a);
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(0, 212, 170, 0.4);
+        }
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .tagline { color: #666; font-size: 14px; margin-top: 4px; }
+        .tabs {
+            display: flex;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px;
+            border-radius: 14px;
+            margin-bottom: 28px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            color: #666;
+            font-weight: 600;
+            font-size: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #00d4aa, #00a88a);
+            color: #000;
+            box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+        }
+        .message {
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s;
+        }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } }
+        .message.error {
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+        }
+        .message.success {
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.3);
+            color: #00d4aa;
+        }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } }
+        .input-wrapper { position: relative; margin-bottom: 16px; }
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            stroke: #555;
+            stroke-width: 2;
+            pointer-events: none;
+        }
+        input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: #fff;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #00d4aa;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #00d4aa, #00a88a);
+            color: #000;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3);
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 212, 170, 0.4);
+        }
+        .btn-submit svg { width: 20px; height: 20px; stroke-width: 2.5; }
+        .btn-text {
+            width: 100%;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 20px;
+            cursor: pointer;
+            padding: 8px;
+            transition: color 0.3s;
+        }
+        .btn-text:hover { color: #00d4aa; }
+        .form-desc {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="brand">
+                <div class="logo-icon">E</div>
+                <h1>ESTETIQ</h1>
+                <p class="tagline">Platformă de antrenament</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" id="tabLogin">Autentificare</button>
+                <button class="tab-btn" id="tabRegister">Cont nou</button>
+            </div>
+
+            <div class="message" id="message"></div>
+
+            <!-- LOGIN -->
+            <form id="loginForm" class="auth-form active">
+                <div class="input-wrapper">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                </div>
+                <div class="input-wrapper">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    <input type="password" id="loginPass" placeholder="Parolă" required>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <span>Intră în cont</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                <button type="button" class="btn-text" id="forgotBtn">Ai uitat parola?</button>
+            </form>
+
+            <!-- REGISTER -->
+            <form id="registerForm" class="auth-form">
+                <div class="input-wrapper">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    <input type="email" id="regEmail" placeholder="Email" required>
+                </div>
+                <div class="input-wrapper">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    <input type="password" id="regPass" placeholder="Parolă minim 6 caractere" minlength="6" required>
+                </div>
+                <div class="input-wrapper">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    <input type="password" id="regPassConfirm" placeholder="Confirmă parola" required>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <span>Creează cont</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </form>
+
+            <!-- FORGOT -->
+            <form id="forgotForm" class="auth-form">
+                <p class="form-desc">Introdu email-ul și primești link de resetare.</p>
+                <div class="input-wrapper">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    <input type="email" id="forgotEmail" placeholder="Email" required>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <span>Trimite link</span>
+                </button>
+                <button type="button" class="btn-text" id="backBtn">← Înapoi la login</button>
+            </form>
+        </div>
+    </div>
+
+<script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+    
+    const supabase = createClient(
+        'https://utljkuefjdvdpmmzxnoi.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV0bGprdWVmamR2ZHBtbXp4bm9pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MjA3MzAsImV4cCI6MjA5NjQ5NjczMH0.KT-_c617Ht2mgVkyK6HQlMex6X3RtdlfTNxI7leP2uw'
+    )
+
+    const msg = document.getElementById('message')
+    const showMsg = (text, isError = false) => {
+        msg.style.display = 'block'
+        msg.className = 'message ' + (isError ? 'error' : 'success')
+        msg.innerText = text
+    }
+    const hideMsg = () => msg.style.display = 'none'
+
+    // Tab switching
+    document.getElementById('tabLogin').onclick = () => {
+        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'))
+        document.getElementById('loginForm').classList.add('active')
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+        document.getElementById('tabLogin').classList.add('active')
+        hideMsg()
+    }
+    document.getElementById('tabRegister').onclick = () => {
+        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'))
+        document.getElementById('registerForm').classList.add('active')
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+        document.getElementById('tabRegister').classList.add('active')
+        hideMsg()
+    }
+    document.getElementById('forgotBtn').onclick = () => {
+        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'))
+        document.getElementById('forgotForm').classList.add('active')
+        hideMsg()
+    }
+    document.getElementById('backBtn').onclick = () => {
+        document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'))
+        document.getElementById('loginForm').classList.add('active')
+        hideMsg()
+    }
+
+    // Login
+    document.getElementById('loginForm').onsubmit = async (e) => {
+        e.preventDefault()
+        const email = document.getElementById('loginEmail').value
+        const password = document.getElementById('loginPass').value
+        showMsg('Se conectează...')
+        const { error } = await supabase.auth.signInWithPassword({ email, password })
+        if (error) showMsg(error.message, true)
+        else window.location.href = 'EstetiqAntrenamentB.html'
+    }
+
+    // Register
+    document.getElementById('registerForm').onsubmit = async (e) => {
+        e.preventDefault()
+        const email = document.getElementById('regEmail').value
+        const pass = document.getElementById('regPass').value
+        const confirm = document.getElementById('regPassConfirm').value
+        if (pass !== confirm) return showMsg('Parolele nu coincid', true)
+        showMsg('Se creează contul...')
+        const { error } = await supabase.auth.signUp({ email, password: pass })
+        if (error) showMsg(error.message, true)
+        else {
+            showMsg('Cont creat! Acum te poți loga.')
+            setTimeout(() => document.getElementById('tabLogin').click(), 1500)
+        }
+    }
+
+    // Forgot
+    document.getElementById('forgotForm').onsubmit = async (e) => {
+        e.preventDefault()
+        const email = document.getElementById('forgotEmail').value
+        showMsg('Se trimite...')
+        const { error } = await supabase.auth.resetPasswordForEmail(email)
+        if (error) showMsg(error.message, true)
+        else showMsg('Link trimis pe email!')
+    }
+</script>
+</body>
+</html>
