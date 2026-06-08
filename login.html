@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estetiq - Autentificare</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <script type="module" src="js/supabase.js"></script>
+    <script type="module" src="js/auth.js"></script>
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">ESTETIQ</div>
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">Autentificare</button>
+                    <button class="tab-btn" data-tab="register">Cont nou</button>
+                </div>
+            </div>
+
+            <div class="message" id="message"></div>
+
+            <!-- LOGIN FORM -->
+            <form id="loginForm" class="auth-form active">
+                <div class="input-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="nume@email.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Parolă</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary">Intră în cont</button>
+                <button type="button" class="btn-link" id="forgotBtn">Ai uitat parola?</button>
+            </form>
+
+            <!-- REGISTER FORM -->
+            <form id="registerForm" class="auth-form">
+                <div class="input-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" placeholder="nume@email.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="register-password">Parolă</label>
+                    <input type="password" id="register-password" placeholder="Minim 6 caractere" minlength="6" required>
+                </div>
+                <div class="input-group">
+                    <label for="register-password-confirm">Confirmă parola</label>
+                    <input type="password" id="register-password-confirm" placeholder="Repetă parola" required>
+                </div>
+                <button type="submit" class="btn-primary">Creează cont</button>
+            </form>
+
+            <!-- FORGOT PASSWORD FORM -->
+            <form id="forgotForm" class="auth-form">
+                <p class="form-text">Introdu email-ul și îți trimitem link de resetare parolă.</p>
+                <div class="input-group">
+                    <label for="forgot-email">Email</label>
+                    <input type="email" id="forgot-email" placeholder="nume@email.com" required>
+                </div>
+                <button type="submit" class="btn-primary">Trimite link</button>
+                <button type="button" class="btn-link" id="backToLogin">Înapoi la login</button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .auth-wrapper { width: 100%; max-width: 420px; }
+        .auth-card {
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 40px 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+        .logo {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 800;
+            color: #00d4aa;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+        .auth-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 28px;
+            background: #0a0a0a;
+            padding: 4px;
+            border-radius: 10px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: #666;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab-btn.active { background: #00d4aa; color: #0a0a0a; }
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+        .message.error { background: #3a1515; color: #ff6b6b; border: 1px solid #5a2020; }
+        .message.success { background: #153a2a; color: #00d4aa; border: 1px solid #205a40; }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+        .input-group { margin-bottom: 18px; }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 13px 16px;
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 15px;
+            transition: border 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #00d4aa;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: #00d4aa;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover { background: #00c29d; transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-link {
+            width: 100%;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 14px;
+            margin-top: 16px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .btn-link:hover { color: #00d4aa; }
+        .form-text {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+    </style>
+</body>
+</html>
