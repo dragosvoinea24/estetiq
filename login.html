@@ -4,11 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estetiq - Autentificare</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <script type="module" src="js/supabase.js"></script>
+    <script type="module" src="js/auth.js"></script>
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">ESTETIQ</div>
+                <div class="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">Autentificare</button>
+                    <button class="tab-btn" data-tab="register">Cont nou</button>
+                </div>
+            </div>
+
+            <div class="message" id="message"></div>
+
+            <!-- LOGIN FORM -->
+            <form id="loginForm" class="auth-form active">
+                <div class="input-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="nume@email.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Parolă</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary">Intră în cont</button>
+                <button type="button" class="btn-link" id="forgotBtn">Ai uitat parola?</button>
+            </form>
+
+            <!-- REGISTER FORM -->
+            <form id="registerForm" class="auth-form">
+                <div class="input-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" placeholder="nume@email.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="register-password">Parolă</label>
+                    <input type="password" id="register-password" placeholder="Minim 6 caractere" minlength="6" required>
+                </div>
+                <div class="input-group">
+                    <label for="register-password-confirm">Confirmă parola</label>
+                    <input type="password" id="register-password-confirm" placeholder="Repetă parola" required>
+                </div>
+                <button type="submit" class="btn-primary">Creează cont</button>
+            </form>
+
+            <!-- FORGOT PASSWORD FORM -->
+            <form id="forgotForm" class="auth-form">
+                <p class="form-text">Introdu email-ul și îți trimitem link de resetare parolă.</p>
+                <div class="input-group">
+                    <label for="forgot-email">Email</label>
+                    <input type="email" id="forgot-email" placeholder="nume@email.com" required>
+                </div>
+                <button type="submit" class="btn-primary">Trimite link</button>
+                <button type="button" class="btn-link" id="backToLogin">Înapoi la login</button>
+            </form>
+        </div>
+    </div>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0f0f0f;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
             color: #fff;
             display: flex;
             align-items: center;
@@ -16,108 +78,108 @@
             min-height: 100vh;
             padding: 20px;
         }
-      .login-container {
-            background: #1a1a1a;
-            padding: 40px 30px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 380px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            border: 1px solid #2a2a2a;
+        .auth-wrapper { width: 100%; max-width: 420px; }
+        .auth-card {
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 40px 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         }
-      .logo { text-align: center; font-size: 28px; font-weight: 700; margin-bottom: 8px; color: #00d4aa; }
-      .subtitle { text-align: center; color: #888; margin-bottom: 30px; font-size: 14px; }
-      .input-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 6px; color: #ccc; font-size: 14px; }
+        .logo {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 800;
+            color: #00d4aa;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+        .auth-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 28px;
+            background: #0a0a0a;
+            padding: 4px;
+            border-radius: 10px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: transparent;
+            border: none;
+            color: #666;
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab-btn.active { background: #00d4aa; color: #0a0a0a; }
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+        .message.error { background: #3a1515; color: #ff6b6b; border: 1px solid #5a2020; }
+        .message.success { background: #153a2a; color: #00d4aa; border: 1px solid #205a40; }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+        .input-group { margin-bottom: 18px; }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaa;
+            font-size: 13px;
+            font-weight: 500;
+        }
         input {
-            width: 100%; padding: 12px 14px; background: #0f0f0f; border: 1px solid #333;
-            border-radius: 8px; color: #fff; font-size: 15px;
+            width: 100%;
+            padding: 13px 16px;
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 15px;
+            transition: border 0.2s;
         }
-        input:focus { outline: none; border-color: #00d4aa; }
-      .btn-login {
-            width: 100%; padding: 13px; background: #00d4aa; color: #0f0f0f; border: none;
-            border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px;
+        input:focus {
+            outline: none;
+            border-color: #00d4aa;
         }
-      .btn-login:hover { background: #00b894; }
-      .forgot { text-align: center; margin-top: 20px; }
-      .forgot a { color: #888; text-decoration: none; font-size: 14px; }
-      .forgot a:hover { color: #00d4aa; }
-      .error {
-            background: #3a1a1a; color: #ff6b6b; padding: 10px; border-radius: 6px;
-            margin-bottom: 20px; font-size: 14px; display: none;
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: #00d4aa;
+            color: #0a0a0a;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover { background: #00c29d; transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-link {
+            width: 100%;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 14px;
+            margin-top: 16px;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .btn-link:hover { color: #00d4aa; }
+        .form-text {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.5;
         }
     </style>
-</head>
-<body>
-    <div class="login-container">
-        <div class="logo">ESTETIQ</div>
-        <div class="subtitle">Accesează programul de antrenament</div>
-        <div class="error" id="errorMsg">User sau parolă incorectă</div>
-        <div class="input-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Introdu username">
-        </div>
-        <div class="input-group">
-            <label for="password">Parolă</label>
-            <input type="password" id="password" placeholder="Introdu parola">
-        </div>
-        <button class="btn-login" onclick="checkLogin()">Intră în cont</button>
-        <div class="forgot">
-            <a href="https://wa.me/40753452245?text=Salut%2C%20am%20uitat%20parola%20pentru%20Estetiq%20Antrenament" target="_blank">
-                Am uitat parola
-            </a>
-        </div>
-    </div>
-
-    <script>
-        // Funcție simplă de hash ca să nu țin parolele pe față
-        function hash(str) {
-            let h = 0;
-            for (let i = 0; i < str.length; i++) {
-                h = Math.imul(31, h) + str.charCodeAt(i) | 0;
-            }
-            return h;
-        }
-
-        // User : hash din "user:parola"
-        const ACCES = {
-            "-124356964": "estetiq01", // estetiq01:Kx9mP2vL
-            "1451715843": "estetiq02", // estetiq02:R7nT4qWz
-            "-1590743486": "estetiq03", // estetiq03:B5hY8uJd
-            "809331871": "estetiq04", // estetiq04:M3cF6aXe
-            "1843210542": "estetiq05", // estetiq05:Z9pL2sQr
-            "-1278059413": "estetiq06", // estetiq06:V4gN7tUb
-            "1987825631": "estetiq07", // estetiq07:H6jK1wEi
-            "-731937968": "estetiq08", // estetiq08:D8fS3mCo
-            "1226936122": "estetiq09", // estetiq09:Q2rX5nAy
-            "-1893124985": "estetiq10" // estetiq10:T1bV9gLp
-        };
-
-        function checkLogin() {
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value.trim();
-            const errorMsg = document.getElementById('errorMsg');
-
-            const combo = user + ":" + pass;
-            const comboHash = hash(combo).toString();
-
-            if (ACCES[comboHash] === user) {
-                sessionStorage.setItem('estetiq_auth', 'true');
-                sessionStorage.setItem('estetiq_user', user);
-                window.location.href = 'EstetiqAntrenamentB.html';
-            } else {
-                errorMsg.style.display = 'block';
-                setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
-            }
-        }
-
-        document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') checkLogin();
-        });
-
-        if (sessionStorage.getItem('estetiq_auth') === 'true') {
-            window.location.href = 'EstetiqAntrenamentB.html';
-        }
-    </script>
 </body>
 </html>
