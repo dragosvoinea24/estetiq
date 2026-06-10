@@ -1559,15 +1559,20 @@ window.addEventListener('scroll', ()=>{
 })();
 
 /* ── PREȚURI ── */
-const BASE = {1:180, 2:350, 3:280};
+const BASE = {1:180, 2:480, 3:280};
 let PRICES = {1:149, 2:300, 3:229};
 
 const CODES = {
-  'DRAGOS24': 15,
-  'AESTETIQ24': 20,
-  'CRISTI15': 15,
-  'ANDREI15': 15,
-  'FIT15': 15
+  'DRAGOS24': 48,
+  'AESTETIQ24': 48,
+  'CRISTI15': 48,
+  'ANDREI15': 48,
+  'FIT15': 48,
+  'TEODORA50': 48,
+  'DANA50': 48,
+  'MONICA50': 48,
+  'DOBRIN50': 48,
+  'ALEX50': 48
 };
 
 function updatePriceDisplay(){
@@ -1576,7 +1581,8 @@ function updatePriceDisplay(){
     const svEl = document.getElementById('save-'+i);
     if(sEl) sEl.textContent = PRICES[i];
     const saved = BASE[i] - PRICES[i];
-    if(svEl) svEl.textContent = saved > 0? '🎉 Economisești '+saved+' RON!' : (i===1?'Economisit 31 RON':i===2?'🎉 Economisit 50 RON':i===3?'Economisit 51 RON':'');
+    const pct = Math.round((BASE[i] - PRICES[i]) / BASE[i] * 100);
+    if(svEl) svEl.textContent = saved > 0? `🎉 -${pct}% Economisești ${saved} RON!` : '';
   });
   const b1=document.getElementById('btn-plan-1'), b2=document.getElementById('btn-plan-2'), b3=document.getElementById('btn-plan-3');
   if(b1) b1.textContent = '💬 Vreau Planul — '+PRICES[1]+' RON →';
@@ -1593,7 +1599,7 @@ function applyDiscount(){
   if(pct){
     PRICES = {1:Math.round(BASE[1]*(1-pct/100)), 2:Math.round(BASE[2]*(1-pct/100)), 3:Math.round(BASE[3]*(1-pct/100))};
     updatePriceDisplay();
-    res.innerHTML = '✅ Cod aplicat! −'+pct+'% la toate planurile 🎉';
+    res.innerHTML = `✅ Cod aplicat! −${pct}% reducere totală 🎉`;
     res.className = 'disc-result show ok';
     inp.className = 'disc-input valid';
   } else {
