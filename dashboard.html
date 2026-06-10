@@ -3,40 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Dashboard - estetiq.fit</title>
+<title>Dashboard</title>
+<style>
+body{margin:0;background:#0a0a0a;color:#fff;font-family:Inter,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.loader{width:40px;height:40px;border:3px solid rgba(198,241,53,0.2);border-top-color:#c6f135;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
 </head>
 <body>
+<div class="loader"></div>
 <script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
   const supabase = createClient('https://utljkuefjdvdpmmzxnoi.supabase.co','sb_publishable_dJNniaqWOEVQLDLFms6bDQ_zoaRJqvb')
   
-  const { data: { session } } = await supabase.auth.getSession()
-  
-  if(!session){
-    location.href = './index.html'
-    return
+  try {
+    const { data: { session } } = await supabase.auth.getSession()
+    
+    if(!session){
+      location.replace('./index.html')
+      throw new Error('No session')
+    }
+    
+    const { data: p, error } = await supabase
+      .from('profiles')
+      .select('plan_level,role')
+      .eq('id', session.user.id)
+      .single()
+    
+    if(error || !p){
+      location.replace('user.html')
+      throw new Error('No profile')
+    }
+    
+    // Dacă e guest sau plan_level 0/null -> user.html
+    if(p.role === 'guest' || !p.plan_level || p.plan_level === 0){
+      location.replace('user.html')
+      throw new Error('Guest or no plan')
+    }
+    
+    // Plan 1,2,3 etc -> încarcă program
+    const { data: pr } = await supabase
+      .from('programs')
+      .select('html_content')
+      .eq('sort_order', p.plan_level)
+      .single()
+    
+    if(!pr?.html_content){
+      location.replace('user.html')
+      throw new Error('No program')
+    }
+    
+    document.open()
+    document.write(pr.html_content)
+    document.close()
+    
+  } catch(e) {
+    console.error(e)
   }
-  
-  const userId = session.user.id
-  const { data: p } = await supabase.from('profiles').select('plan_level').eq('id', userId).single()
-  
-  if(!p || p.plan_level === 0 || p.plan_level === null){
-    location.href = 'user.html'
-    return
-  }
-  
-  const { data: pr } = await supabase.from('programs').select('html_content').eq('sort_order', p.plan_level).single()
-  
-  if(!pr?.html_content){
-    location.href = 'user.html'
-    return
-  }
-  
-  document.open()
-  document.write(pr.html_content)
-  document.close()
 </script>
-</body>
-</html>
 </body>
 </html>
