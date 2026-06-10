@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - ESTETIQ.FIT</title>
+</head>
+<body>
+  <div id="loading">Se încarcă...</div>
+  <div id="app" style="display:none">
+    <h1>Salut, <span id="userName"></span></h1>
+    <div id="planBadge"></div>
+    <div id="content"></div>
+    <button onclick="doLogout()">Logout</button>
+  </div>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+  const supabase = createClient('https://utljkuefjdvdpmmzxnoi.supabase.co', 'sb_publishable_dJNniaqWOEVQLDLFms6bDQ_zoaRJqvb')
+
+  window.doLogout = async () => {
+    await supabase.auth.signOut()
+    window.location.href = './index.html'
+  }
+
+  const userId = new URLSearchParams(window.location.search).get('id')
+  const { data: { session } } = await supabase.auth.getSession()
+
+  if (!session || session.user.id!== userId) {
+    window.location.href = './index.html'
+  } else {
+    const { data: profile } = await supabase.from('profiles').select('*').eq('id', userId).single()
+    document.getElementById('userName').innerText = profile.full_name || profile.email.split('@')[0]
+    document.getElementById('planBadge').innerText = profile.role === 'premium'? 'PREMIUM' : 'FREE'
+    document.getElementById('content').innerHTML = profile.role === 'premium'
+     ? '<h2>Programele tale premium</h2>'
+      : '<h2>Upgrade la Premium pentru acces</h2><button>Plătește 49€</button>'
+    document.getElementById('loading').style.display = 'none'
+    document.getElementById('app').style.display = 'block'
+  }
+</script>
+</body>
+</html>
