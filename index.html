@@ -1439,17 +1439,18 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 window._sb = supabase
 
-// Verifică sesiunea la încărcare - dacă e logat îl duce direct pe dashboard
-supabase.auth.getSession().then(({ data: { session } }) => {
-  if (session) {
-    console.log('User logged in:', session.user.email)
-    redirectToDashboard(session.user.id)
-  }
-})
+// Dacă vine din user.html cu ?logout=true, deloghează-l
+const params = new URLSearchParams(location.search)
+if(params.get('logout') === 'true'){
+  await supabase.auth.signOut()
+  history.replaceState({}, '', 'index.html')
+}
 
-// FUNCȚIE UNIVERSALĂ: Redirect pe dashboard.html - NU O MAI SCHIMBI NICIODATĂ
-function redirectToDashboard(userId) {
-  window.location.href = `./dashboard.html?id=${userId}`
+// NU MAI REDIRECȚIONĂM AUTOMAT - lasă userul să stea pe index
+
+// FUNCȚIE UNIVERSALĂ: Redirect pe dashboard.html
+function redirectToDashboard() {
+  window.location.href = './dashboard.html'
 }
 
 // LOGIN
@@ -1469,7 +1470,7 @@ window.doLogin = async function() {
   showModalMsg('✅ Autentificat! Redirecționare...','success')
   setTimeout(() => {
     closeLoginModal()
-    redirectToDashboard(data.user.id)
+    redirectToDashboard()
   }, 1000)
 }
 
