@@ -1380,7 +1380,7 @@ footer{background:var(--bg);border-top:1px solid var(--bdr);padding:60px 20px;te
     <!-- LOGIN -->
     <div id="fLogin" class="a-form active">
       <div class="mi-wrap">
-        <svg class="mi-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <svg class="mi-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2.9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         <input type="email" id="lEmail" class="m-input" placeholder="Email">
       </div>
       <div class="mi-wrap">
@@ -1401,7 +1401,7 @@ footer{background:var(--bg);border-top:1px solid var(--bdr);padding:60px 20px;te
     <!-- REGISTER -->
     <div id="fRegister" class="a-form">
       <div class="mi-wrap">
-        <svg class="mi-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <svg class="mi-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2.9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         <input type="email" id="rEmail" class="m-input" placeholder="Email">
       </div>
       <div class="mi-wrap">
@@ -1424,7 +1424,7 @@ footer{background:var(--bg);border-top:1px solid var(--bdr);padding:60px 20px;te
     <div id="fForgot" class="a-form">
       <p style="font-size:.83rem;color:var(--mid);text-align:center;margin-bottom:16px;">Introdu email-ul și primești link de resetare.</p>
       <div class="mi-wrap">
-        <svg class="mi-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <svg class="mi-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2.9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         <input type="email" id="fEmail" class="m-input" placeholder="Email">
       </div>
       <button class="m-sub" onclick="doForgot()">Trimite link resetare</button>
@@ -1481,7 +1481,6 @@ sb.auth.getSession().then(({ data: { session } }) => {
 window.doLogin = async function() {
   const email = document.getElementById('lEmail').value.trim()
   const pass = document.getElementById('lPass').value
-  const remember = document.getElementById('rememberMe').checked
   if (!email ||!pass) return showMsg('Completează email și parola.','err')
   const btn = document.getElementById('lSubmit')
   btn.disabled = true
