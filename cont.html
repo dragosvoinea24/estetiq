@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ESTETIQ.FIT">
+<title>Cont - estetiq.fit</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a;
+  --surface:#141414;
+  --surface-2:#1f1f1f;
+  --lime:#c6f135;
+  --lime-glow:rgba(198,241,53,0.25);
+  --text:#ffffff;
+  --text-dim:#9a9a9a;
+  --border:rgba(255,255,255,0.06);
+  --red:#ff3b3b;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100dvh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  overflow-x:hidden;
+}
+.bg-anim{
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0;left:0;
+  overflow:hidden;
+  z-index:0;
+}
+.bg-anim span{
+  position:absolute;
+  border-radius:50%;
+  background:radial-gradient(circle,var(--lime-glow) 0%,transparent 70%);
+  animation:float 20s infinite;
+}
+.bg-anim span:nth-child(1){width:500px;height:500px;top:-250px;left:-250px;animation-delay:0s}
+.bg-anim span:nth-child(2){width:400px;height:400px;bottom:-200px;right:-200px;animation-delay:4s}
+.bg-anim span:nth-child(3){width:300px;height:300px;top:50%;left:50%;animation-delay:8s}
+@keyframes float{
+  0%,100%{transform:translate(0,0) scale(1);opacity:0.3}
+  33%{transform:translate(40px,-60px) scale(1.15);opacity:0.5}
+  66%{transform:translate(-30px,30px) scale(0.85);opacity:0.4}
+}
+.grid{
+  position:fixed;
+  width:100%;
+  height:100%;
+  background-image:
+    linear-gradient(rgba(198,241,53,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(198,241,53,0.03) 1px,transparent 1px);
+  background-size:50px 50px;
+  animation:gridMove 20s linear infinite;
+}
+@keyframes gridMove{
+  0%{transform:translate(0,0)}
+  100%{transform:translate(50px,50px)}
+}
+.container{
+  max-width:440px;
+  width:100%;
+  background:linear-gradient(145deg,rgba(20,20,20,0.95),rgba(31,31,31,0.95));
+  backdrop-filter:blur(30px);
+  border:1px solid var(--border);
+  border-radius:28px;
+  padding:44px 32px 36px;
+  position:relative;
+  z-index:1;
+  box-shadow:0 30px 100px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.06);
+  animation:slideUp 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(50px) scale(0.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+.logo-wrap{
+  text-align:center;
+  margin-bottom:32px;
+}
+.logo{
+  font-size:2.2rem;
+  font-weight:900;
+  letter-spacing:-1.5px;
+  margin-bottom:8px;
+  animation:fadeIn 0.8s 0.2s both;
+}
+.logo span{
+  background:linear-gradient(135deg,var(--lime),#a8d12a);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.tagline{
+  font-size:0.85rem;
+  color:var(--text-dim);
+  font-weight:600;
+  animation:fadeIn 0.8s 0.3s both;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:26px;
+  padding:5px;
+  background:rgba(255,255,255,0.03);
+  border-radius:14px;
+  animation:fadeIn 0.8s 0.4s both;
+}
+.tab{
+  flex:1;
+  padding:12px;
+  background:transparent;
+  border:none;
+  color:var(--text-dim);
+  font-size:0.92rem;
+  font-weight:700;
+  cursor:pointer;
+  border-radius:10px;
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.tab.active{
+  background:var(--lime);
+  color:#0a0a0a;
+  box-shadow:0 4px 15px rgba(198,241,53,0.3);
+}
+.msg{
+  display:none;
+  padding:13px 16px;
+  border-radius:12px;
+  font-size:0.85rem;
+  font-weight:600;
+  margin-bottom:20px;
+  text-align:center;
+  animation:msgSlide 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+@keyframes msgSlide{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.msg.err{background:rgba(255,77,79,0.12);border:1px solid rgba(255,77,79,0.3);color:#ff6b6b}
+.msg.ok{background:rgba(198,241,53,0.12);border:1px solid rgba(198,241,53,0.3);color:var(--lime)}
+.form{display:none}
+.form.active{display:block;animation:formFade 0.4s cubic-bezier(0.16,1,0.3,1)}
+@keyframes formFade{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+.input-wrap{
+  position:relative;
+  margin-bottom:15px;
+}
+.input-wrap svg{
+  position:absolute;
+  left:16px;
+  top:50%;
+  transform:translateY(-50%);
+  width:19px;
+  height:19px;
+  color:var(--text-dim);
+  stroke-width:2;
+  transition:color 0.3s;
+  pointer-events:none;
+}
+.input{
+  width:100%;
+  padding:15px 16px 15px 50px;
+  background:rgba(255,255,255,0.04);
+  border:1.5px solid rgba(255,255,255,0.08);
+  border-radius:13px;
+  color:var(--text);
+  font-size:0.96rem;
+  font-family:inherit;
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.input:focus{
+  outline:none;
+  border-color:var(--lime);
+  background:rgba(255,255,255,0.06);
+  box-shadow:0 0 0 4px rgba(198,241,53,0.1);
+}
+.input:focus + svg{color:var(--lime)}
+.remember{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:22px;
+  cursor:pointer;
+  user-select:none;
+}
+.remember input{
+  width:20px;
+  height:20px;
+  cursor:pointer;
+  accent-color:var(--lime);
+}
+.remember span{font-size:0.88rem;color:var(--text-dim);font-weight:600}
+.submit{
+  width:100%;
+  padding:16px;
+  background:var(--lime);
+  color:#0a0a0a;
+  border:none;
+  border-radius:13px;
+  font-size:1rem;
+  font-weight:800;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+  position:relative;
+  overflow:hidden;
+  margin-bottom:14px;
+}
+.submit::before{
+  content:'';
+  position:absolute;
+  top:0;left:-100%;
+  width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
+  transition:left 0.6s;
+}
+.submit:hover::before{left:100%}
+.submit:hover{transform:translateY(-2px);box-shadow:0 12px 35px rgba(198,241,53,0.4)}
+.submit:active{transform:scale(0.98)}
+.submit:disabled{opacity:0.6;cursor:not-allowed}
+.divider{
+  text-align:center;
+  margin:22px 0;
+  position:relative;
+  font-size:0.82rem;
+  color:var(--text-dim);
+  font-weight:600;
+}
+.divider::before,.divider::after{
+  content:'';
+  position:absolute;
+  top:50%;
+  width:35%;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);
+}
+.divider::before{left:0}
+.divider::after{right:0}
+.txt-btn{
+  width:100%;
+  padding:12px;
+  background:transparent;
+  border:none;
+  color:var(--lime);
+  font-size:0.88rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.3s;
+  margin-top:12px;
+}
+.txt-btn:hover{color:var(--text);text-decoration:underline}
+.note{
+  font-size:0.83rem;
+  color:var(--text-dim);
+  text-align:center;
+  margin-top:18px;
+  line-height:1.6;
+}
+.note a{color:var(--lime);font-weight:700;text-decoration:none;transition:color 0.3s}
+.note a:hover{color:var(--text)}
+.support-icon{
+  font-size:3.5rem;
+  text-align:center;
+  margin-bottom:16px;
+  animation:floatIcon 3s ease-in-out infinite;
+}
+@keyframes floatIcon{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.support-title{
+  font-size:1.45rem;
+  font-weight:800;
+  text-align:center;
+  margin-bottom:10px;
+}
+.support-text{
+  font-size:0.9rem;
+  color:var(--text-dim);
+  text-align:center;
+  margin-bottom:26px;
+  line-height:1.6;
+}
+.support-btns{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-bottom:22px;
+}
+.support-btn{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:15px 20px;
+  background:rgba(255,255,255,0.04);
+  border:1.5px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  text-decoration:none;
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+  position:relative;
+  overflow:hidden;
+}
+.support-btn::before{
+  content:'';
+  position:absolute;
+  top:0;left:-100%;
+  width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent);
+  transition:left 0.5s;
+}
+.support-btn:hover::before{left:100%}
+.support-btn:hover{
+  transform:translateX(4px);
+  background:rgba(255,255,255,0.06);
+  border-color:var(--lime);
+  box-shadow:0 8px 25px rgba(198,241,53,0.15);
+}
+.support-btn svg,.support-btn img{
+  width:26px;
+  height:26px;
+  border-radius:7px;
+  object-fit:cover;
+}
+.support-btn svg{fill:var(--text)}
+.support-btn span{
+  font-size:0.97rem;
+  font-weight:700;
+  color:var(--text);
+}
+.support-btn.wa:hover{border-color:#25D366;box-shadow:0 8px 25px rgba(37,211,102,0.2)}
+.support-btn.ig:hover{border-color:#E4405F;box-shadow:0 8px 25px rgba(228,64,95,0.2)}
+.support-btn.mail:hover{border-color:#EA4335;box-shadow:0 8px 25px rgba(234,67,53,0.2)}
+@media(max-width:480px){
+ .container{padding:38px 26px 30px}
+ .logo{font-size:1.9rem}
+}
+</style>
+</head>
+<body>
+<div class="bg-anim"><span></span><span></span></div>
+<div class="grid"></div>
+<div class="container">
+  <div class="logo-wrap">
+    <div class="logo">ESTETIQ<span>.FIT</span></div>
+    <p class="tagline">Accesează programul tău personal</p>
+  </div>
+  
+  <div class="tabs">
+    <button class="tab active" id="tabL" onclick="switchTab('login')">Login</button>
+    <button class="tab" id="tabR" onclick="switchTab('register')">Cont nou</button>
+  </div>
+  
+  <div class="msg" id="mMsg"></div>
+
+  <!-- LOGIN -->
+  <div id="fLogin" class="form active">
+    <div class="input-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <input type="email" id="lEmail" class="input" placeholder="Email">
+    </div>
+    <div class="input-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <input type="password" id="lPass" class="input" placeholder="Parolă">
+    </div>
+    <label class="remember">
+      <input type="checkbox" id="rememberMe" checked>
+      <span>Ține-mă minte</span>
+    </label>
+    <button class="submit" id="lSubmit" onclick="doLogin()">
+      <span>Intră în cont</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <div class="divider">sau</div>
+    <button class="txt-btn" onclick="switchTab('support')">Ai uitat parola? Contactează suport</button>
+  </div>
+
+  <!-- REGISTER -->
+  <div id="fRegister" class="form">
+    <div class="input-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <input type="email" id="rEmail" class="input" placeholder="Email">
+    </div>
+    <div class="input-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <input type="password" id="rPass" class="input" placeholder="Parolă (minim 6 caractere)">
+    </div>
+    <div class="input-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <input type="password" id="rPassC" class="input" placeholder="Confirmă parola">
+    </div>
+    <button class="submit" onclick="doRegister()">
+      <span>Creează cont</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <p class="note">După plată, creează cont cu email-ul folosit la comandă</p>
+  </div>
+
+  <!-- SUPPORT -->
+  <div id="fSupport" class="form">
+    <div class="support-icon">💬</div>
+    <h3 class="support-title">Ai nevoie de ajutor?</h3>
+    <p class="support-text">Contactează-mă direct și rezolvăm rapid orice problemă cu contul tău:</p>
+    <div class="support-btns">
+      <a href="https://wa.me/40753452245?text=Salut%20Dragoș%2C%20am%20probleme%20cu%20contul%20estetiq.fit" target="_blank" class="support-btn wa">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0.16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <span>WhatsApp</span>
+      </a>
+      <a href="https://instagram.com/dododragos" target="_blank" class="support-btn ig">
+        <img src="pozamica.jpeg" alt="IG">
+        <span>Instagram @dododragos</span>
+      </a>
+      <a href="mailto:dragosvoinea24@icloud.com?subject=Problema%20cont%20estetiq.fit" class="support-btn mail">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        <span>Email</span>
+      </a>
+    </div>
+    <button class="txt-btn" onclick="switchTab('login')">← Înapoi la login</button>
+  </div>
+  
+  <p class="note" style="margin-top:28px;">💡 <strong>Tip:</strong> Adaugă pagina la ecranul principal<br>pentru acces rapid ca aplicație</p>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+
+const sb = createClient('https://utljkuefjdvdpmmzxnoi.supabase.co','sb_publishable_dJNniaqWOEVQLDLFms6bDQ_zoaRJqvb')
+
+// Dacă e deja logat, du-l direct pe dashboard
+sb.auth.getSession().then(({ data: { session } }) => {
+  if (session) window.location.href = './dashboard.html'
+})
+
+window.doLogin = async function() {
+  const email = document.getElementById('lEmail').value.trim()
+  const pass = document.getElementById('lPass').value
+  if (!email ||!pass) return showMsg('Completează email și parola.','err')
+  const btn = document.getElementById('lSubmit')
+  btn.disabled = true
+  showMsg('Se conectează...','ok')
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass })
+  btn.disabled = false
+  if (error) { showMsg(error.message,'err'); return }
+  showMsg('✅ Bine ai venit!','ok')
+  setTimeout(() => window.location.href = './dashboard.html', 1000)
+}
+
+window.doRegister = async function() {
+  const email = document.getElementById('rEmail').value.trim()
+  const pass = document.getElementById('rPass').value
+  const passC = document.getElementById('rPassC').value
+  if (!email ||!pass) return showMsg('Completează toate câmpurile.','err')
+  if (pass!== passC) return showMsg('Parolele nu coincid.','err')
+  if (pass.length < 6) return showMsg('Parola — minim 6 caractere.','err')
+  showMsg('Se creează contul...','ok')
+  const { error } = await sb.auth.signUp({
+    email,
+    password: pass,
+    options: { emailRedirectTo: window.location.origin + '/dashboard.html' }
+  })
+  if (error) { showMsg(error.message,'err'); return }
+  showMsg('✅ Cont creat! Verifică email-ul sau loghează-te.','ok')
+  setTimeout(() => { switchTab('login'); document.getElementById('lEmail').value = email }, 2200)
+}
+
+function showMsg(text, type) {
+  const el = document.getElementById('mMsg')
+  el.style.display = 'block'
+  el.className = 'msg ' + type
+  el.textContent = text
+}
+
+window.switchTab = function(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
+  document.querySelectorAll('.form').forEach(f => f.classList.remove('active'))
+  if(tab === 'login') {
+    document.getElementById('tabL').classList.add('active')
+    document.getElementById('fLogin').classList.add('active')
+  } else if(tab === 'register') {
+    document.getElementById('tabR').classList.add('active')
+    document.getElementById('fRegister').classList.add('active')
+  } else if(tab === 'support') {
+    document.getElementById('fSupport').classList.add('active')
+  }
+  document.getElementById('mMsg').style.display = 'none'
+}
+</script>
+</body>
+</html>
