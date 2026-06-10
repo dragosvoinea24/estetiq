@@ -60,6 +60,15 @@ body{margin:0;background:#0a0a0a;color:#fff;font-family:Inter,sans-serif;display
   } catch(e) {
     console.error(e)
   }
+  // TEMP: Logout button
+const logoutBtn = document.createElement('button')
+logoutBtn.textContent = 'LOGOUT'
+logoutBtn.style.cssText = 'position:fixed;top:10px;right:10px;z-index:9999;padding:10px;background:red;color:#fff;border:none;border-radius:8px;cursor:pointer'
+logoutBtn.onclick = async () => {
+  await supabase.auth.signOut()
+  location.href = 'index.html'
+}
+document.body.appendChild(logoutBtn)
 </script>
 </body>
 </html>
