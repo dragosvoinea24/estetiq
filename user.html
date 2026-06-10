@@ -264,8 +264,8 @@ p{
   <div class="badge">Cont Inactiv</div>
   <h1>Nu ai niciun plan<br><span>estetiq.fit</span> activ</h1>
   <p>Activează un plan de transformare pentru a accesa programele exclusive și a începe călătoria ta.</p>
-  <a href="index.html#preturi" class="btn">Vezi planurile disponibile</a>
-  <a href="index.html" class="btn btn-secondary">Înapoi la pagina principală</a>
+  <a href="#" class="btn" id="btnPreturi">Vezi planurile disponibile</a>
+  <a href="#" class="btn btn-secondary" id="btnHome">Înapoi la pagina principală</a>
   <div class="divider"></div>
   <div class="support-text">Probleme cu contul? Contactează-mă:</div>
   <div class="social-btns">
@@ -280,5 +280,21 @@ p{
     </a>
   </div>
 </div>
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+  const supabase = createClient('https://utljkuefjdvdpmmzxnoi.supabase.co','sb_publishable_dJNniaqWOEVQLDLFms6bDQ_zoaRJqvb')
+  
+  document.getElementById('btnPreturi').onclick = async (e) => {
+    e.preventDefault()
+    await supabase.auth.signOut()
+    location.href = 'index.html#preturi'
+  }
+  
+  document.getElementById('btnHome').onclick = async (e) => {
+    e.preventDefault()
+    await supabase.auth.signOut()
+    location.href = 'index.html'
+  }
+</script>
 </body>
 </html>
