@@ -1439,13 +1439,18 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 window._sb = supabase
 
-// Verifică sesiunea la încărcare - dacă e logat îl duce direct pe pagina lui
-supabase.auth.getSession().then(async ({ data: { session } }) => {
+// Verifică sesiunea la încărcare - dacă e logat îl duce direct pe dashboard
+supabase.auth.getSession().then(({ data: { session } }) => {
   if (session) {
     console.log('User logged in:', session.user.email)
-    await redirectToUserPage(session.user.id)
+    redirectToDashboard(session.user.id)
   }
 })
+
+// FUNCȚIE UNIVERSALĂ: Redirect pe dashboard.html - NU O MAI SCHIMBI NICIODATĂ
+function redirectToDashboard(userId) {
+  window.location.href = `./dashboard.html?id=${userId}`
+}
 
 // LOGIN
 window.doLogin = async function() {
@@ -1462,9 +1467,9 @@ window.doLogin = async function() {
   }
 
   showModalMsg('✅ Autentificat! Redirecționare...','success')
-  setTimeout(async () => {
+  setTimeout(() => {
     closeLoginModal()
-    await redirectToUserPage(data.user.id)
+    redirectToDashboard(data.user.id)
   }, 1000)
 }
 
@@ -1483,7 +1488,7 @@ window.doRegister = async function() {
     email,
     password: pass,
     options: {
-      emailRedirectTo: window.location.origin + '/user.html'
+      emailRedirectTo: window.location.origin + '/dashboard.html'
     }
   })
 
@@ -1516,32 +1521,7 @@ window.doForgot = async function() {
   showModalMsg('✅ Link trimis pe email!','success')
 }
 
-// FUNCȚIE: Verifică rolul și redirecționează pe pagina userului
-async function redirectToUserPage(userId) {
-  const { data: profile, error } = await supabase
-   .from('profiles')
-   .select('role, subscription_end, full_name')
-   .eq('id', userId)
-   .single()
-
-  if (error) {
-    console.error('Eroare la profil:', error)
-    showModalMsg('Eroare la încărcarea profilului','error')
-    return
-  }
-
-  // Verifică dacă abonamentul monthly a expirat
-  if (profile.role === 'premium' && profile.subscription_end) {
-    if (new Date(profile.subscription_end) < new Date()) {
-      await supabase.from('profiles').update({ role: 'guest' }).eq('id', userId)
-    }
-  }
-
-  // Redirect pe pagina personală cu ID-ul userului
-  window.location.href = `./user.html?id=${userId}`
-}
-
-// LOGOUT - folosește-o pe user.html
+// LOGOUT - folosește-o pe dashboard.html
 window.doLogout = async function() {
   await supabase.auth.signOut()
   window.location.href = './index.html'
