@@ -8,7 +8,9 @@ const u=new URLSearchParams(location.search).get('id')
 const{data:{session}}=await s.auth.getSession()
 if(!session||session.user.id!==u){location.href='./index.html'}else{
 const{data:p}=await s.from('profiles').select('plan_level').eq('id',u).single()
-const{data:pr}=await s.from('programs').select('html_content').eq('sort_order',p.plan_level||1).single()
-document.open();document.write(pr?.html_content||'Plan inactiv');document.close()}
+if(!p||p.plan_level===0||p.plan_level===null){location.href='user.html';return}
+const{data:pr}=await s.from('programs').select('html_content').eq('sort_order',p.plan_level).single()
+if(!pr?.html_content){location.href='user.html';return}
+document.open();document.write(pr.html_content);document.close()}
 </script>
 </body></html>
