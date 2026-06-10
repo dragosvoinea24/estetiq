@@ -1559,8 +1559,8 @@ window.addEventListener('scroll', ()=>{
 })();
 
 /* ── PREȚURI ── */
-const BASE = {1:50, 2:175, 3:150};
-let PRICES = {1:50, 2:175, 3:150};
+const BASE = {1:180, 2:350, 3:280};
+let PRICES = {1:149, 2:300, 3:229};
 
 const CODES = {
   'DRAGOS24': 15,
@@ -1576,7 +1576,7 @@ function updatePriceDisplay(){
     const svEl = document.getElementById('save-'+i);
     if(sEl) sEl.textContent = PRICES[i];
     const saved = BASE[i] - PRICES[i];
-    if(svEl) svEl.textContent = saved > 0 ? '🎉 Economisești '+saved+' RON!' : (i===1?'Economisat 30 RON':i===2?'🎉 Reducere 45 RON față de separat':'Economisat 30 RON');
+    if(svEl) svEl.textContent = saved > 0? '🎉 Economisești '+saved+' RON!' : (i===1?'Economisit 31 RON':i===2?'🎉 Economisit 50 RON':i===3?'Economisit 51 RON':'');
   });
   const b1=document.getElementById('btn-plan-1'), b2=document.getElementById('btn-plan-2'), b3=document.getElementById('btn-plan-3');
   if(b1) b1.textContent = '💬 Vreau Planul — '+PRICES[1]+' RON →';
@@ -1588,7 +1588,7 @@ function applyDiscount(){
   const inp = document.getElementById('discInput');
   const res = document.getElementById('discResult');
   const code = (inp.value||'').trim().toUpperCase();
-  if(!code){ res.textContent='Introdu un cod de reducere.'; res.className='disc-result show err'; PRICES={1:50,2:175,3:150}; updatePriceDisplay(); return; }
+  if(!code){ res.textContent='Introdu un cod de reducere.'; res.className='disc-result show err'; PRICES={1:149,2:300,3:229}; updatePriceDisplay(); return; }
   const pct = CODES[code];
   if(pct){
     PRICES = {1:Math.round(BASE[1]*(1-pct/100)), 2:Math.round(BASE[2]*(1-pct/100)), 3:Math.round(BASE[3]*(1-pct/100))};
@@ -1597,7 +1597,7 @@ function applyDiscount(){
     res.className = 'disc-result show ok';
     inp.className = 'disc-input valid';
   } else {
-    PRICES = {1:50,2:175,3:150}; updatePriceDisplay();
+    PRICES = {1:149,2:300,3:229}; updatePriceDisplay();
     res.textContent = '❌ Cod invalid. Încearcă altul.';
     res.className = 'disc-result show err';
     inp.className = 'disc-input invalid';
