@@ -1,36 +1,4 @@
--- 1. Setează plan_level default 0
-alter table public.profiles 
-alter column plan_level set default 0;
-
--- 2. Șterge trigger vechi
-drop trigger if exists on_auth_user_created on auth.users;
-drop function if exists public.handle_new_user();
-
--- 3. Creează trigger nou cu plan_level = 0
-create or replace function public.handle_new_user()
-returns trigger as $$
-begin
-  insert into public.profiles (id, email, plan_level, role)
-  values (new.id, new.email, 0, 'guest');
-  return new;
-end;
-$$ language plpgsql security definer;
-
-create trigger on_auth_user_created
-  after insert on auth.users
-  for each row execute procedure public.handle_new_user();
-
--- 4. Șterge și bagă program 0 cu HTML-ul tău
-delete from public.programs where sort_order = 0;
-
-insert into public.programs (title, category, description, is_premium, sort_order, html_content) 
-values (
-  'Cont Inactiv',
-  'inactive',
-  'Pagină pentru conturi fără plan activ',
-  false,
-  0,
-  $$<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
@@ -313,10 +281,4 @@ p{
   </div>
 </div>
 </body>
-</html>$$
-);
-
--- 5. Pune pe 0 toți userii existenți fără plan
-update public.profiles 
-set plan_level = 0 
-where role = 'guest' or plan_level is null;
+</html>
