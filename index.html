@@ -1362,171 +1362,169 @@ footer{background:var(--bg);border-top:1px solid var(--bdr);padding:60px 20px;te
   </div>
 </div>
 
-<!-- ═══ LOGIN MODAL ═══ -->
-<div id="loginModal" class="modal-overlay" onclick="handleModalClick(event)">
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="modal-ov" onclick="handleModalBg(event)">
   <div class="modal-bg"></div>
   <div class="modal-box">
-    <button class="modal-close" onclick="closeLoginModal()">✕</button>
-    <div class="modal-brand">
-      <div class="modal-logo">ESTETIQ.FIT</div>
-      <p class="modal-tagline">Platformă de antrenament · Dragoș</p>
+    <button class="m-close" onclick="closeModal()">✕</button>
+    <div class="m-brand">
+      <div class="m-logo">ESTETIQ.FIT</div>
+      <p class="m-tagline">Platformă de antrenament · Dragoș</p>
     </div>
-    <div class="modal-tabs">
-      <button class="modal-tab active" id="tabLogin" onclick="switchTab('login')">Autentificare</button>
-      <button class="modal-tab" id="tabRegister" onclick="switchTab('register')">Cont nou</button>
+    <div class="m-tabs">
+      <button class="m-tab active" id="tabL" onclick="switchTab('login')">Login</button>
+      <button class="m-tab" id="tabR" onclick="switchTab('register')">Cont nou</button>
     </div>
-    <div class="modal-msg" id="modalMsg"></div>
+    <div class="m-msg" id="mMsg"></div>
 
-    <!-- LOGIN FORM -->
-    <div id="formLogin" class="auth-form active">
-      <div class="m-input-wrap">
-        <svg class="m-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        <input type="email" id="loginEmail" class="m-input" placeholder="Email">
+    <!-- LOGIN -->
+    <div id="fLogin" class="a-form active">
+      <div class="mi-wrap">
+        <svg class="mi-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <input type="email" id="lEmail" class="m-input" placeholder="Email">
       </div>
-      <div class="m-input-wrap">
-        <svg class="m-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <input type="password" id="loginPass" class="m-input" placeholder="Parolă">
+      <div class="mi-wrap">
+        <svg class="mi-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <input type="password" id="lPass" class="m-input" placeholder="Parolă">
       </div>
-      <button class="m-submit" onclick="doLogin()">
+      <label class="m-remember">
+        <input type="checkbox" id="rememberMe" checked>
+        <span>Ține-mă minte</span>
+      </label>
+      <button class="m-sub" id="lSubmit" onclick="doLogin()">
         Intră în cont
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
-      <button class="m-text-btn" onclick="switchTab('forgot')">Ai uitat parola?</button>
+      <button class="m-txt-btn" onclick="switchTab('forgot')">Ai uitat parola?</button>
     </div>
 
-    <!-- REGISTER FORM -->
-    <div id="formRegister" class="auth-form">
-      <div class="m-input-wrap">
-        <svg class="m-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        <input type="email" id="regEmail" class="m-input" placeholder="Email">
+    <!-- REGISTER -->
+    <div id="fRegister" class="a-form">
+      <div class="mi-wrap">
+        <svg class="mi-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <input type="email" id="rEmail" class="m-input" placeholder="Email">
       </div>
-      <div class="m-input-wrap">
-        <svg class="m-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <input type="password" id="regPass" class="m-input" placeholder="Parolă (minim 6 caractere)">
+      <div class="mi-wrap">
+        <svg class="mi-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <input type="password" id="rPass" class="m-input" placeholder="Parolă (minim 6 caractere)">
       </div>
-      <div class="m-input-wrap">
-        <svg class="m-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <input type="password" id="regPassConfirm" class="m-input" placeholder="Confirmă parola">
+      <div class="mi-wrap">
+        <svg class="mi-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <input type="password" id="rPassC" class="m-input" placeholder="Confirmă parola">
       </div>
-      <button class="m-submit" onclick="doRegister()">
+      <button class="m-sub" onclick="doRegister()">
         Creează cont
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
-      <p class="modal-note">
-        Vrei să cumperi un plan? <a href="javascript:void(0)" onclick="closeLoginModal();document.getElementById('preturi').scrollIntoView({behavior:'smooth'});">Alege planul tău →</a>
-      </p>
+      <p class="m-note">Ai deja un plan cumpărat? <a href="javascript:void(0)" onclick="switchTab('login')">Loghează-te →</a><br>
+      Vrei să cumperi? <a href="javascript:void(0)" onclick="closeModal();document.getElementById('preturi').scrollIntoView({behavior:'smooth'})">Alege planul tău →</a></p>
     </div>
 
-    <!-- FORGOT FORM -->
-    <div id="formForgot" class="auth-form">
-      <p style="font-size:.85rem;color:var(--mid);text-align:center;margin-bottom:18px;">Introdu email-ul și primești link de resetare.</p>
-      <div class="m-input-wrap">
-        <svg class="m-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        <input type="email" id="forgotEmail" class="m-input" placeholder="Email">
+    <!-- FORGOT -->
+    <div id="fForgot" class="a-form">
+      <p style="font-size:.83rem;color:var(--mid);text-align:center;margin-bottom:16px;">Introdu email-ul și primești link de resetare.</p>
+      <div class="mi-wrap">
+        <svg class="mi-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <input type="email" id="fEmail" class="m-input" placeholder="Email">
       </div>
-      <button class="m-submit" onclick="doForgot()">Trimite link resetare</button>
-      <button class="m-text-btn" onclick="switchTab('login')">← Înapoi la login</button>
+      <button class="m-sub" onclick="doForgot()">Trimite link resetare</button>
+      <button class="m-txt-btn" onclick="switchTab('login')">← Înapoi la login</button>
     </div>
   </div>
 </div>
 
+<!-- SUPABASE AUTH MODULE -->
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
 
-const SUPABASE_URL = 'https://utljkuefjdvdpmmzxnoi.supabase.co'
-const SUPABASE_ANON_KEY = 'sb_publishable_dJNniaqWOEVQLDLFms6bDQ_zoaRJqvb'
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+const SB_URL = 'https://utljkuefjdvdpmmzxnoi.supabase.co'
+const SB_KEY = 'sb_publishable_dJNniaqWOEVQLDLFms6bDQ_zoaRJqvb'
+const sb = createClient(SB_URL, SB_KEY)
+window._sb = sb
 
-window._sb = supabase
-
-// Dacă vine din user.html cu ?logout=true, deloghează-l
-const params = new URLSearchParams(location.search)
-if(params.get('logout') === 'true'){
-  await supabase.auth.signOut()
-  history.replaceState({}, '', 'index.html')
+function updateNavAuth(user) {
+  const btn = document.getElementById('navLoginBtn')
+  const sBtn = document.getElementById('stickyLoginBtn')
+  if (!btn) return
+  if (user) {
+    const email = user.email || ''
+    const short = email.split('@')[0].substring(0,12)
+    btn.textContent = '👤 ' + short
+    btn.classList.add('logged-in')
+    btn.onclick = () => doLogout()
+    if (sBtn) { sBtn.textContent = '👤 Cont'; sBtn.onclick = () => doLogout(); }
+  } else {
+    btn.textContent = '🔐 Login'
+    btn.classList.remove('logged-in')
+    btn.onclick = () => window.openModal()
+    if (sBtn) { sBtn.textContent = '🔐 Login'; sBtn.onclick = () => window.openModal(); }
+  }
 }
 
-// NU MAI REDIRECȚIONĂM AUTOMAT - lasă userul să stea pe index
+// Listen for auth state changes
+sb.auth.onAuthStateChange((event, session) => {
+  updateNavAuth(session?.user || null)
+})
 
-// FUNCȚIE UNIVERSALĂ: Redirect pe dashboard.html
-function redirectToDashboard() {
-  window.location.href = './dashboard.html'
-}
+// Check existing session on load
+sb.auth.getSession().then(({ data: { session } }) => {
+  updateNavAuth(session?.user || null)
+})
 
-// LOGIN
 window.doLogin = async function() {
-  const email = document.getElementById('loginEmail').value.trim()
-  const pass = document.getElementById('loginPass').value
-  if(!email ||!pass) return showModalMsg('Completează email și parola.','error')
-
-  showModalMsg('Se conectează...','success')
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass })
-
-  if(error) {
-    showModalMsg(error.message,'error')
-    return
-  }
-
-  showModalMsg('✅ Autentificat! Redirecționare...','success')
-  setTimeout(() => {
-    closeLoginModal()
-    redirectToDashboard()
-  }, 1000)
+  const email = document.getElementById('lEmail').value.trim()
+  const pass = document.getElementById('lPass').value
+  const remember = document.getElementById('rememberMe').checked
+  if (!email || !pass) return showMsg('Completează email și parola.','err')
+  const btn = document.getElementById('lSubmit')
+  btn.disabled = true
+  showMsg('Se conectează...','ok')
+  // persistSession controls "remember me"
+  const { data, error } = await sb.auth.signInWithPassword({
+    email, password: pass,
+    options: { persistSession: remember }
+  })
+  btn.disabled = false
+  if (error) { showMsg(error.message,'err'); return }
+  showMsg('✅ Bine ai venit!','ok')
+  setTimeout(() => window.closeModal(), 1400)
 }
 
-// REGISTER
 window.doRegister = async function() {
-  const email = document.getElementById('regEmail').value.trim()
-  const pass = document.getElementById('regPass').value
-  const confirm = document.getElementById('regPassConfirm').value
-
-  if(!email ||!pass) return showModalMsg('Completează toate câmpurile.','error')
-  if(pass!== confirm) return showModalMsg('Parolele nu coincid.','error')
-  if(pass.length < 6) return showModalMsg('Parola trebuie să aibă minim 6 caractere.','error')
-
-  showModalMsg('Se creează contul...','success')
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password: pass,
-    options: {
-      emailRedirectTo: window.location.origin + '/dashboard.html'
-    }
-  })
-
-  if(error) {
-    showModalMsg(error.message,'error')
-    return
-  }
-
-  showModalMsg('✅ Cont creat! Verifică email-ul pentru confirmare.','success')
-  setTimeout(() => {
-    switchTab('login')
-    document.getElementById('loginEmail').value = email
-  }, 2500)
+  const email = document.getElementById('rEmail').value.trim()
+  const pass = document.getElementById('rPass').value
+  const passC = document.getElementById('rPassC').value
+  if (!email || !pass) return showMsg('Completează toate câmpurile.','err')
+  if (pass !== passC) return showMsg('Parolele nu coincid.','err')
+  if (pass.length < 6) return showMsg('Parola — minim 6 caractere.','err')
+  showMsg('Se creează contul...','ok')
+  const { error } = await sb.auth.signUp({ email, password: pass })
+  if (error) { showMsg(error.message,'err'); return }
+  showMsg('✅ Cont creat! Verifică email-ul sau loghează-te.','ok')
+  setTimeout(() => { window.switchTab('login'); document.getElementById('lEmail').value = email }, 2200)
 }
 
-// FORGOT PASSWORD
 window.doForgot = async function() {
-  const email = document.getElementById('forgotEmail').value.trim()
-  if(!email) return showModalMsg('Introdu email-ul.','error')
-
-  showModalMsg('Se trimite...','success')
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '/reset-password.html'
-  })
-
-  if(error) {
-    showModalMsg(error.message,'error')
-    return
-  }
-  showModalMsg('✅ Link trimis pe email!','success')
+  const email = document.getElementById('fEmail').value.trim()
+  if (!email) return showMsg('Introdu email-ul.','err')
+  showMsg('Se trimite...','ok')
+  const { error } = await sb.auth.resetPasswordForEmail(email)
+  if (error) { showMsg(error.message,'err'); return }
+  showMsg('✅ Link trimis pe email!','ok')
 }
 
-// LOGOUT - folosește-o pe dashboard.html
 window.doLogout = async function() {
-  await supabase.auth.signOut()
-  window.location.href = './index.html'
+  await sb.auth.signOut()
+  updateNavAuth(null)
 }
+
+function showMsg(text, type) {
+  const el = document.getElementById('mMsg')
+  el.style.display = 'block'
+  el.className = 'm-msg ' + type
+  el.textContent = text
+}
+window._showAuthMsg = showMsg
 </script>
 
 <script>
