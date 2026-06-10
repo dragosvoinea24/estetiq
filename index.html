@@ -1442,6 +1442,13 @@ const SB_KEY = 'sb_publishable_dJNniaqWOEVQLDLFms6bDQ_zoaRJqvb'
 const sb = createClient(SB_URL, SB_KEY)
 window._sb = sb
 
+// Dacă vine din user.html cu?logout=true, deloghează-l
+const params = new URLSearchParams(location.search)
+if(params.get('logout') === 'true'){
+  await sb.auth.signOut()
+  history.replaceState({}, '', 'index.html')
+}
+
 function updateNavAuth(user) {
   const btn = document.getElementById('navLoginBtn')
   const sBtn = document.getElementById('stickyLoginBtn')
@@ -1475,30 +1482,40 @@ window.doLogin = async function() {
   const email = document.getElementById('lEmail').value.trim()
   const pass = document.getElementById('lPass').value
   const remember = document.getElementById('rememberMe').checked
-  if (!email || !pass) return showMsg('Completează email și parola.','err')
+  if (!email ||!pass) return showMsg('Completează email și parola.','err')
   const btn = document.getElementById('lSubmit')
   btn.disabled = true
   showMsg('Se conectează...','ok')
-  // persistSession controls "remember me"
+
   const { data, error } = await sb.auth.signInWithPassword({
-    email, password: pass,
-    options: { persistSession: remember }
+    email,
+    password: pass
   })
+
   btn.disabled = false
   if (error) { showMsg(error.message,'err'); return }
   showMsg('✅ Bine ai venit!','ok')
-  setTimeout(() => window.closeModal(), 1400)
+  setTimeout(() => {
+    window.closeModal()
+    window.location.href = './dashboard.html'
+  }, 1000)
 }
 
 window.doRegister = async function() {
   const email = document.getElementById('rEmail').value.trim()
   const pass = document.getElementById('rPass').value
   const passC = document.getElementById('rPassC').value
-  if (!email || !pass) return showMsg('Completează toate câmpurile.','err')
-  if (pass !== passC) return showMsg('Parolele nu coincid.','err')
+  if (!email ||!pass) return showMsg('Completează toate câmpurile.','err')
+  if (pass!== passC) return showMsg('Parolele nu coincid.','err')
   if (pass.length < 6) return showMsg('Parola — minim 6 caractere.','err')
   showMsg('Se creează contul...','ok')
-  const { error } = await sb.auth.signUp({ email, password: pass })
+  const { error } = await sb.auth.signUp({
+    email,
+    password: pass,
+    options: {
+      emailRedirectTo: window.location.origin + '/dashboard.html'
+    }
+  })
   if (error) { showMsg(error.message,'err'); return }
   showMsg('✅ Cont creat! Verifică email-ul sau loghează-te.','ok')
   setTimeout(() => { window.switchTab('login'); document.getElementById('lEmail').value = email }, 2200)
@@ -1508,7 +1525,9 @@ window.doForgot = async function() {
   const email = document.getElementById('fEmail').value.trim()
   if (!email) return showMsg('Introdu email-ul.','err')
   showMsg('Se trimite...','ok')
-  const { error } = await sb.auth.resetPasswordForEmail(email)
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/reset-password.html'
+  })
   if (error) { showMsg(error.message,'err'); return }
   showMsg('✅ Link trimis pe email!','ok')
 }
@@ -1516,6 +1535,7 @@ window.doForgot = async function() {
 window.doLogout = async function() {
   await sb.auth.signOut()
   updateNavAuth(null)
+  window.location.href = './index.html'
 }
 
 function showMsg(text, type) {
@@ -1525,6 +1545,38 @@ function showMsg(text, type) {
   el.textContent = text
 }
 window._showAuthMsg = showMsg
+
+// Helper functions pentru modal
+window.openModal = function() {
+  document.getElementById('loginModal').classList.add('show')
+  document.body.style.overflow = 'hidden'
+}
+
+window.closeModal = function() {
+  document.getElementById('loginModal').classList.remove('show')
+  document.body.style.overflow = ''
+  document.getElementById('mMsg').style.display = 'none'
+}
+
+window.switchTab = function(tab) {
+  document.querySelectorAll('.m-tab').forEach(t => t.classList.remove('active'))
+  document.querySelectorAll('.a-form').forEach(f => f.classList.remove('active'))
+
+  if(tab === 'login') {
+    document.getElementById('tabL').classList.add('active')
+    document.getElementById('fLogin').classList.add('active')
+  } else if(tab === 'register') {
+    document.getElementById('tabR').classList.add('active')
+    document.getElementById('fRegister').classList.add('active')
+  } else if(tab === 'forgot') {
+    document.getElementById('fForgot').classList.add('active')
+  }
+  document.getElementById('mMsg').style.display = 'none'
+}
+
+window.handleModalBg = function(e) {
+  if(e.target.id === 'loginModal') closeModal()
+}
 </script>
 
 <script>
