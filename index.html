@@ -1439,46 +1439,112 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 window._sb = supabase
 
-// Check session on load
-supabase.auth.getSession().then(({ data: { session } }) => {
+// Verifică sesiunea la încărcare - dacă e logat îl duce direct pe pagina lui
+supabase.auth.getSession().then(async ({ data: { session } }) => {
   if (session) {
     console.log('User logged in:', session.user.email)
-    // Could redirect to member area here
+    await redirectToUserPage(session.user.id)
   }
 })
 
+// LOGIN
 window.doLogin = async function() {
   const email = document.getElementById('loginEmail').value.trim()
   const pass = document.getElementById('loginPass').value
-  if(!email || !pass) return showModalMsg('Completează email și parola.','error')
+  if(!email ||!pass) return showModalMsg('Completează email și parola.','error')
+
   showModalMsg('Se conectează...','success')
   const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass })
-  if(error) { showModalMsg(error.message,'error'); return; }
-  showModalMsg('✅ Autentificat! Bine ai venit!','success')
-  setTimeout(() => { closeLoginModal(); }, 1500)
+
+  if(error) {
+    showModalMsg(error.message,'error')
+    return
+  }
+
+  showModalMsg('✅ Autentificat! Redirecționare...','success')
+  setTimeout(async () => {
+    closeLoginModal()
+    await redirectToUserPage(data.user.id)
+  }, 1000)
 }
 
+// REGISTER
 window.doRegister = async function() {
   const email = document.getElementById('regEmail').value.trim()
   const pass = document.getElementById('regPass').value
   const confirm = document.getElementById('regPassConfirm').value
-  if(!email || !pass) return showModalMsg('Completează toate câmpurile.','error')
-  if(pass !== confirm) return showModalMsg('Parolele nu coincid.','error')
+
+  if(!email ||!pass) return showModalMsg('Completează toate câmpurile.','error')
+  if(pass!== confirm) return showModalMsg('Parolele nu coincid.','error')
   if(pass.length < 6) return showModalMsg('Parola trebuie să aibă minim 6 caractere.','error')
+
   showModalMsg('Se creează contul...','success')
-  const { data, error } = await supabase.auth.signUp({ email, password: pass })
-  if(error) { showModalMsg(error.message,'error'); return; }
-  showModalMsg('✅ Cont creat! Verifică email-ul sau loghează-te direct.','success')
-  setTimeout(() => { switchTab('login'); document.getElementById('loginEmail').value = email; }, 2500)
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password: pass,
+    options: {
+      emailRedirectTo: window.location.origin + '/user.html'
+    }
+  })
+
+  if(error) {
+    showModalMsg(error.message,'error')
+    return
+  }
+
+  showModalMsg('✅ Cont creat! Verifică email-ul pentru confirmare.','success')
+  setTimeout(() => {
+    switchTab('login')
+    document.getElementById('loginEmail').value = email
+  }, 2500)
 }
 
+// FORGOT PASSWORD
 window.doForgot = async function() {
   const email = document.getElementById('forgotEmail').value.trim()
   if(!email) return showModalMsg('Introdu email-ul.','error')
+
   showModalMsg('Se trimite...','success')
-  const { error } = await supabase.auth.resetPasswordForEmail(email)
-  if(error) { showModalMsg(error.message,'error'); return; }
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/reset-password.html'
+  })
+
+  if(error) {
+    showModalMsg(error.message,'error')
+    return
+  }
   showModalMsg('✅ Link trimis pe email!','success')
+}
+
+// FUNCȚIE: Verifică rolul și redirecționează pe pagina userului
+async function redirectToUserPage(userId) {
+  const { data: profile, error } = await supabase
+   .from('profiles')
+   .select('role, subscription_end, full_name')
+   .eq('id', userId)
+   .single()
+
+  if (error) {
+    console.error('Eroare la profil:', error)
+    showModalMsg('Eroare la încărcarea profilului','error')
+    return
+  }
+
+  // Verifică dacă abonamentul monthly a expirat
+  if (profile.role === 'premium' && profile.subscription_end) {
+    if (new Date(profile.subscription_end) < new Date()) {
+      await supabase.from('profiles').update({ role: 'guest' }).eq('id', userId)
+    }
+  }
+
+  // Redirect pe pagina personală cu ID-ul userului
+  window.location.href = `./user.html?id=${userId}`
+}
+
+// LOGOUT - folosește-o pe user.html
+window.doLogout = async function() {
+  await supabase.auth.signOut()
+  window.location.href = './index.html'
 }
 </script>
 
