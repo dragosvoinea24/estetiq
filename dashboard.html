@@ -1,16 +1,40 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"></head>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dashboard - estetiq.fit</title>
+</head>
 <body>
 <script type="module">
-import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-const s=createClient('https://utljkuefjdvdpmmzxnoi.supabase.co','sb_publishable_dJNniaqWOEVQLDLFms6bDQ_zoaRJqvb')
-const u=new URLSearchParams(location.search).get('id')
-const{data:{session}}=await s.auth.getSession()
-if(!session||session.user.id!==u){location.href='./index.html'}else{
-const{data:p}=await s.from('profiles').select('plan_level').eq('id',u).single()
-if(!p||p.plan_level===0||p.plan_level===null){location.href='user.html';return}
-const{data:pr}=await s.from('programs').select('html_content').eq('sort_order',p.plan_level).single()
-if(!pr?.html_content){location.href='user.html';return}
-document.open();document.write(pr.html_content);document.close()}
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+  const supabase = createClient('https://utljkuefjdvdpmmzxnoi.supabase.co','sb_publishable_dJNniaqWOEVQLDLFms6bDQ_zoaRJqvb')
+  
+  const u = new URLSearchParams(location.search).get('id')
+  const { data: { session } } = await supabase.auth.getSession()
+  
+  if(!session || session.user.id !== u){
+    location.href = './index.html'
+    return
+  }
+  
+  const { data: p } = await supabase.from('profiles').select('plan_level').eq('id', u).single()
+  
+  if(!p || p.plan_level === 0 || p.plan_level === null){
+    location.href = 'user.html'
+    return
+  }
+  
+  const { data: pr } = await supabase.from('programs').select('html_content').eq('sort_order', p.plan_level).single()
+  
+  if(!pr?.html_content){
+    location.href = 'user.html'
+    return
+  }
+  
+  document.open()
+  document.write(pr.html_content)
+  document.close()
 </script>
-</body></html>
+</body>
+</html>
