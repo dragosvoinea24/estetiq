@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<link rel="apple-touch-icon" href="https://dododragos.neocities.org/PictogramaAlimentatie.jpeg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SB Alimentație">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>| Summer Body </title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0d0d;
+  --bg2:#141414;
+  --bg3:#1a1a1a;
+  --surface:#212121;
+  --surface2:#2a2a2a;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+  --lime:#c6f135;
+  --lime-dim:rgba(198,241,53,0.12);
+  --lime-glow:rgba(198,241,53,0.25);
+  --orange:#ff7340;
+  --orange-dim:rgba(255,115,64,0.12);
+  --blue:#4fc3f7;
+  --blue-dim:rgba(79,195,247,0.12);
+  --purple:#b57aff;
+  --purple-dim:rgba(181,122,255,0.12);
+  --white:#f5f5f0;
+  --gray:#7a7a7a;
+  --gray2:#555;
+  --text:#e8e8e3;
+  --red:#ff5252;
+  --green:#4caf7d;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100dvh;
+  overflow-x:hidden;
+  padding-top:var(--safe-top);
+  padding-bottom:calc(72px + var(--safe-bottom));
+  position:relative;
+}
+
+/* NOISE TEXTURE */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:0.5;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* GLOW ORBS */
+.orbs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.15;animation:orbFloat 25s ease-in-out infinite}
+.orb1{width:400px;height:400px;background:var(--lime);top:-10%;left:-15%;animation-delay:0s}
+.orb2{width:300px;height:300px;background:var(--orange);bottom:5%;right:-10%;animation-delay:8s}
+.orb3{width:250px;height:250px;background:var(--purple);top:40%;left:50%;animation-delay:16s}
+@keyframes orbFloat{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(40px,-60px) scale(1.15)}
+  66%{transform:translate(-30px,30px) scale(0.9)}
+}
+
+/* INTRO SCREEN */
+#intro{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
+  animation:introOut 0.5s ease 2.4s forwards;
+}
+@keyframes introOut{to{opacity:0;visibility:hidden;pointer-events:none}}
+.intro-icon{
+  width:80px;height:80px;
+  background:var(--lime);
+  border-radius:28px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:36px;
+  animation:iconPop 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+  box-shadow:0 0 60px var(--lime-glow);
+}
+@keyframes iconPop{from{transform:scale(0) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.intro-title{
+  font-family:'Syne',sans-serif;
+  font-size:1.6rem;font-weight:800;letter-spacing:-0.5px;
+  text-align:center;line-height:1.2;
+  animation:slideUp 0.5s ease 0.5s both;
+}
+.intro-title span{color:var(--lime)}
+.intro-sub{font-size:0.85rem;color:var(--gray);letter-spacing:2px;text-transform:uppercase;animation:slideUp 0.5s ease 0.7s both}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.intro-bar{
+  width:180px;height:2px;background:rgba(255,255,255,0.1);border-radius:10px;overflow:hidden;
+  animation:slideUp 0.5s ease 0.8s both;
+}
+.intro-fill{height:100%;width:0%;background:var(--lime);animation:fillBar 2s ease 0.9s forwards}
+@keyframes fillBar{to{width:100%}}
+
+/* HEADER */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(13,13,13,0.9);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  padding:14px 20px;
+}
+.header-inner{max-width:520px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{
+  font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;letter-spacing:-0.3px;
+  display:flex;align-items:center;gap:10px;
+}
+.logo-dot{width:10px;height:10px;background:var(--lime);border-radius:50%;box-shadow:0 0 8px var(--lime)}
+.header-badge{
+  font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  background:var(--lime-dim);color:var(--lime);
+  padding:4px 10px;border-radius:20px;border:1px solid rgba(198,241,53,0.2);
+}
+
+/* TABS */
+.tabs-wrap{
+  position:sticky;top:57px;z-index:99;
+  background:rgba(13,13,13,0.95);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+}
+.tabs-wrap::-webkit-scrollbar{display:none}
+.tabs{display:flex;gap:4px;padding:10px 16px;min-width:max-content}
+.tab{
+  padding:8px 16px;border:none;background:transparent;
+  color:var(--gray);font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;
+  border-radius:10px;cursor:pointer;white-space:nowrap;
+  transition:all 0.25s ease;letter-spacing:0.2px;
+}
+.tab.active{background:var(--lime);color:#0d0d0d;font-weight:700}
+.tab:not(.active):active{background:var(--surface);color:var(--white)}
+
+/* MAIN CONTENT */
+main{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:20px 16px}
+.section{display:none;animation:sectionIn 0.35s ease}
+.section.active{display:block}
+@keyframes sectionIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;padding:20px;margin-bottom:14px;
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(135deg,rgba(255,255,255,0.03),transparent);
+  pointer-events:none;
+}
+.card-accent{border-top:2px solid var(--lime)}
+.card-orange{border-top:2px solid var(--orange)}
+.card-blue{border-top:2px solid var(--blue)}
+.card-purple{border-top:2px solid var(--purple)}
+
+.card-title{
+  font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;
+  margin-bottom:14px;display:flex;align-items:center;gap:10px;
+}
+.card-title .icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;
+}
+.icon-lime{background:var(--lime-dim)}
+.icon-orange{background:var(--orange-dim)}
+.icon-blue{background:var(--blue-dim)}
+.icon-purple{background:var(--purple-dim)}
+
+/* PROGRESS */
+.progress-section{padding:16px 0 8px}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.progress-label{font-size:0.82rem;color:var(--gray);font-weight:500;letter-spacing:0.3px}
+.progress-val{font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;color:var(--lime)}
+.progress-bar{height:6px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden}
+.progress-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--lime),#a8e620);
+  border-radius:999px;
+  transition:width 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* MEAL CARDS */
+.meal-time-label{
+  font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--lime);margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
+.meal-time-label::before{content:'';width:4px;height:4px;background:var(--lime);border-radius:50%}
+.meal-title{
+  font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:4px;
+}
+.meal-cal{
+  font-size:0.78rem;color:var(--gray);margin-bottom:14px;
+}
+.alt-toggle{
+  display:flex;gap:6px;margin-bottom:14px;
+}
+.alt-btn{
+  padding:5px 12px;border:1px solid var(--border2);border-radius:8px;
+  background:transparent;color:var(--gray);font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:600;
+  cursor:pointer;transition:all 0.2s ease;
+}
+.alt-btn.active{background:var(--lime);color:#0d0d0d;border-color:var(--lime)}
+.food-option{display:none}
+.food-option.active{display:block}
+.food-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 0;border-bottom:1px solid var(--border);
+}
+.food-row:last-child{border:none}
+.food-name{font-size:0.9rem;font-weight:500;line-height:1.3}
+.food-name small{display:block;font-size:0.75rem;color:var(--gray);font-weight:400;margin-top:2px}
+.food-amount{
+  font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;
+  color:var(--lime);white-space:nowrap;margin-left:12px;
+}
+.macros-row{
+  display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);
+}
+.macro-chip{
+  flex:1;background:var(--bg3);border-radius:10px;padding:8px;text-align:center;
+}
+.macro-chip-val{font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:800;color:var(--white)}
+.macro-chip-lab{font-size:0.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px}
+.macro-prot .macro-chip-val{color:var(--orange)}
+.macro-carb .macro-chip-val{color:var(--lime)}
+.macro-fat .macro-chip-val{color:var(--blue)}
+
+/* CHECKLIST */
+.checklist{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.check-item{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;background:var(--bg3);
+  border-radius:14px;cursor:pointer;
+  border:1px solid transparent;
+  transition:all 0.22s ease;position:relative;overflow:hidden;
+}
+.check-item.done{
+  background:rgba(198,241,53,0.08);
+  border-color:rgba(198,241,53,0.25);
+}
+.check-item.done::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 50%,rgba(198,241,53,0.05),transparent);
+}
+.check-box{
+  width:22px;height:22px;min-width:22px;border-radius:7px;
+  border:2px solid var(--border2);background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1);
+}
+.check-item.done .check-box{
+  background:var(--lime);border-color:var(--lime);transform:scale(1.05);
+}
+.check-box svg{width:13px;height:13px;stroke:#0d0d0d;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;fill:none;opacity:0;transform:scale(0);transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1)}
+.check-item.done .check-box svg{opacity:1;transform:scale(1)}
+.check-text{font-size:0.9rem;font-weight:500;line-height:1.3;flex:1}
+.check-sub{font-size:0.75rem;color:var(--gray);margin-top:2px}
+
+/* INFO BOXES */
+.info-box{
+  background:var(--lime-dim);border:1px solid rgba(198,241,53,0.2);
+  border-radius:14px;padding:14px 16px;margin:12px 0;
+}
+.info-box.orange{background:var(--orange-dim);border-color:rgba(255,115,64,0.25)}
+.info-box.blue{background:var(--blue-dim);border-color:rgba(79,195,247,0.25)}
+.info-box.purple{background:var(--purple-dim);border-color:rgba(181,122,255,0.25)}
+.info-box.warn{background:rgba(255,82,82,0.08);border-color:rgba(255,82,82,0.25)}
+.info-box p,.info-box-text{font-size:0.85rem;line-height:1.7;color:var(--text)}
+.info-title{
+  font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.5px;
+  text-transform:uppercase;color:var(--lime);margin-bottom:6px;
+}
+.info-title.orange{color:var(--orange)}
+.info-title.blue{color:var(--blue)}
+.info-title.purple{color:var(--purple)}
+.info-title.warn{color:var(--red)}
+
+/* SUPPLEMENTS */
+.supp-card{
+  background:var(--bg3);border:1px solid var(--border);border-radius:14px;
+  padding:16px;margin-bottom:10px;
+}
+.supp-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.supp-name{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;line-height:1.2}
+.supp-badge{
+  font-size:0.62rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;
+  padding:3px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0;
+}
+.badge-essential{background:var(--lime);color:#0d0d0d}
+.badge-optional{background:var(--surface2);color:var(--gray)}
+.badge-mental{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(181,122,255,0.3)}
+.badge-female{background:rgba(255,105,180,0.15);color:#ff69b4;border:1px solid rgba(255,105,180,0.3)}
+.badge-joints{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(79,195,247,0.3)}
+.supp-dose{
+  font-size:0.8rem;color:var(--gray);margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.supp-dose strong{color:var(--text)}
+.supp-why{font-size:0.83rem;line-height:1.7;color:var(--gray)}
+.supp-why strong{color:var(--text)}
+.supp-brand{font-size:0.75rem;color:var(--orange);margin-top:8px;font-weight:600}
+.supp-study{
+  font-size:0.77rem;color:var(--purple);margin-top:6px;font-style:italic;
+}
+
+/* DAILY TOTALS */
+.totals-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.total-item{
+  background:var(--bg3);border-radius:12px;padding:12px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.total-val{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800}
+.total-lab{font-size:0.72rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px}
+.color-lime{color:var(--lime)}
+.color-orange{color:var(--orange)}
+.color-blue{color:var(--blue)}
+.color-purple{color:var(--purple)}
+
+/* ACCORDION */
+.acc{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:8px}
+.acc-head{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:14px 16px;cursor:pointer;
+  background:var(--bg3);transition:background 0.2s ease;
+}
+.acc-head:active{background:var(--surface)}
+.acc-head-left{display:flex;align-items:center;gap:10px}
+.acc-label{font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700}
+.acc-sub{font-size:0.75rem;color:var(--gray)}
+.acc-arrow{transition:transform 0.3s ease;font-size:12px;color:var(--gray)}
+.acc.open .acc-arrow{transform:rotate(180deg)}
+.acc-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+.acc.open .acc-body{max-height:3000px}
+.acc-content{padding:16px}
+
+/* SECTION HEADING */
+.sec-heading{
+  font-family:'Syne',sans-serif;font-size:0.7rem;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--gray2);
+  margin:20px 0 10px;padding-left:4px;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(13,13,13,0.97);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-top:1px solid var(--border);
+  padding:8px 12px calc(8px + var(--safe-bottom));
+  display:flex;gap:4px;
+}
+.nav-btn{
+  flex:1;padding:8px 4px;border:none;background:transparent;
+  border-radius:12px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  transition:all 0.2s ease;
+  font-family:'DM Sans',sans-serif;font-size:0.68rem;font-weight:600;color:var(--gray);
+}
+.nav-btn.active{background:var(--lime-dim);color:var(--lime)}
+.nav-icon{font-size:20px;line-height:1}
+
+/* WATER TRACKER */
+.water-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin:12px 0}
+.water-drop{
+  aspect-ratio:1;border-radius:50%;border:2px solid var(--border2);
+  cursor:pointer;transition:all 0.2s ease;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+.water-drop.filled{border-color:var(--blue);background:var(--blue-dim)}
+.water-drop:active{transform:scale(0.88)}
+
+/* WEEK SELECTOR */
+.week-pills{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+.week-pills::-webkit-scrollbar{display:none}
+.day-pill{
+  padding:6px 14px;border-radius:10px;border:1px solid var(--border);
+  background:transparent;color:var(--gray);
+  font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:700;
+  cursor:pointer;transition:all 0.2s ease;white-space:nowrap;
+}
+.day-pill.active{background:var(--lime);color:#0d0d0d;border-color:var(--lime)}
+
+/* CONFETTI */
+.confetti-piece{
+  position:fixed;width:8px;height:8px;z-index:9999;
+  pointer-events:none;border-radius:2px;
+  animation:confettiFall 0.9s ease-out forwards;
+}
+@keyframes confettiFall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1}
+  100%{transform:translateY(80px) rotate(540deg);opacity:0}
+}
+.pop-emoji{
+  position:fixed;font-size:22px;z-index:9999;pointer-events:none;
+  animation:popFloat 1.2s ease-out forwards;
+}
+@keyframes popFloat{
+  0%{transform:translateY(0) scale(0.5);opacity:1}
+  60%{transform:translateY(-60px) scale(1.1);opacity:1}
+  100%{transform:translateY(-90px) scale(1);opacity:0}
+}
+
+/* FOOTER */
+footer{
+  text-align:center;padding:24px 16px;font-size:0.75rem;color:var(--gray2);line-height:1.8;
+}
+.contact-row{
+  display:flex;gap:8px;margin-top:12px;
+}
+.contact-btn{
+  flex:1;padding:13px;border-radius:14px;border:none;cursor:pointer;
+  font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:700;
+  text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:transform 0.15s ease,opacity 0.15s ease;
+}
+.contact-btn:active{transform:scale(0.96);opacity:0.85}
+.btn-wa{background:linear-gradient(135deg,#25D366,#1ebe60);color:#fff}
+.btn-ig{background:linear-gradient(135deg,#e1306c,#c13584);color:#fff}
+</style>
+</head>
+<body>
+<div class="orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="intro-icon">🌿</div>
+  <div class="intro-title">SUMMER BODY<br><span>PROTOCOL</span></div>
+  <div class="intro-sub">Plan Alimentație Complet</div>
+  <div class="intro-bar"><div class="intro-fill"></div></div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo"><div class="logo-dot"></div>SUMMER BODY</div>
+    <div class="header-badge">Plan Activ ✓</div>
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('plan')">📋 Plan Zilnic</button>
+    <button class="tab" onclick="switchTab('tracker')">✅ Tracker</button>
+    <button class="tab" onclick="switchTab('supp')">💊 Suplimente</button>
+    <button class="tab" onclick="switchTab('mental')">🧠 Focus Mental</button>
+    <button class="tab" onclick="switchTab('lista')">🛒 Lista</button>
+  </div>
+</div>
+
+<main>
+
+<!-- ========== PLAN ZILNIC ========== -->
+<div id="tab-plan" class="section active">
+
+  <div class="card card-accent">
+    <div class="progress-section">
+      <div class="progress-row">
+        <span class="progress-label">PROGRES AZI</span>
+        <span class="progress-val" id="prog-text">0 / 5 mese</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
+    </div>
+    <div class="totals-grid">
+      <div class="total-item"><div class="total-val color-lime">~2200</div><div class="total-lab">Calorii / zi</div></div>
+      <div class="total-item"><div class="total-val color-orange">180g</div><div class="total-lab">Proteine</div></div>
+      <div class="total-item"><div class="total-val color-blue">220g</div><div class="total-lab">Carbohidrați</div></div>
+      <div class="total-item"><div class="total-val color-purple">65g</div><div class="total-lab">Grăsimi</div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-title">Cum funcționează planul</div>
+    <div class="info-box-text">Fiecare masă are 2-3 variante cu valori nutriționale identice. Alege ce îți convine în ziua respectivă. Greutatea se cântărește CRUDĂ, înainte de gătit.</div>
+  </div>
+
+  <!-- MASA 1 -->
+  <div class="sec-heading">MASA 1 — 07:30</div>
+  <div class="card card-orange">
+    <div class="meal-time-label">Mic Dejun · Start puternic</div>
+    <div class="meal-title">Proteină + Carbohidrați Complecși</div>
+    <div class="meal-cal">~550 kcal · 40g P · 55g C · 18g G</div>
+    <div class="alt-toggle">
+      <button class="alt-btn active" onclick="switchAlt('m1','a')">Opțiunea A</button>
+      <button class="alt-btn" onclick="switchAlt('m1','b')">Opțiunea B</button>
+      <button class="alt-btn" onclick="switchAlt('m1','c')">Opțiunea C</button>
+    </div>
+    <div class="food-option active" id="m1-a">
+      <div class="food-row"><div class="food-name">4 ouă întregi<small>Omletă sau fierte</small></div><div class="food-amount">200g</div></div>
+      <div class="food-row"><div class="food-name">Cremă de orez<small>Fiartă cu apă, gust neutru, absorbție rapidă</small></div><div class="food-amount">70g crud</div></div>
+      <div class="food-row"><div class="food-name">Banană<small>Potasiu + glucoză naturală pentru energie</small></div><div class="food-amount">1 buc · 120g</div></div>
+      <div class="food-row"><div class="food-name">Unt de arahide<small>Grăsimi bune + calorii dense</small></div><div class="food-amount">15g</div></div>
+    </div>
+    <div class="food-option" id="m1-b">
+      <div class="food-row"><div class="food-name">Iaurt grecesc 0%<small>Proteină completă, probiotic natural</small></div><div class="food-amount">200g</div></div>
+      <div class="food-row"><div class="food-name">Fulgi de ovăz instant<small>Carbohidrat complex, fibre</small></div><div class="food-amount">70g</div></div>
+      <div class="food-row"><div class="food-name">3 albușuri<small>Adaugi pe lângă iaurt, în shake, sau fierte</small></div><div class="food-amount">90g</div></div>
+      <div class="food-row"><div class="food-name">Fructe de pădure congelate<small>Antioxidanți, gust fără calorii extra</small></div><div class="food-amount">100g</div></div>
+      <div class="food-row"><div class="food-name">Nuci crude<small>Omega-3, sătietate</small></div><div class="food-amount">20g</div></div>
+    </div>
+    <div class="food-option" id="m1-c">
+      <div class="food-row"><div class="food-name">Conservă de Ton NIXE <small>1 conservă · proteină pură, ieftină, gata instant</small></div><div class="food-amount">150g scurs</div></div>
+      <div class="food-row"><div class="food-name">Pâine integrală<small>Carbohidrat complex + fibre</small></div><div class="food-amount">80g · 2 felii</div></div>
+      <div class="food-row"><div class="food-name">2 ouă fierte<small>Grăsimi bune + vitamina D</small></div><div class="food-amount">100g</div></div>
+      <div class="food-row"><div class="food-name">Roșii + castravete<small>Hidratare + vitamine</small></div><div class="food-amount">după gust</div></div>
+    </div>
+    <div class="macros-row">
+      <div class="macro-chip macro-prot"><div class="macro-chip-val">40g</div><div class="macro-chip-lab">Proteine</div></div>
+      <div class="macro-chip macro-carb"><div class="macro-chip-val">55g</div><div class="macro-chip-lab">Carbo</div></div>
+      <div class="macro-chip macro-fat"><div class="macro-chip-val">18g</div><div class="macro-chip-lab">Grăsimi</div></div>
+    </div>
+  </div>
+
+  <!-- MASA 2 -->
+  <div class="sec-heading">MASA 2 — 10:30</div>
+  <div class="card">
+    <div class="meal-time-label">Gustare Matinală · Menține energia</div>
+    <div class="meal-title">Proteină Rapidă</div>
+    <div class="meal-cal">~280 kcal · 30g P · 20g C · 8g G</div>
+    <div class="alt-toggle">
+      <button class="alt-btn active" onclick="switchAlt('m2','a')">Opțiunea A</button>
+      <button class="alt-btn" onclick="switchAlt('m2','b')">Opțiunea B</button>
+    </div>
+    <div class="food-option active" id="m2-a">
+      <div class="food-row"><div class="food-name">Shake Whey Protein<small>Dizolvat în apă rece · absorbție maximă</small></div><div class="food-amount">30g (1 cupă)</div></div>
+      <div class="food-row"><div class="food-name">Măr sau pară<small>Fibre + fructoză naturală</small></div><div class="food-amount">1 buc · 150g</div></div>
+      <div class="food-row"><div class="food-name">Migdale crude<small>Vitamina E + grăsimi bune</small></div><div class="food-amount">20g · ~20 buc</div></div>
+    </div>
+    <div class="food-option" id="m2-b">
+      <div class="food-row"><div class="food-name">Brânză de vaci slabă<small>Caseină lentă + calciu</small></div><div class="food-amount">200g</div></div>
+      <div class="food-row"><div class="food-name">Conservă de Ton NIXE<small>Instant, zero prep, proteine complete</small></div><div class="food-amount">½ conservă · 75g</div></div>
+      <div class="food-row"><div class="food-name">Biscuiți integrali<small>Carbohidrat complex</small></div><div class="food-amount">30g</div></div>
+    </div>
+    <div class="macros-row">
+      <div class="macro-chip macro-prot"><div class="macro-chip-val">30g</div><div class="macro-chip-lab">Proteine</div></div>
+      <div class="macro-chip macro-carb"><div class="macro-chip-val">20g</div><div class="macro-chip-lab">Carbo</div></div>
+      <div class="macro-chip macro-fat"><div class="macro-chip-val">8g</div><div class="macro-chip-lab">Grăsimi</div></div>
+    </div>
+  </div>
+
+  <!-- MASA 3 -->
+  <div class="sec-heading">MASA 3 — 13:30</div>
+  <div class="card card-accent">
+    <div class="meal-time-label">Prânz · Masa principală</div>
+    <div class="meal-title">Proteină + Carbohidrați + Legume</div>
+    <div class="meal-cal">~600 kcal · 50g P · 65g C · 14g G</div>
+    <div class="alt-toggle">
+      <button class="alt-btn active" onclick="switchAlt('m3','a')">Opțiunea A</button>
+      <button class="alt-btn" onclick="switchAlt('m3','b')">Opțiunea B</button>
+      <button class="alt-btn" onclick="switchAlt('m3','c')">Opțiunea C</button>
+    </div>
+    <div class="food-option active" id="m3-a">
+      <div class="food-row"><div class="food-name">Piept de pui la grătar<small>Condimentat cu boia, usturoi, sare</small></div><div class="food-amount">180g crud</div></div>
+      <div class="food-row"><div class="food-name">Orez alb fiert<small>Carbohydrat rapid, energia mușchilor</small></div><div class="food-amount">90g crud</div></div>
+      <div class="food-row"><div class="food-name">Sparanghel la abur<small>Zero calorii utile, detox, senzație de plin</small></div><div class="food-amount">200g</div></div>
+      <div class="food-row"><div class="food-name">Ulei de măsline extravirgin<small>Omega-9, anti-inflamator</small></div><div class="food-amount">10ml</div></div>
+    </div>
+    <div class="food-option" id="m3-b">
+      <div class="food-row"><div class="food-name">Piept de curcan tocat<small>Mai slab decât pui, mai gustos</small></div><div class="food-amount">180g crud</div></div>
+      <div class="food-row"><div class="food-name">Cartofi dulci la cuptor<small>Beta-caroten + carbohidrat complex</small></div><div class="food-amount">200g cruzi</div></div>
+      <div class="food-row"><div class="food-name">Fasole verde la abur<small>Fibre + potasiu</small></div><div class="food-amount">150g</div></div>
+      <div class="food-row"><div class="food-name">Ulei de măsline<small>Pe deasupra, după gătire</small></div><div class="food-amount">10ml</div></div>
+    </div>
+    <div class="food-option" id="m3-c">
+      <div class="food-row"><div class="food-name">Somon file la cuptor<small>Omega-3 · cel mai bun pește pentru corp</small></div><div class="food-amount">150g crud</div></div>
+      <div class="food-row"><div class="food-name">Quinoa fiartă<small>Proteină vegetală + toți aminoacizii esențiali</small></div><div class="food-amount">80g crud</div></div>
+      <div class="food-row"><div class="food-name">Brocoli la abur<small>Sulforafan · cel mai dens nutrițional</small></div><div class="food-amount">200g</div></div>
+      <div class="food-row"><div class="food-name">Lamaie + ulei de măsline<small>Dressing natural simplu</small></div><div class="food-amount">½ lămâie + 8ml ulei</div></div>
+    </div>
+    <div class="macros-row">
+      <div class="macro-chip macro-prot"><div class="macro-chip-val">50g</div><div class="macro-chip-lab">Proteine</div></div>
+      <div class="macro-chip macro-carb"><div class="macro-chip-val">65g</div><div class="macro-chip-lab">Carbo</div></div>
+      <div class="macro-chip macro-fat"><div class="macro-chip-val">14g</div><div class="macro-chip-lab">Grăsimi</div></div>
+    </div>
+  </div>
+
+  <!-- MASA 4 -->
+  <div class="sec-heading">MASA 4 — 16:30 · Pre-antrenament</div>
+  <div class="card card-blue">
+    <div class="meal-time-label">Pre-workout · Energie pentru sală</div>
+    <div class="meal-title">Carbohidrați + Proteină Ușoară</div>
+    <div class="meal-cal">~420 kcal · 35g P · 55g C · 6g G</div>
+    <div class="alt-toggle">
+      <button class="alt-btn active" onclick="switchAlt('m4','a')">Opțiunea A</button>
+      <button class="alt-btn" onclick="switchAlt('m4','b')">Opțiunea B</button>
+    </div>
+    <div class="food-option active" id="m4-a">
+      <div class="food-row"><div class="food-name">Cremă de orez<small>Absorbție rapidă înainte de antrenament</small></div><div class="food-amount">70g crud</div></div>
+      <div class="food-row"><div class="food-name">Shake Whey Protein<small>30-40 min înainte de sală</small></div><div class="food-amount">30g</div></div>
+      <div class="food-row"><div class="food-name">Banană<small>Potasiu + carbohidrat rapid · nu provoacă balonare</small></div><div class="food-amount">1 medie</div></div>
+    </div>
+    <div class="food-option" id="m4-b">
+      <div class="food-row"><div class="food-name">Pâine integrală<small>2 felii · carbohidrat înainte de efort</small></div><div class="food-amount">80g</div></div>
+      <div class="food-row"><div class="food-name">Conservă de Ton NIXE<small>Proteină fără grăsime · nu îngreunează stomacul</small></div><div class="food-amount">1 conservă</div></div>
+      <div class="food-row"><div class="food-name">Mere sau portocale<small>Vitamina C + carbohidrat</small></div><div class="food-amount">150g</div></div>
+    </div>
+    <div class="macros-row">
+      <div class="macro-chip macro-prot"><div class="macro-chip-val">35g</div><div class="macro-chip-lab">Proteine</div></div>
+      <div class="macro-chip macro-carb"><div class="macro-chip-val">55g</div><div class="macro-chip-lab">Carbo</div></div>
+      <div class="macro-chip macro-fat"><div class="macro-chip-val">6g</div><div class="macro-chip-lab">Grăsimi</div></div>
+    </div>
+  </div>
+
+  <!-- MASA 5 -->
+  <div class="sec-heading">MASA 5 — 20:00 · Post-antrenament</div>
+  <div class="card card-purple">
+    <div class="meal-time-label">Cina · Recuperare și construcție</div>
+    <div class="meal-title">Proteină + Grăsimi + Legume</div>
+    <div class="meal-cal">~550 kcal · 50g P · 30g C · 22g G</div>
+    <div class="alt-toggle">
+      <button class="alt-btn active" onclick="switchAlt('m5','a')">Opțiunea A</button>
+      <button class="alt-btn" onclick="switchAlt('m5','b')">Opțiunea B</button>
+      <button class="alt-btn" onclick="switchAlt('m5','c')">Opțiunea C</button>
+    </div>
+    <div class="food-option active" id="m5-a">
+      <div class="food-row"><div class="food-name">Shake Whey — imediat după sală<small>Fereastră anabolică: primele 30-40 minute</small></div><div class="food-amount">30g</div></div>
+      <div class="food-row"><div class="food-name">Somon file<small>Omega-3 anti-inflamator, recuperare rapidă</small></div><div class="food-amount">150g crud</div></div>
+      <div class="food-row"><div class="food-name">Sparanghel sau fasole verde<small>Detox + fibre</small></div><div class="food-amount">200g</div></div>
+      <div class="food-row"><div class="food-name">Cartofi dulci<small>Carbohidrat seara = glicogen muscular refăcut</small></div><div class="food-amount">150g cruzi</div></div>
+      <div class="food-row"><div class="food-name">Ulei de măsline<small>Peste legume</small></div><div class="food-amount">10ml</div></div>
+    </div>
+    <div class="food-option" id="m5-b">
+      <div class="food-row"><div class="food-name">Shake Whey — imediat post<small>Nu sări peste asta</small></div><div class="food-amount">30g</div></div>
+      <div class="food-row"><div class="food-name">Ton NIXE sau macrou conservă<small>Ieftin, gata instant, 25g proteină per conservă</small></div><div class="food-amount">1-1.5 conserve</div></div>
+      <div class="food-row"><div class="food-name">Ouă fierte<small>Proteină completă, caseină lentă pentru noapte</small></div><div class="food-amount">2 buc</div></div>
+      <div class="food-row"><div class="food-name">Orez sau paste<small>Carbohidrat post-antrenament</small></div><div class="food-amount">70g crud</div></div>
+      <div class="food-row"><div class="food-name">Salată verde cu ulei<small>Volum + vitamine</small></div><div class="food-amount">mare · 10ml ulei</div></div>
+    </div>
+    <div class="food-option" id="m5-c">
+      <div class="food-row"><div class="food-name">Shake Whey<small>Imediat post</small></div><div class="food-amount">30g</div></div>
+      <div class="food-row"><div class="food-name">Vită slabă (rasol/mușchi)<small>Creatină naturală + fier + zinc · cel mai complet</small></div><div class="food-amount">150g crud</div></div>
+      <div class="food-row"><div class="food-name">Brocoli la abur<small>Sulforafan reduce inflamația post-antrenament</small></div><div class="food-amount">200g</div></div>
+      <div class="food-row"><div class="food-name">Orez alb sau cartofi<small>Carbohidrat rapid refacere glicogen</small></div><div class="food-amount">80g crud</div></div>
+    </div>
+    <div class="macros-row">
+      <div class="macro-chip macro-prot"><div class="macro-chip-val">50g</div><div class="macro-chip-lab">Proteine</div></div>
+      <div class="macro-chip macro-carb"><div class="macro-chip-val">30g</div><div class="macro-chip-lab">Carbo</div></div>
+      <div class="macro-chip macro-fat"><div class="macro-chip-val">22g</div><div class="macro-chip-lab">Grăsimi</div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-title">💧 Apă — cel mai subevaluat supliment</div>
+    <div class="info-box-text">Minimum <strong>3 litri pe zi</strong>. În zile de sală: 3.5L. Corpul este 70% apă. Dehidratarea de 2% scade performanța la sală cu 20%. Bea constant, nu dintr-o dată. Un pahar imediat după trezire înainte de cafea.</div>
+  </div>
+
+  <div class="contact-row" style="margin-top:8px">
+    <a href="https://wa.me/40753452245?text=Salut%20Dragos,%20am%20o%20intrebare%20despre%20planul%20de%20alimentatie" class="contact-btn btn-wa" target="_blank">💬 WhatsApp</a>
+    <a href="https://instagram.com/dododragos" class="contact-btn btn-ig" target="_blank">📸 Instagram</a>
+  </div>
+</div>
+
+<!-- ========== TRACKER ========== -->
+<div id="tab-tracker" class="section">
+
+  <div class="card card-accent">
+    <div class="progress-section">
+      <div class="progress-row">
+        <span class="progress-label">MESE BIFATE AZI</span>
+        <span class="progress-val" id="check-prog-text">0 / 5</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="check-prog-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="sec-heading">MESE ZILNICE</div>
+  <div class="card">
+    <div class="checklist" id="meal-checks">
+      <div class="check-item" data-key="m1" onclick="toggleCheck(this)">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div><div class="check-text">🍳 Mic Dejun — 07:30</div><div class="check-sub">40g P · 55g C · ~550 kcal</div></div>
+      </div>
+      <div class="check-item" data-key="m2" onclick="toggleCheck(this)">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div><div class="check-text">🥪 Gustare — 10:30</div><div class="check-sub">30g P · 20g C · ~280 kcal</div></div>
+      </div>
+      <div class="check-item" data-key="m3" onclick="toggleCheck(this)">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div><div class="check-text">🍗 Prânz — 13:30</div><div class="check-sub">50g P · 65g C · ~600 kcal</div></div>
+      </div>
+      <div class="check-item" data-key="m4" onclick="toggleCheck(this)">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div><div class="check-text">⚡ Pre-Workout — 16:30</div><div class="check-sub">35g P · 55g C · ~420 kcal</div></div>
+      </div>
+      <div class="check-item" data-key="m5" onclick="toggleCheck(this)">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div><div class="check-text">🌙 Cină Post-Sală — 20:00</div><div class="check-sub">50g P · 30g C · ~550 kcal</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-heading">APĂ — TARGET 3L</div>
+  <div class="card">
+    <div class="card-title" style="margin-bottom:8px"><div class="icon icon-blue">💧</div><span>Pahar cu pahar</span></div>
+    <div style="font-size:0.82rem;color:var(--gray);margin-bottom:4px">Fiecare bulă = 375ml. Apasă pe rând.</div>
+    <div class="water-grid" id="water-grid"></div>
+    <div style="text-align:center;font-family:'Syne',sans-serif;font-size:0.9rem;color:var(--blue);margin-top:4px" id="water-text">0 / 3L</div>
+  </div>
+
+  <div class="sec-heading">ALTE OBICEIURI</div>
+  <div class="card">
+    <div class="checklist">
+      <div class="check-item" data-key="sleep" onclick="toggleCheck(this)">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div><div class="check-text">🌙 Somn 7-9 ore</div><div class="check-sub">70% din hormoni anabolici se produc noaptea</div></div>
+      </div>
+      <div class="check-item" data-key="train" onclick="toggleCheck(this)">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div><div class="check-text">🏋️ Antrenament bifat</div><div class="check-sub">Cel mai puternic stimulator hormonal natural</div></div>
+      </div>
+      <div class="check-item" data-key="creat" onclick="toggleCheck(this)">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div><div class="check-text">💊 Creatină 5g</div><div class="check-sub">Zilnic, indiferent de zi de sală sau repaus</div></div>
+      </div>
+      <div class="check-item" data-key="sun" onclick="toggleCheck(this)">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+        <div><div class="check-text">☀️ 15 min soare pe piele</div><div class="check-sub">Vitamina D naturală + oxid nitric + dispoziție</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SUPLIMENTE ========== -->
+<div id="tab-supp" class="section">
+
+  <div class="info-box">
+    <div class="info-title">Realitatea despre suplimente</div>
+    <div class="info-box-text">Suplimentele sunt 5-10% din ecuație. Mâncarea, somnul și antrenamentul fac restul de 90%. Astea de mai jos funcționează cu adevărat, au studii solide și nu sunt marketing pur.</div>
+  </div>
+
+  <div class="sec-heading">ESENȚIALE — Fundația</div>
+
+  <div class="acc open">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🥛</span>
+        <div><div class="acc-label">Whey Protein</div><div class="acc-sub">Proteina de bază</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-essential">ESENȚIAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 1 cupă (30g) cu 300ml apă rece. Dimineața și/sau imediat post-antrenament.</div>
+        <div class="supp-why">Conține toți cei 9 aminoacizi esențiali de care are nevoie corpul. Leucina din whey activează un mecanism celular care pornește construcția musculară. Un shake = 24g proteină pură în 30 de minute direct în mușchi. <strong>Nu are rost să cumperi aminoacizi separat</strong> — whey îi are pe toți în proporția perfectă și costă de 5x mai puțin.</div>
+        <div class="supp-study">📊 Meta-analiză 2022: suplimentarea cu whey a crescut masa musculară cu 1.2kg în 12 săptămâni vs aceeași alimentație fără supliment.</div>
+        <div class="supp-brand">✓ Recomandat: Optimum Nutrition Gold Standard · Dymatize ISO100 · MyProtein Impact Whey</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">⚡</span>
+        <div><div class="acc-label">Creatină Monohidrat</div><div class="acc-sub">Cel mai studiat supliment din lume</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-essential">ESENȚIAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 5g pe zi, în fiecare zi. Ora nu contează. Cu apă sau în shake. Și în zilele de pauză iei.</div>
+        <div class="supp-why">Saturează mușchii cu fosfocreatină — combustibil rapid pentru ultimele repetări grele. Practic îți dă 1-2 repetări extra per serie, ceea ce în 30 de zile înseamnă un progres enorm. Crește forța cu 5-15% și masa musculară cu 2-3kg în 8 săptămâni. <strong>Nu este steroid, nu este hormonal</strong> — este o moleculă naturală pe care corpul o produce singur în cantități mici.</div>
+        <div class="supp-study">📊 Peste 700 de studii clinice publicate. Considerat de unanimitate suplimentul natural nr.1 pentru performanță.</div>
+        <div class="supp-brand">✓ Recomandat: MyProtein Creatine Monohydrate · Optimum Nutrition Micronized Creatine</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🌿</span>
+        <div><div class="acc-label">Multivitamine</div><div class="acc-sub">Acoperă golurile din alimentație</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-essential">ESENȚIAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 1 tabletă dimineața cu prima masă. Zilnic.</div>
+        <div class="supp-why">Chiar și cu o alimentație bună, solul agricol din ziua de azi este mult mai sărac în minerale față de acum 50 de ani. Un multivitamin acoperă: Zinc (esențial pentru testosteron și imunitate), Magneziu (somn și recuperare), Vitamina B complex (energie), Fier, Seleniu. Practic elimini riscul de a-ți sabota progresul printr-un deficit de micronutrienți invizibil.</div>
+        <div class="supp-brand">✓ Recomandat: Optimum Nutrition Opti-Men (băieți) · Opti-Women (fete) · Animal Pak</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">☀️</span>
+        <div><div class="acc-label">Vitamina D3 + K2</div><div class="acc-sub">Hormonul soarelui</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-essential">ESENȚIAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 2000-4000 UI D3 + 100mcg K2 dimineața cu prima masă (cu grăsimi pentru absorbție). Zilnic.</div>
+        <div class="supp-why">Vitamina D3 funcționează mai degrabă ca un hormon decât ca o vitamină. Receptorii ei se găsesc în aproape orice celulă din corp, inclusiv în organe implicate în producția hormonală. Circa 80% din români au deficit, mai ales în sezonul rece. K2 funcționează în tandem: direcționează calciul în oase și dinți, nu în artere. Fără K2, D3 în doze mari poate fi contraproductivă.</div>
+        <div class="supp-study">📊 Un studiu pe bărbați cu deficit de D3 a arătat creșterea semnificativă a nivelului de testosteron după 12 luni de suplimentare.</div>
+        <div class="supp-brand">✓ Recomandat: Now Foods D3 5000 UI + K2 · Thorne D3/K2 Drops</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🔬</span>
+        <div><div class="acc-label">Boron (Bor)</div><div class="acc-sub">Testosteron liber crescut rapid</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-essential">ESENȚIAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 6-10mg dimineața cu prima masă. Ciclu: 2 săptămâni on, 1 săptămână off.</div>
+        <div class="supp-why">Unul dintre cele mai subevaluate suplimente. Boronul reduce SHBG — o proteină care „leagă" testosteronul și îl face inactiv. Mai puțin SHBG = mai mult testosteron liber disponibil. Reduce și estrogenul. Îmbunătățește și absorbția magneziului la nivel celular. Ieftin și eficient.</div>
+        <div class="supp-study">📊 Un studiu a arătat o creștere semnificativă a testosteronului liber după numai 7 zile de suplimentare cu 10mg bor. Ciclul este important pentru a evita adaptarea.</div>
+        <div class="supp-brand">✓ Recomandat: Now Foods Boron 3mg (iei 2 capsule) · Swanson Boron 6mg </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🍄</span>
+        <div><div class="acc-label">Cordyceps Sinensis</div><div class="acc-sub">Energie + rezistență la antrenament</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-optional">OPȚIONAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 1000-2000mg extract, 30-45 min înainte de antrenament sau dimineața.</div>
+        <div class="supp-why">Ciupercă adaptogenă folosită de mii de ani în medicina tradițională. Crește producția de ATP celular — combustibilul de bază al fiecărei celule. Îmbunătățește utilizarea oxigenului în mușchi (VO2 max). Rezultat practic: te simți mai puțin obosit în antrenamentele lungi și te recuperezi mai rapid.</div>
+        <div class="supp-study">📊 Studiu 2016: participanții au arătat îmbunătățiri semnificative ale rezistenței după 3 săptămâni de suplimentare vs placebo.</div>
+        <div class="supp-brand">✓ Recomandat: Real Mushrooms Cordyceps · Swanson Cordyceps</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🩸</span>
+        <div><div class="acc-label">Chromium Picolinate</div><div class="acc-sub">Controlul glicemiei și al poftei</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-optional">OPȚIONAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 200-400mcg cu prima masă. Zilnic.</div>
+        <div class="supp-why">Cromul ajută insulina să funcționeze mai eficient — adică nutrienții din mâncare (proteine, carbohidrați) ajung preferențial în mușchi, nu în celulele de grăsime. Reduce și pofta de dulce și zahăr procesat, ceea ce este extrem de util când ești la deficit caloric. Ieftin, fără efecte adverse la doza standard.</div>
+        <div class="supp-brand">✓ Recomandat: Vitabolic Chromium Picolinate 200mcg</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🛡️</span>
+        <div><div class="acc-label">NAC — N-Acetil Cisteină</div><div class="acc-sub">Antioxidant + detox celular</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-optional">OPȚIONAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 600mg, de 1-2 ori pe zi, departe de mese (pe stomacul gol sau la 2h după masă).</div>
+        <div class="supp-why">NAC este precursorul Glutationului — cel mai puternic antioxidant produs de corpul uman. Antrenamentele intense generează stres oxidativ în mușchi. NAC neutralizează acest stres și accelerează recuperarea. Ajută ficatul să proceseze toxinele și are efecte antiinflamatoare. Util mai ales dacă consumi alcool ocazional sau ești expus la poluare.</div>
+        <div class="supp-study">📊 Folosit în medicină pentru protecție hepatică și tratamentul supradozajului de paracetamol datorită puterii sale antioxidante dovedite.</div>
+        <div class="supp-brand">✓ Recomandat: Now Foods NAC 600mg · Vitabolic NAC</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🔥</span>
+        <div><div class="acc-label">Pre-Workout</div><div class="acc-sub">Blood and Guts — Dorian Yates</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-optional">OPȚIONAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 1 cupă cu 400ml apă, 20-30 min înainte de antrenament. Maximum 4x pe săptămână. Nu lua cu mai puțin de 6h înainte de somn.</div>
+        <div class="supp-why">Nu este un must — o cafea neagră face 60% din treaba unui pre-workout. Dar în zilele grele, când ești obosit sau nemotivat, un pre-workout bun face diferența. Cofeina crește focus-ul și forța, citrulina mărește „pomparea" în mușchi (vasodilatație), beta-alanina crește rezistența. Blood and Guts are formula curată, fără ingrediente inutile.</div>
+        <div class="supp-brand">✓ Recomandat: Blood and Guts — Dorian Yates · WarCry · C4 Ultimate</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-heading">FEMEI — Suplimente specifice</div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">💅</span>
+        <div><div class="acc-label">Colagen + Vitamina C</div><div class="acc-sub">Piele, articulații, păr, unghii</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-female">FEMEI</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 10-15g colagen hidrolizat pe zi + 500mg Vitamina C pentru absorbție maximă. Dimineața pe stomacul gol sau în cafea.</div>
+        <div class="supp-why">Colagenul este proteina structurală nr. 1 din corp — 30% din toată proteina corpului. Producția naturală scade cu 1% pe an după 25 de ani. Suplimentarea stimulează fibroblastele să producă mai mult colagen propriu. Efecte vizibile: piele mai elastică și hidratată, unghii mai rezistente, păr mai puternic, articulații protejate. Vitamina C este obligatorie — fără ea, sinteza colagenului nu funcționează.</div>
+        <div class="supp-study">📊 Studii recente arată că 10g de colagen hidrolizat zilnic timp de 8 săptămâni îmbunătățesc semnificativ elasticitatea pielii și reduc ridurile fine.</div>
+        <div class="supp-brand">✓ Recomandat: Vital Proteins Collagen Peptides · Now Foods Collagen · orice colagen hidrolizat de tip I și III</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🌿</span>
+        <div><div class="acc-label">Ashwagandha KSM-66</div><div class="acc-sub">Anti-stres + hormoni echilibrați</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-optional">OPȚIONAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 300-600mg extract KSM-66 seara, cu ultima masă. Ciclu: 8 săptămâni on, 2 off.</div>
+        <div class="supp-why">Cortizolul — hormonul stresului — este dușmanul numarul 1 al progresului fizic. Când cortizolul este cronic ridicat, corpul depozitează grăsime (mai ales abdominal), degradează mușchii și perturbă somnul. Ashwagandha reduce cortizolul cu 20-30%, îmbunătățește calitatea somnului și oferă o stare de calm fără sedare. KSM-66 este extractul cel mai studiat, cu cea mai bună biodisponibilitate.</div>
+        <div class="supp-study">📊 Studiu 2019: participanții care au luat 600mg KSM-66 zilnic au raportat reducerea semnificativă a stresului și îmbunătățiri ale somnului față de grupul placebo.</div>
+        <div class="supp-brand">✓ Recomandat: KSM-66 Ashwagandha OstroVit · Vitabolic Ashwagandha KSM-66</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-heading">ARTICULAȚII — Dacă dor încheieturile</div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🦴</span>
+        <div><div class="acc-label">MSM + Condroitină</div><div class="acc-sub">Cartilaj sănătos, mișcare fără durere</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-joints">ARTICULAȚII</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> MSM 1000-2000mg de 2x pe zi + Condroitină 800-1200mg pe zi, cu mesele. Efectele apar după 4-8 săptămâni de administrare continuă.</div>
+        <div class="supp-why"><strong>MSM (Methylsulfonylmethane)</strong> — sursă organică de sulf, esențială pentru sinteza colagenului și a cartilajului. Reduce inflamația articulară și durerea musculară post-antrenament. <strong>Condroitina</strong> — componenta principală a cartilajului. Reține apa în articulație, amortizează impactul și încetinește degradarea cartilajului. Funcționează cel mai bine combinate cu glucozamină.</div>
+        <div class="supp-study">📊 Meta-analiză pe 3.800 de pacienți: combinația Condroitină + Glucozamină a redus semnificativ durerea articulară și îmbunătățit mobilitatea față de placebo.</div>
+        <div class="supp-brand">✓ Recomandat: Now Foods MSM 1000mg · OstroVit Glucosamine Chondroitin MSM</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box warn" style="margin-top:8px">
+    <div class="info-title warn">⚠️ Important</div>
+    <div class="info-box-text">Informațiile sunt educaționale, nu înlocuiesc sfatul unui medic. Consultă un specialist înainte de a combina suplimentele cu medicamente. Nu depăși dozele recomandate. Suplimentele funcționează doar pe fundația unui alimentații corecte și a somnului suficient.</div>
+  </div>
+</div>
+
+<!-- ========== MENTAL ========== -->
+<div id="tab-mental" class="section">
+
+  <div class="info-box purple">
+    <div class="info-title purple">🧠 Creierul tău mănâncă și el</div>
+    <div class="info-box-text">Dopamina, serotonina, noradrenalina sunt fabricate din aminoacizi din alimentație. Stresul cronic, alimentația slabă și lipsa somnului le epuizează. Ce urmează sunt suplimente care refac aceste sisteme fără a fi stimulante agresive sau medicamente.</div>
+  </div>
+
+  <div class="sec-heading">CLARITATE MENTALĂ + FOCUS</div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">⚗️</span>
+        <div><div class="acc-label">Acetyl L-Carnitine (ALCAR)</div><div class="acc-sub">Focus + energie mentală + ardere grăsimi</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-mental">MENTAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 500-1000mg dimineața pe stomacul gol sau pre-antrenament. Zilnic.</div>
+        <div class="supp-why">Forma de carnitină care trece bariera sânge-creier (spre deosebire de L-Carnitina obișnuită). Face două lucruri simultan: transportă acizii grași în mitocondrii pentru energie (mai puțin „fuel" stocat ca grăsime) și crește acetilcolina — neurotransmițătorul memoriei și al concentrării. Efectele se simt: mai multă claritate mentală, focus mai bun la antrenament și la muncă, energie fără nervozitatea cofeinei.</div>
+        <div class="supp-study">📊 Studii la persoane cu oboseală mentală cronică au arătat reducerea semnificativă a oboselii și îmbunătățirea funcției cognitive după 30 de zile.</div>
+        <div class="supp-brand">✓ Recomandat: Now Foods ALCAR 500mg · Nutricost Acetyl L-Carnitine</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🌿</span>
+        <div><div class="acc-label">Coama Leului (Lion's Mane)</div><div class="acc-sub">Regenerare neuronală + memorie</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-mental">MENTAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 500-1000mg extract dimineața. Efectele se construiesc în 4-8 săptămâni. Zilnic, fără ciclu.</div>
+        <div class="supp-why">Lion's Mane stimulează producția de NGF (Nerve Growth Factor) — o proteină care promovează creșterea și menținerea neuronilor. Este practic singurul supliment natural cunoscut că stimulează neurogeneza (formarea de noi neuroni). Efecte raportate: memorie mai bună, creativitate, concentrare, reducerea anxietății și a „cetii mentale". Nu dă energie imediată ca cofeina, dar eficiența cognitivă crește treptat și durabil.</div>
+        <div class="supp-study">📊 Studiu japonez pe adulți cu declin cognitiv ușor: 16 săptămâni de Lion's Mane a îmbunătățit semnificativ scorul cognitiv față de placebo, cu revenire la valori inițiale la 4 săptămâni după oprire.</div>
+        <div class="supp-brand">✓ Recomandat: Real Mushrooms Lion's Mane Swanson · Host Defense Lion's Mane (extract, nu pulbere uscată)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🏔️</span>
+        <div><div class="acc-label">Rhodiola Rosea</div><div class="acc-sub">Anti-oboseală mentală + rezistență la stres</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-mental">MENTAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 200-400mg extract 3% rosavine, dimineața pe stomacul gol. Ciclu: 3 săptămâni on, 1 off. Nu lua seara — poate perturba somnul.</div>
+        <div class="supp-why">Adaptogen clasic folosit de sportivi și militari ruși de decenii. Funcționează pe axa HPA (hipotalamus-hipofiză-suprarenale) — sistemul care răspunde la stres. Reduce oboseala mentală și fizică, crește rezistența la sarcini stresante, îmbunătățește dispoziția. Diferența față de stimulante: nu creează dependență, nu epuizează sistemul nervos, nu dă crash după.</div>
+        <div class="supp-study">📊 Studiu dublu-orb: reducerea oboselii cu 30% și creșterea capacității de muncă mentală după 4 săptămâni față de grupul placebo.</div>
+        <div class="supp-brand">✓ Recomandat: Now Foods Rhodiola (standardizat 3% rosavine) · Swanson Rhodiola Roseea Root</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">⚡</span>
+        <div><div class="acc-label">N-Acetyl L-Tyrosine (NALT)</div><div class="acc-sub">Dopamină + adrenalină + focus sub presiune</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-mental">MENTAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 350-500mg dimineața sau pre-antrenament, pe stomacul gol. Sinergic excelent cu cofeina.</div>
+        <div class="supp-why">Tirozina este aminoacidul din care corpul fabrică dopamina, noradrenalina și adrenalina. Când ești obosit, stresat sau ai dormit prost, rezervele de tirozină se epuizează rapid = „ceată mentală", lipsă de motivație, reactivitate scăzută. NALT (forma acetilată) are biodisponibilitate mult mai mare față de L-Tirozina simplă. Efectul principal: restabilește claritatea mentală și motivația mai ales în condiții de stres sau oboseală. Nu creează dependență.</div>
+        <div class="supp-study">📊 Studii militare au arătat că tirozina îmbunătățește semnificativ performanța cognitivă în condiții de lipsă de somn și stres extrem față de placebo.</div>
+        <div class="supp-brand">✓ Recomandat: Now Foods N-Acetyl Tyrosine · Swanson NALT 350mg</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🌱</span>
+        <div><div class="acc-label">Bacopa Monnieri</div><div class="acc-sub">Memorie pe termen lung + calmare</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-mental">MENTAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 300-450mg extract standardizat 20% bacosides, cu o masă ce conține grăsimi (se absoarbe mai bine). Efectele se construiesc în 6-12 săptămâni.</div>
+        <div class="supp-why">Plantă folosită în Ayurveda de peste 3000 de ani. Are două mecanisme principale: crește viteza de transmitere a semnalelor nervoase (mielina axonilor) și are efecte anxiolitice (reduce anxietatea fără sedare). Este mai lentă decât alți nootropici dar efectele sunt profunde și durabile. Ideală pentru cei care au multă informație de procesat sau niveluri ridicate de anxietate de fond.</div>
+        <div class="supp-study">📊 Meta-analiză a 9 studii clinice: Bacopa îmbunătățește consistent memoria, viteza procesării informației și atenția. Efect cu atât mai pronunțat la utilizare îndelungată.</div>
+        <div class="supp-brand">✓ Recomandat: Now Foods Bacopa · Swanson Bacopa Monnieri </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="acc">
+    <div class="acc-head" onclick="toggleAcc(this)">
+      <div class="acc-head-left">
+        <span style="font-size:20px">🫘</span>
+        <div><div class="acc-label">Mucuna Pruriens</div><div class="acc-sub">Reset dopamină + motivație naturală</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px"><span class="supp-badge badge-mental">MENTAL</span><span class="acc-arrow">▼</span></div>
+    </div>
+    <div class="acc-body">
+      <div class="acc-content">
+        <div class="supp-dose">⏰ <strong>Cum:</strong> 300-500mg extract 15% L-Dopa, dimineața pe stomacul gol. Ciclu strict: 5 zile on, 2 off. NU lua cu antidepresive sau medicație Parkinson.</div>
+        <div class="supp-why">Mucuna conține L-Dopa (levodopa) — precursorul direct și imediat al dopaminei. Această moleculă trece bariera sânge-creier și crește rapid nivelul de dopamină. Efecte: motivație crescută, drive, plăcere, energie mentală, libido îmbunătățit. De asemenea, reduce prolactina (care când e ridicată suprimă testosteronul). Ciclul este important — fără pauze, receptorii de dopamină se pot desensibiliza.</div>
+        <div class="supp-study">📊 Studii au arătat eficiență comparabilă cu Levodopa farmaceutică la persoane cu niveluri scăzute de dopamină, cu un profil de siguranță bun la dozele suplimentare standard.</div>
+        <div class="supp-brand">✓ Recomandat: Now Foods Mucuna Pruriens · Swanson Full Spectrum Mucuna Pruriens</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info-box purple">
+    <div class="info-title purple">💡 Stack recomandat pentru claritate mentală</div>
+    <div class="info-box-text">
+      <strong>Dimineața:</strong> ALCAR 500mg + NALT 350mg + Rhodiola 200mg + cafea neagră<br><br>
+      <strong>Zilnic pe termen lung:</strong> Lion's Mane 1000mg + Bacopa 300mg (cu masă cu grăsimi)<br><br>
+      <strong>Ciclic:</strong> Mucuna (5 zile on, 2 zile off) pentru perioade de motivație scăzută<br><br>
+      Nu le lua pe toate simultan de la început. Introduce câte unul pe săptămână ca să știi ce îți face bine.
+    </div>
+  </div>
+</div>
+
+<!-- ========== LISTA ========== -->
+<div id="tab-lista" class="section">
+
+  <div class="sec-heading">LISTA DE CUMPĂRĂTURI — Săptămânală</div>
+
+  <div class="card card-orange">
+    <div class="card-title"><div class="icon icon-orange">🥩</div>Proteine</div>
+    <div class="food-row"><div class="food-name">Piept de pui / curcan<small>Baza proteinei săptămânale</small></div><div class="food-amount">1-1.2kg</div></div>
+    <div class="food-row"><div class="food-name">Conservă de Ton NIXE<small>Conserve · gata instant · ieftin</small></div><div class="food-amount">6-8 conserve</div></div>
+    <div class="food-row"><div class="food-name">Somon file congelat<small>Omega-3 · 2-3 porții/săptămână</small></div><div class="food-amount">400-500g</div></div>
+    <div class="food-row"><div class="food-name">Ouă de găină<small>Proteina cea mai ieftina și completă</small></div><div class="food-amount">20 buc</div></div>
+    <div class="food-row"><div class="food-name">Iaurt grecesc 0%<small>Caseină + probiotic natural</small></div><div class="food-amount">1kg total</div></div>
+    <div class="food-row"><div class="food-name">Brânză de vaci slabă<small>Caseină lentă · ideal seara</small></div><div class="food-amount">400g</div></div>
+  </div>
+
+  <div class="card card-accent">
+    <div class="card-title"><div class="icon icon-lime">🌾</div>Carbohidrați</div>
+    <div class="food-row"><div class="food-name">Cremă de orez<small>Mic dejun rapid · absorbție excelentă</small></div><div class="food-amount">500g</div></div>
+    <div class="food-row"><div class="food-name">Orez alb sau brun<small>Baza meselor principale</small></div><div class="food-amount">1kg</div></div>
+    <div class="food-row"><div class="food-name">Cartofi dulci<small>Beta-caroten · carbohidrat complex</small></div><div class="food-amount">1.5kg</div></div>
+    <div class="food-row"><div class="food-name">Fulgi de ovăz<small>Mic dejun alternativă + fibre</small></div><div class="food-amount">500g</div></div>
+    <div class="food-row"><div class="food-name">Quinoa<small>Proteina vegetala + carbohidrat complet</small></div><div class="food-amount">300g</div></div>
+    <div class="food-row"><div class="food-name">Pâine integrală<small>Pre-workout rapid</small></div><div class="food-amount">2 pâini</div></div>
+    <div class="food-row"><div class="food-name">Banane<small>Pre-workout natural · potasiu</small></div><div class="food-amount">1.5kg</div></div>
+  </div>
+
+  <div class="card card-blue">
+    <div class="card-title"><div class="icon icon-blue">🥦</div>Legume recomandate</div>
+    <div class="food-row"><div class="food-name">Sparanghel<small>Detox, diuretic natural, nutrienți densi</small></div><div class="food-amount">500g</div></div>
+    <div class="food-row"><div class="food-name">Brocoli<small>Sulforafan · anti-estrogen natural</small></div><div class="food-amount">500g</div></div>
+    <div class="food-row"><div class="food-name">Fasole verde<small>Fibre + potasiu</small></div><div class="food-amount">400g</div></div>
+    <div class="food-row"><div class="food-name">Spanac proaspăt<small>Fier + magneziu + vitamina K</small></div><div class="food-amount">200g</div></div>
+    <div class="food-row"><div class="food-name">Roșii + castravete + ardei<small>Hidratare + antioxidanți</small></div><div class="food-amount">după gust</div></div>
+    <div class="food-row"><div class="food-name">Usturoi proaspăt<small>Allicin · natural anti-inflamator</small></div><div class="food-amount">1 căpățână</div></div>
+  </div>
+
+  <div class="card card-purple">
+    <div class="card-title"><div class="icon icon-purple">🥑</div>Grăsimi bune</div>
+    <div class="food-row"><div class="food-name">Ulei de măsline extravirgin<small>Omega-9 · baza pentru gătit și dressing</small></div><div class="food-amount">1 sticlă</div></div>
+    <div class="food-row"><div class="food-name">Unt de arahide natural<small>Grăsimi bune + proteină + calorii dense</small></div><div class="food-amount">1 borcan</div></div>
+    <div class="food-row"><div class="food-name">Migdale crude<small>Vitamina E + magneziu + Omega-3</small></div><div class="food-amount">200g</div></div>
+    <div class="food-row"><div class="food-name">Nuci crude<small>Cel mai bun Omega-3 vegetal</small></div><div class="food-amount">150g</div></div>
+    <div class="food-row"><div class="food-name">Avocado (opțional)<small>Grăsimi mononesaturate + potasiu</small></div><div class="food-amount">3-4 buc</div></div>
+  </div>
+
+  <div class="info-box">
+    <div class="info-title">💡 Tip Meal Prep — Duminica</div>
+    <div class="info-box-text">Fierbi 700g orez sau cremă de orez + gătești 1kg piept pui la cuptor + fierbi 15 ouă + prepari 1kg cartofi dulci. Porționezi în caserole. Economisești 45 min în fiecare zi din săptămână. Gata instant la microunde 2 minute.</div>
+  </div>
+
+  <div class="contact-row" style="margin-top:8px;margin-bottom:4px">
+    <a href="https://wa.me/40753452245?text=Salut%20Dragos,%20am%20o%20intrebare%20despre%20planul%20de%20alimentatie" class="contact-btn btn-wa" target="_blank">💬 Întreabă pe WhatsApp</a>
+    <a href="https://instagram.com/dododragos" class="contact-btn btn-ig" target="_blank">📸 @dododragos</a>
+  </div>
+</div>
+
+<footer>
+  <div style="color:var(--gray);font-size:0.72rem;letter-spacing:1px;text-transform:uppercase">Summer Body Protocol · Plan Alimentație</div>
+  <div style="margin-top:4px;color:var(--gray2);font-size:0.7rem">creat de DRAGOS · @dododragos</div>
+</footer>
+
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-tab="plan" onclick="switchTab('plan',this)">
+    <div class="nav-icon">📋</div>Plan
+  </button>
+  <button class="nav-btn" data-tab="tracker" onclick="switchTab('tracker',this)">
+    <div class="nav-icon">✅</div>Tracker
+  </button>
+  <button class="nav-btn" data-tab="supp" onclick="switchTab('supp',this)">
+    <div class="nav-icon">💊</div>Supl.
+  </button>
+  <button class="nav-btn" data-tab="mental" onclick="switchTab('mental',this)">
+    <div class="nav-icon">🧠</div>Mental
+  </button>
+  <button class="nav-btn" data-tab="lista" onclick="switchTab('lista',this)">
+    <div class="nav-icon">🛒</div>Listă
+  </button>
+</nav>
+
+<script>
+(function(){
+'use strict';
+
+const STORAGE_KEY = 'sbp_ali_v1';
+const state = {
+  checks:{},
+  water:0,
+  date:''
+};
+
+function today(){ return new Date().toDateString(); }
+
+function load(){
+  try{
+    const s = localStorage.getItem(STORAGE_KEY);
+    if(s){
+      const d = JSON.parse(s);
+      if(d.date === today()){
+        Object.assign(state, d);
+      } else {
+        state.checks = {};
+        state.water = 0;
+        state.date = today();
+        save();
+      }
+    } else {
+      state.date = today();
+    }
+  }catch(e){}
+}
+
+function save(){
+  try{ state.date=today(); localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+}
+
+// --- TABS ---
+function switchTab(id, btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  // Also handle top tabs
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+window.switchTab = switchTab;
+
+// Top tabs also call switchTab
+document.querySelectorAll('.tab').forEach((t,i)=>{
+  t.addEventListener('click',function(){
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    this.classList.add('active');
+    const tabs = ['plan','tracker','supp','mental','lista'];
+    switchTab(tabs[i], null);
+    // sync bottom nav
+    document.querySelectorAll('.nav-btn').forEach((b,j)=>{ if(j===i) b.classList.add('active'); });
+  });
+});
+
+// --- ALTERNATIVES ---
+window.switchAlt = function(meal, opt){
+  const card = document.querySelector(`#${meal}-a`)?.closest('.card') || 
+               document.querySelector(`[id^="${meal}-"]`)?.closest('.card');
+  if(!card) return;
+  card.querySelectorAll('.food-option').forEach(f=>f.classList.remove('active'));
+  card.querySelectorAll('.alt-btn').forEach(b=>b.classList.remove('active'));
+  const target = document.getElementById(meal+'-'+opt);
+  if(target) target.classList.add('active');
+  const btns = card.querySelectorAll('.alt-btn');
+  const idx = ['a','b','c'].indexOf(opt);
+  if(btns[idx]) btns[idx].classList.add('active');
+};
+
+// --- ACCORDION ---
+document.querySelectorAll('.acc-head').forEach(h=>{
+  h.addEventListener('click',()=>{
+    h.closest('.acc').classList.toggle('open');
+  });
+});
+
+// --- CHECKLIST ---
+function updateProgress(){
+  const keys = ['m1','m2','m3','m4','m5'];
+  const done = keys.filter(k=>state.checks[k]).length;
+  const pct = (done/keys.length)*100;
+  const pt = document.getElementById('prog-text');
+  const pf = document.getElementById('prog-fill');
+  const cpt = document.getElementById('check-prog-text');
+  const cpf = document.getElementById('check-prog-fill');
+  if(pt) pt.textContent = done+' / '+keys.length+' mese';
+  if(pf) pf.style.width = pct+'%';
+  if(cpt) cpt.textContent = done+' / '+keys.length;
+  if(cpf) cpf.style.width = pct+'%';
+}
+
+function spawnEffects(el){
+  if(navigator.vibrate) navigator.vibrate([40,20,40]);
+  const rect = el.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+  const colors = ['#c6f135','#ff7340','#4fc3f7','#b57aff','#ffffff'];
+  for(let i=0;i<12;i++){
+    const p = document.createElement('div');
+    p.className='confetti-piece';
+    p.style.cssText = `left:${cx+(Math.random()*80-40)}px;top:${cy}px;background:${colors[i%colors.length]};animation-delay:${Math.random()*0.2}s;border-radius:${Math.random()>0.5?'50%':'2px'}`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 1000);
+  }
+  const emojis = ['🔥','💪','✅','🌿','⚡'];
+  const e = document.createElement('div');
+  e.className='pop-emoji';
+  e.style.cssText = `left:${cx-12}px;top:${cy}px`;
+  e.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(), 1200);
+}
+
+window.toggleCheck = function(item){
+  const key = item.dataset.key;
+  state.checks[key] = !state.checks[key];
+  if(state.checks[key]){
+    item.classList.add('done');
+    spawnEffects(item);
+  } else {
+    item.classList.remove('done');
+  }
+  updateProgress();
+  save();
+};
+
+function applyChecks(){
+  document.querySelectorAll('.check-item[data-key]').forEach(item=>{
+    const key = item.dataset.key;
+    if(state.checks[key]) item.classList.add('done');
+    else item.classList.remove('done');
+  });
+  updateProgress();
+}
+
+// --- WATER ---
+function buildWater(){
+  const grid = document.getElementById('water-grid');
+  if(!grid) return;
+  grid.innerHTML='';
+  const total = 8;
+  for(let i=0;i<total;i++){
+    const d = document.createElement('div');
+    d.className='water-drop'+(i<state.water?' filled':'');
+    d.textContent='💧';
+    d.addEventListener('click',()=>{
+      state.water = (i < state.water) ? i : i+1;
+      buildWater();
+      updateWaterText();
+      save();
+    });
+    grid.appendChild(d);
+  }
+}
+function updateWaterText(){
+  const t = document.getElementById('water-text');
+  if(t) t.textContent = (state.water*375/1000).toFixed(2).replace('.00','').replace(/\.?0+$/,'')+'L / 3L';
+}
+
+// --- INTRO ---
+setTimeout(()=>{ 
+  const i = document.getElementById('intro');
+  if(i){ i.style.display='none'; }
+},2900);
+
+// Init
+load();
+applyChecks();
+buildWater();
+updateWaterText();
+updateProgress();
+
+// Prevent double-tap zoom
+let lastTouch=0;
+document.addEventListener('touchend',function(e){
+  const now=Date.now();
+  if(now-lastTouch<=300){ e.preventDefault(); }
+  lastTouch=now;
+},false);
+
+})();
+</script>
+</body>
+</html>
